@@ -1,0 +1,72 @@
+# uscasestatus.com — Cursor Rules
+
+## Project overview
+A USCIS immigration case tracker at uscasestatus.com. Users enter a USCIS receipt number and get:
+- Real-time case status pulled from the public USCIS case status endpoint
+- Plain-English explanation of what their status means
+- Case history timeline
+- Processing time comparison
+- Email / WhatsApp / web push alerts when their status changes
+- A dashboard to save and manage multiple cases
+- Bilingual (English + Spanish)
+
+## Tech stack
+- Next.js 15 App Router, TypeScript, Tailwind CSS
+- Supabase (PostgreSQL database + Auth via magic link)
+- Resend (transactional email)
+- Upstash Redis (caching + rate limiting)
+- Vercel (hosting + cron jobs for polling)
+- Recharts (charts)
+- next-intl (i18n for EN/ES)
+
+## Design system
+- Primary color: teal #0F6E56 (light fill #E1F5EE, dark text #085041)
+- Background: #FAFAFA (off-white)
+- Status colors: amber for pending, green for approved, red for denied/RFE
+- Font: Inter (via next/font)
+- Border radius: 8px (md), 12px (lg for cards)
+- Borders: 0.5px, very subtle
+- No gradients, no drop shadows, flat and clean
+
+## File structure conventions
+- /app — Next.js App Router pages and layouts
+- /app/api — API routes (server-side only)
+- /components — Reusable React components
+- /lib — Utilities, Supabase client, USCIS polling logic
+- /data — Static JSON files (status explanations, processing times, form metadata)
+- /public — Static assets
+
+## Key data files
+- /data/status-explanations.json — maps every USCIS status message to plain_english, what_to_do, is_positive
+- /data/processing-times.json — USCIS published processing times by form + service center
+- /data/forms.json — metadata for all 15 tracked form types
+
+## API conventions
+- All API routes in /app/api/[route]/route.ts
+- Always return { data, error } shape
+- Use Supabase service role client for server-side routes
+- Rate limit all public routes with Upstash Redis
+
+## Receipt number formats
+Valid USCIS receipt number prefixes: IOE, WAC, EAC, LIN, SRC, YSC, ZAR, ZCH, ZHN, NBC, MSC, MGL, MCT
+Format: 3-letter prefix + 10 digits = 13 characters total
+Example: IOE0912345678 or WAC2190012345
+
+## USCIS polling
+The public USCIS case status URL is:
+https://egov.uscis.gov/casestatus/mycasestatus.do
+Method: POST
+Body: appReceiptNum=IOE0912345678&caseStatusSearchBtn=CHECK+STATUS
+Returns HTML — parse the status message from the h1 inside .rows div
+
+## Supabase schema
+- cases: id, receipt, form_type, last_status, last_checked, history (jsonb), created_at
+- alerts: id, receipt, email, phone, channels (jsonb), confirmed, user_id (nullable), created_at
+- users: managed by Supabase Auth
+
+## Coding style
+- Always use TypeScript with proper types, no any
+- Use server components by default, add use client only when needed
+- Tailwind classes only — no inline styles, no CSS modules
+- Always handle loading and error states in components
+- Mobile-first: write mobile styles first, use md: and lg: prefixes for larger screens
