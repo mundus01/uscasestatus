@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/recheck?limit=50",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/neighbors?seeds=5&perSeed=8",
+      "schedule": "30 */6 * * *"
+    }
+  ]
+}

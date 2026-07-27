@@ -1,0 +1,212 @@
+[
+  {
+    "code": "I-90",
+    "trackerSlug": "i90-tracker",
+    "category": "green-card",
+    "officialTitle": "Application to Replace Permanent Resident Card",
+    "commonName": { "en": "Green Card replacement", "es": "Reemplazo de Green Card" },
+    "shortDescription": {
+      "en": "Replaces or renews a Permanent Resident Card (green card).",
+      "es": "Reemplaza o renueva la Tarjeta de Residente Permanente (green card)."
+    },
+    "hasBiometrics": true,
+    "hasInterview": false,
+    "producesCard": true
+  },
+  {
+    "code": "I-129",
+    "trackerSlug": "i129-tracker",
+    "category": "employment",
+    "officialTitle": "Petition for a Nonimmigrant Worker",
+    "commonName": { "en": "Work visa petition", "es": "Petición de visa de trabajo" },
+    "shortDescription": {
+      "en": "Employer petition for a temporary worker, such as H-1B, L-1 or O-1.",
+      "es": "Petición del empleador para un trabajador temporal, como H-1B, L-1 u O-1."
+    },
+    "hasBiometrics": false,
+    "hasInterview": false,
+    "producesCard": false
+  },
+  {
+    "code": "I-129F",
+    "trackerSlug": "i129f-tracker",
+    "category": "family",
+    "officialTitle": "Petition for Alien Fiancé(e)",
+    "commonName": { "en": "Fiancé(e) visa petition", "es": "Petición de visa de prometido(a)" },
+    "shortDescription": {
+      "en": "Starts the K-1 fiancé(e) visa process for a U.S. citizen's fiancé(e).",
+      "es": "Inicia el proceso de visa K-1 para el prometido(a) de un ciudadano estadounidense."
+    },
+    "hasBiometrics": false,
+    "hasInterview": false,
+    "producesCard": false
+  },
+  {
+    "code": "I-130",
+    "trackerSlug": "i130-tracker",
+    "category": "family",
+    "officialTitle": "Petition for Alien Relative",
+    "commonName": { "en": "Family petition", "es": "Petición familiar" },
+    "shortDescription": {
+      "en": "Establishes a qualifying family relationship so a relative can immigrate.",
+      "es": "Establece la relación familiar que permite a un pariente inmigrar."
+    },
+    "hasBiometrics": false,
+    "hasInterview": false,
+    "producesCard": false
+  },
+  {
+    "code": "I-131",
+    "trackerSlug": "i131-tracker",
+    "category": "travel",
+    "officialTitle": "Application for Travel Document",
+    "commonName": { "en": "Travel document / advance parole", "es": "Documento de viaje / permiso adelantado" },
+    "shortDescription": {
+      "en": "Requests advance parole, a re-entry permit, or refugee travel document.",
+      "es": "Solicita permiso adelantado, permiso de reingreso o documento de viaje para refugiados."
+    },
+    "hasBiometrics": true,
+    "hasInterview": false,
+    "producesCard": true
+  },
+  {
+    "code": "I-140",
+    "trackerSlug": "i140-tracker",
+    "category": "employment",
+    "officialTitle": "Immigrant Petition for Alien Workers",
+    "commonName": { "en": "Employment-based green card petition", "es": "Petición de residencia por empleo" },
+    "shortDescription": {
+      "en": "Employer or self-petition for an employment-based immigrant visa.",
+      "es": "Petición del empleador o propia para una visa de inmigrante por empleo."
+    },
+    "hasBiometrics": false,
+    "hasInterview": false,
+    "producesCard": false
+  },
+  {
+    "code": "I-360",
+    "trackerSlug": "i360-tracker",
+    "category": "humanitarian",
+    "officialTitle": "Petition for Amerasian, Widow(er), or Special Immigrant",
+    "commonName": { "en": "Special immigrant petition", "es": "Petición de inmigrante especial" },
+    "shortDescription": {
+      "en": "Covers widow(er)s, VAWA self-petitions, religious workers and other special categories.",
+      "es": "Cubre viudos(as), autopeticiones VAWA, trabajadores religiosos y otras categorías especiales."
+    },
+    "hasBiometrics": false,
+    "hasInterview": false,
+    "producesCard": false
+  },
+  {
+    "code": "I-485",
+    "trackerSlug": "i485-tracker",
+    "category": "green-card",
+    "officialTitle": "Application to Register Permanent Residence or Adjust Status",
+    "commonName": { "en": "Green Card (adjustment of status)", "es": "Green Card (ajuste de estatus)" },
+    "shortDescription": {
+      "en": "Applies for a green card from inside the United States.",
+      "es": "Solicita la residencia permanente desde dentro de Estados Unidos."
+    },
+    "hasBiometrics": true,
+    "hasInterview": true,
+    "producesCard": true
+  },
+  {
+    "code": "I-539",
+    "trackerSlug": "i539-tracker",
+    "category": "status-change",
+    "officialTitle": "Application to Extend/Change Nonimmigrant Status",
+    "commonName": { "en": "Extend or change status", "es": "Extender o cambiar estatus" },
+    "shortDescription": {
+      "en": "Extends or changes a temporary status, such as B-2, F-1, H-4 or L-2.",
+      "es": "Extiende o cambia un estatus temporal, como B-2, F-1, H-4 o L-2."
+    },
+    "hasBiometrics": true,
+    "hasInterview": false,
+    "producesCard": false
+  },
+  {
+    "code": "I-751",
+    "trackerSlug": "i751-tracker",
+    "category": "green-card",
+    "officialTitle": "Petition to Remove Conditions on Residence",
+    "commonName": { "en": "Remove green card conditions", "es": "Eliminar condiciones de la residencia" },
+    "shortDescription": {
+      "en": "Converts a two-year conditional green card into a ten-year card.",
+      "es": "Convierte la residencia condicional de dos años en una tarjeta de diez años."
+    },
+    "hasBiometrics": true,
+    "hasInterview": false,
+    "producesCard": true
+  },
+  {
+    "code": "I-765",
+    "trackerSlug": "i765-tracker",
+    "category": "work-permit",
+    "officialTitle": "Application for Employment Authorization",
+    "commonName": { "en": "Work permit (EAD)", "es": "Permiso de trabajo (EAD)" },
+    "shortDescription": {
+      "en": "Requests an Employment Authorization Document so you can work legally.",
+      "es": "Solicita un Documento de Autorización de Empleo para poder trabajar legalmente."
+    },
+    "hasBiometrics": true,
+    "hasInterview": false,
+    "producesCard": true
+  },
+  {
+    "code": "I-821",
+    "trackerSlug": "i821-tracker",
+    "category": "humanitarian",
+    "officialTitle": "Application for Temporary Protected Status",
+    "commonName": { "en": "TPS application", "es": "Solicitud de TPS" },
+    "shortDescription": {
+      "en": "Requests or renews Temporary Protected Status for a designated country.",
+      "es": "Solicita o renueva el Estatus de Protección Temporal para un país designado."
+    },
+    "hasBiometrics": true,
+    "hasInterview": false,
+    "producesCard": false
+  },
+  {
+    "code": "I-821D",
+    "trackerSlug": "daca-tracker",
+    "category": "humanitarian",
+    "officialTitle": "Consideration of Deferred Action for Childhood Arrivals",
+    "commonName": { "en": "DACA", "es": "DACA" },
+    "shortDescription": {
+      "en": "Requests or renews DACA protection from removal.",
+      "es": "Solicita o renueva la protección de DACA contra la deportación."
+    },
+    "hasBiometrics": true,
+    "hasInterview": false,
+    "producesCard": false
+  },
+  {
+    "code": "N-400",
+    "trackerSlug": "n400-tracker",
+    "category": "citizenship",
+    "officialTitle": "Application for Naturalization",
+    "commonName": { "en": "Citizenship", "es": "Ciudadanía" },
+    "shortDescription": {
+      "en": "Applies to become a U.S. citizen through naturalization.",
+      "es": "Solicita convertirse en ciudadano estadounidense por naturalización."
+    },
+    "hasBiometrics": true,
+    "hasInterview": true,
+    "producesCard": false
+  },
+  {
+    "code": "N-600",
+    "trackerSlug": "n600-tracker",
+    "category": "citizenship",
+    "officialTitle": "Application for Certificate of Citizenship",
+    "commonName": { "en": "Certificate of Citizenship", "es": "Certificado de Ciudadanía" },
+    "shortDescription": {
+      "en": "Documents U.S. citizenship acquired at birth or through a parent.",
+      "es": "Documenta la ciudadanía estadounidense adquirida al nacer o a través de un padre."
+    },
+    "hasBiometrics": false,
+    "hasInterview": false,
+    "producesCard": false
+  }
+]

@@ -1,0 +1,349 @@
+[
+  {
+    "slug": "case_was_received",
+    "match": [
+      "Case Was Received",
+      "Case Was Received And A Receipt Notice Was Sent",
+      "Case Was Received And A Receipt Notice Was Sent Electronically"
+    ],
+    "tone": "pending",
+    "isPositive": true,
+    "timelineStep": "received",
+    "plainEnglish": {
+      "en": "USCIS has your application and created a case file. This is the starting line — they have not decided anything yet. A receipt notice (Form I-797C) should arrive by mail or in your online account.",
+      "es": "USCIS ya tiene su solicitud y creó un expediente. Esto es el punto de partida: aún no han decidido nada. Debe llegar un aviso de recibo (Formulario I-797C) por correo o a su cuenta en línea."
+    },
+    "whatToDo": {
+      "en": "Keep your receipt notice. Create or check a myUSCIS account so you can see updates online. You usually do not need to contact USCIS yet — just wait for the next notice (biometrics, RFE, or a decision).",
+      "es": "Guarde su aviso de recibo. Cree o revise una cuenta myUSCIS para ver actualizaciones en línea. Por lo general no necesita contactar a USCIS todavía: espere el próximo aviso (biometría, RFE o una decisión)."
+    }
+  },
+  {
+    "slug": "fingerprint_fee_was_received",
+    "match": ["Fingerprint Fee Was Received"],
+    "tone": "pending",
+    "isPositive": true,
+    "timelineStep": "biometrics",
+    "plainEnglish": {
+      "en": "USCIS has the biometrics fee for your case. Next they typically schedule a fingerprint / photo appointment at an Application Support Center (ASC).",
+      "es": "USCIS ya tiene la tarifa de datos biométricos de su caso. Lo siguiente suele ser programar una cita de huellas / foto en un Application Support Center (ASC)."
+    },
+    "whatToDo": {
+      "en": "Watch your mail and myUSCIS for an ASC appointment notice. Bring the notice and a photo ID. If you already submitted biometrics for a related case, USCIS sometimes reuses them — still keep checking for notices.",
+      "es": "Revise su correo y myUSCIS por un aviso de cita ASC. Lleve el aviso y una identificación con foto. Si ya dio biometría para un caso relacionado, a veces USCIS la reutiliza; igual siga revisando avisos."
+    }
+  },
+  {
+    "slug": "biometrics_appointment_was_scheduled",
+    "match": [
+      "Biometrics Appointment Was Scheduled",
+      "Fingerprint Appointment Was Scheduled"
+    ],
+    "tone": "pending",
+    "isPositive": true,
+    "timelineStep": "biometrics",
+    "plainEnglish": {
+      "en": "USCIS scheduled your biometrics appointment. At the ASC they take fingerprints, a photo, and a signature used for background checks.",
+      "es": "USCIS programó su cita de datos biométricos. En el ASC toman huellas, una foto y una firma usadas para las verificaciones de antecedentes."
+    },
+    "whatToDo": {
+      "en": "Attend on the date and time on the notice. Bring the appointment notice and government photo ID. If you cannot go, reschedule through myUSCIS or the instructions on the notice — missing it can delay your case.",
+      "es": "Asista en la fecha y hora del aviso. Lleve el aviso de cita y una identificación oficial con foto. Si no puede ir, reprograme por myUSCIS o según las instrucciones del aviso; faltarle puede retrasar su caso."
+    }
+  },
+  {
+    "slug": "fingerprints_were_taken",
+    "match": [
+      "Case Was Updated To Show Fingerprints Were Taken",
+      "Fingerprint Review Was Completed"
+    ],
+    "tone": "pending",
+    "isPositive": true,
+    "timelineStep": "review",
+    "plainEnglish": {
+      "en": "USCIS recorded that your biometrics were taken. Background checks can now move forward while an officer reviews your file.",
+      "es": "USCIS registró que ya tomaron sus datos biométricos. Las verificaciones de antecedentes pueden avanzar mientras un oficial revisa su expediente."
+    },
+    "whatToDo": {
+      "en": "No action needed unless USCIS asks for more evidence. Keep your address current at uscis.gov/addresschange so notices reach you.",
+      "es": "No necesita hacer nada a menos que USCIS pida más evidencia. Mantenga su dirección actualizada en uscis.gov/addresschange para recibir avisos."
+    }
+  },
+  {
+    "slug": "case_is_being_actively_reviewed",
+    "match": [
+      "Case Is Being Actively Reviewed By USCIS",
+      "Case Is Currently Being Reviewed"
+    ],
+    "tone": "pending",
+    "isPositive": true,
+    "timelineStep": "review",
+    "plainEnglish": {
+      "en": "An officer is working on your case right now — or recently touched it. This is progress, not a decision. Next steps vary: more evidence, an interview, or a decision notice.",
+      "es": "Un oficial está trabajando en su caso ahora mismo — o lo revisó recientemente. Esto es progreso, no una decisión. Lo siguiente puede ser más evidencia, una entrevista o un aviso de decisión."
+    },
+    "whatToDo": {
+      "en": "Wait for the next update. Do not send unsolicited documents unless a lawyer advises it. If your case is past the published processing time for your form and office, you may submit an online case inquiry.",
+      "es": "Espere la próxima actualización. No envíe documentos no solicitados salvo que un abogado lo aconseje. Si su caso supera el tiempo de procesamiento publicado para su formulario y oficina, puede presentar una consulta en línea."
+    }
+  },
+  {
+    "slug": "request_for_evidence_was_sent",
+    "match": [
+      "Request for Additional Evidence Was Sent",
+      "Request For Evidence Was Sent",
+      "Notice Of Intent To Deny Was Sent"
+    ],
+    "tone": "alert",
+    "isPositive": false,
+    "timelineStep": "review",
+    "plainEnglish": {
+      "en": "USCIS needs more information before they can decide. An RFE (or NOID) was mailed — the clock is running against a deadline printed on the notice. This is serious but often fixable if you respond completely and on time.",
+      "es": "USCIS necesita más información antes de decidir. Enviaron un RFE (o NOID) por correo: el plazo corre según la fecha en el aviso. Es serio, pero a menudo se puede resolver si responde completo y a tiempo."
+    },
+    "whatToDo": {
+      "en": "Read the notice the day it arrives. Gather every document they listed. Respond before the deadline — late or incomplete responses are a common reason cases stall or get denied. Consider a qualified immigration lawyer if the request is complex.",
+      "es": "Lea el aviso el día que llegue. Reúna cada documento que pidieron. Responda antes de la fecha límite: las respuestas tardías o incompletas suelen atrasar o denegar casos. Considere un abogado de inmigración si la solicitud es compleja."
+    }
+  },
+  {
+    "slug": "response_to_rfe_was_received",
+    "match": [
+      "Response To USCIS' Request For Evidence Was Received",
+      "Response To A Request For Evidence Was Received",
+      "Correspondence Was Received And USCIS Is Reviewing It"
+    ],
+    "tone": "pending",
+    "isPositive": true,
+    "timelineStep": "review",
+    "plainEnglish": {
+      "en": "USCIS got your response and put it back in the queue for an officer. There is usually no new timeline estimate — wait for the next status change.",
+      "es": "USCIS recibió su respuesta y la volvió a poner en la cola de un oficial. Por lo general no hay un nuevo estimado de tiempo: espere el próximo cambio de estado."
+    },
+    "whatToDo": {
+      "en": "Keep a copy of everything you sent. Watch for a decision, interview notice, or another RFE. Update your address if you move.",
+      "es": "Guarde una copia de todo lo que envió. Esté atento a una decisión, aviso de entrevista u otro RFE. Actualice su dirección si se muda."
+    }
+  },
+  {
+    "slug": "interview_was_scheduled",
+    "match": [
+      "Interview Was Scheduled",
+      "Case Is Ready To Be Scheduled For An Interview"
+    ],
+    "tone": "pending",
+    "isPositive": true,
+    "timelineStep": "interview",
+    "plainEnglish": {
+      "en": "USCIS wants to meet with you (and sometimes a petitioner or family member) before deciding. Bring originals of the documents listed on the interview notice.",
+      "es": "USCIS quiere reunirse con usted (y a veces con el peticionario o un familiar) antes de decidir. Lleve originales de los documentos listados en el aviso de entrevista."
+    },
+    "whatToDo": {
+      "en": "Confirm the date, time, and location. Prepare documents early. Arrive early with photo ID. If you need an interpreter or accommodation, follow the instructions on the notice. Missing the interview without rescheduling can lead to denial.",
+      "es": "Confirme fecha, hora y lugar. Prepare los documentos con anticipación. Llegue temprano con identificación con foto. Si necesita intérprete o acomodación, siga las instrucciones del aviso. Faltar a la entrevista sin reprogramar puede llevar a una denegación."
+    }
+  },
+  {
+    "slug": "interview_was_completed",
+    "match": ["Interview Was Completed And My Case Must Be Reviewed"],
+    "tone": "pending",
+    "isPositive": true,
+    "timelineStep": "decision",
+    "plainEnglish": {
+      "en": "Your interview is done. An officer still needs to finish reviewing the file — sometimes the same day, sometimes weeks later. You may get a decision notice, an oath ceremony (N-400), or another request.",
+      "es": "Su entrevista terminó. Un oficial aún debe terminar de revisar el expediente: a veces el mismo día, a veces semanas después. Puede recibir un aviso de decisión, una ceremonia de juramento (N-400) u otra solicitud."
+    },
+    "whatToDo": {
+      "en": "Wait for written notice. If the officer asked for more documents, send them exactly as instructed. Check myUSCIS and your mail regularly.",
+      "es": "Espere el aviso por escrito. Si el oficial pidió más documentos, envíelos exactamente como se indicó. Revise myUSCIS y su correo con frecuencia."
+    }
+  },
+  {
+    "slug": "new_card_is_being_produced",
+    "match": ["New Card Is Being Produced", "Card Is Being Produced"],
+    "tone": "approved",
+    "isPositive": true,
+    "timelineStep": "card",
+    "plainEnglish": {
+      "en": "Good news: USCIS approved the benefit that comes with a card (green card, EAD, or travel document) and sent it to production. Mailing usually follows within a few weeks.",
+      "es": "Buenas noticias: USCIS aprobó el beneficio que incluye una tarjeta (green card, EAD o documento de viaje) y la envió a producción. El envío por correo suele seguir en unas semanas."
+    },
+    "whatToDo": {
+      "en": "Make sure your mailing address is current. Watch for the next status (\"Card Was Mailed\"). If weeks pass with no card, use the USCIS card-not-received process after the normal wait window.",
+      "es": "Asegúrese de que su dirección postal esté actualizada. Espere el próximo estado (\"Se Me Envió La Tarjeta\"). Si pasan semanas sin tarjeta, use el proceso de USCIS para tarjetas no recibidas después del período normal de espera."
+    }
+  },
+  {
+    "slug": "case_was_approved",
+    "match": [
+      "Case Was Approved",
+      "Case Approval Was Affirmed",
+      "Decision Was Affirmed"
+    ],
+    "tone": "approved",
+    "isPositive": true,
+    "timelineStep": "decision",
+    "plainEnglish": {
+      "en": "USCIS approved your case. What happens next depends on the form: you may receive a card, an approval notice to take to the National Visa Center / consulate, or an oath ceremony date for citizenship.",
+      "es": "USCIS aprobó su caso. Lo que sigue depende del formulario: puede recibir una tarjeta, un aviso de aprobación para el National Visa Center / consulado, o una fecha de ceremonia de juramento para ciudadanía."
+    },
+    "whatToDo": {
+      "en": "Read the approval notice carefully. Note any next steps (card production, NVC, oath). Keep the notice with your immigration records. If something looks wrong, contact USCIS or a lawyer promptly.",
+      "es": "Lea el aviso de aprobación con cuidado. Anote los siguientes pasos (producción de tarjeta, NVC, juramento). Guarde el aviso con sus registros. Si algo parece incorrecto, contacte a USCIS o a un abogado de inmediato."
+    }
+  },
+  {
+    "slug": "case_was_denied",
+    "match": ["Case Was Denied", "Case Was Rejected"],
+    "tone": "alert",
+    "isPositive": false,
+    "timelineStep": "decision",
+    "plainEnglish": {
+      "en": "USCIS decided against approving this filing. The denial (or rejection) notice explains why and whether you can appeal, file a motion, or refile. Deadlines are short — often 30 days.",
+      "es": "USCIS decidió no aprobar esta solicitud. El aviso de denegación (o rechazo) explica por qué y si puede apelar, presentar una moción o volver a presentar. Los plazos son cortos: a menudo 30 días."
+    },
+    "whatToDo": {
+      "en": "Read the entire notice immediately. Calendar any appeal or motion deadline. Talk to a licensed immigration attorney or accredited representative before the deadline passes — do not ignore the letter.",
+      "es": "Lea el aviso completo de inmediato. Anote cualquier plazo de apelación o moción. Hable con un abogado de inmigración con licencia o un representante acreditado antes de que venza el plazo; no ignore la carta."
+    }
+  },
+  {
+    "slug": "card_was_mailed",
+    "match": [
+      "Card Was Mailed To Me",
+      "Card Was Picked Up By The United States Postal Service",
+      "Card Was Delivered To Me By The Post Office"
+    ],
+    "tone": "approved",
+    "isPositive": true,
+    "timelineStep": "card",
+    "plainEnglish": {
+      "en": "Your card left USCIS and is with the Postal Service (or was delivered). Check your mailbox and any tracking number shown in your case history.",
+      "es": "Su tarjeta salió de USCIS y está con el Servicio Postal (o ya fue entregada). Revise su buzón y cualquier número de seguimiento en el historial de su caso."
+    },
+    "whatToDo": {
+      "en": "Watch for delivery. If the card does not arrive within the USCIS wait window, follow the \"card was not delivered\" instructions on uscis.gov. Never laminate a green card.",
+      "es": "Esté atento a la entrega. Si la tarjeta no llega dentro del período de espera de USCIS, siga las instrucciones de \"tarjeta no entregada\" en uscis.gov. Nunca plastifique una green card."
+    }
+  },
+  {
+    "slug": "case_was_transferred",
+    "match": [
+      "Case Was Transferred And A New Office Has Jurisdiction",
+      "Case Was Transferred To Another Office"
+    ],
+    "tone": "pending",
+    "isPositive": true,
+    "timelineStep": "review",
+    "plainEnglish": {
+      "en": "USCIS moved your file to a different office. This is common for workload balancing. Your receipt number stays the same; processing continues at the new office.",
+      "es": "USCIS movió su expediente a otra oficina. Es común para balancear carga de trabajo. Su número de recibo no cambia; el procesamiento continúa en la nueva oficina."
+    },
+    "whatToDo": {
+      "en": "No action needed unless a notice asks you to appear somewhere new. Continue monitoring this receipt number — do not refile just because of a transfer.",
+      "es": "No necesita hacer nada a menos que un aviso le pida presentarse en otro lugar. Siga monitoreando este número de recibo: no vuelva a presentar solo por una transferencia."
+    }
+  },
+  {
+    "slug": "name_was_updated",
+    "match": ["Name Was Updated"],
+    "tone": "neutral",
+    "isPositive": true,
+    "timelineStep": "review",
+    "plainEnglish": {
+      "en": "USCIS updated the name on your case file — often after a marriage, divorce, or correction. Your case otherwise continues as before.",
+      "es": "USCIS actualizó el nombre en su expediente — a menudo tras un matrimonio, divorcio o corrección. Su caso continúa como antes."
+    },
+    "whatToDo": {
+      "en": "Confirm the spelling is correct on your next notice. If it is wrong, contact USCIS with proof of the correct legal name.",
+      "es": "Confirme que la ortografía sea correcta en su próximo aviso. Si está mal, contacte a USCIS con prueba del nombre legal correcto."
+    }
+  },
+  {
+    "slug": "document_was_mailed",
+    "match": [
+      "Document Was Mailed To Me",
+      "Notice Was Mailed To Me",
+      "Approval Notice Was Sent"
+    ],
+    "tone": "pending",
+    "isPositive": true,
+    "timelineStep": "review",
+    "plainEnglish": {
+      "en": "USCIS mailed you a notice or document. Check your mailbox and myUSCIS documents tab — the paper letter still matters for deadlines.",
+      "es": "USCIS le envió un aviso o documento por correo. Revise su buzón y la pestaña de documentos en myUSCIS: la carta en papel sigue importando para los plazos."
+    },
+    "whatToDo": {
+      "en": "Open mail from USCIS promptly. Note any deadlines. If nothing arrives after a reasonable wait, request a copy through myUSCIS or an online inquiry.",
+      "es": "Abra el correo de USCIS de inmediato. Anote cualquier plazo. Si no llega nada después de una espera razonable, solicite una copia por myUSCIS o una consulta en línea."
+    }
+  },
+  {
+    "slug": "expedite_request",
+    "match": [
+      "Expedite Request Received",
+      "Expedite Request Approved",
+      "Expedite Request Denied"
+    ],
+    "tone": "pending",
+    "isPositive": true,
+    "timelineStep": "review",
+    "plainEnglish": {
+      "en": "USCIS logged an expedite request on your case. Approval of an expedite only means faster processing consideration — it is not the same as approving the underlying benefit.",
+      "es": "USCIS registró una solicitud de aceleración en su caso. Aprobar una aceleración solo significa consideración más rápida: no es lo mismo que aprobar el beneficio principal."
+    },
+    "whatToDo": {
+      "en": "If approved, keep watching for status movement. If denied, normal processing continues — you can usually only re-request with new urgent evidence.",
+      "es": "Si fue aprobada, siga vigilando movimientos de estado. Si fue denegada, el procesamiento normal continúa; por lo general solo puede volver a pedirla con nueva evidencia urgente."
+    }
+  },
+  {
+    "slug": "case_was_reopened",
+    "match": ["Case Was Reopened"],
+    "tone": "pending",
+    "isPositive": true,
+    "timelineStep": "review",
+    "plainEnglish": {
+      "en": "USCIS reopened a previously closed or decided case — often after a motion, appeal remand, or agency error correction. Review continues from there.",
+      "es": "USCIS reabrió un caso previamente cerrado o decidido — a menudo tras una moción, remisión de apelación o corrección de error. La revisión continúa desde ahí."
+    },
+    "whatToDo": {
+      "en": "Read any reopening notice. Follow new instructions or deadlines. Ask a lawyer if you filed a motion or appeal and are unsure what the reopen means for you.",
+      "es": "Lea cualquier aviso de reapertura. Siga nuevas instrucciones o plazos. Consulte a un abogado si presentó una moción o apelación y no está seguro de lo que significa la reapertura."
+    }
+  },
+  {
+    "slug": "oath_ceremony",
+    "match": [
+      "Oath Ceremony Will Be Scheduled",
+      "Oath Ceremony Notice Was Mailed",
+      "Certificate Of Naturalization Was Issued"
+    ],
+    "tone": "approved",
+    "isPositive": true,
+    "timelineStep": "decision",
+    "plainEnglish": {
+      "en": "For naturalization cases, this means you are at or past the final ceremony stage — the last step before you become a U.S. citizen (or you already received your certificate).",
+      "es": "Para casos de naturalización, esto significa que está en la etapa final de la ceremonia — el último paso antes de ser ciudadano estadounidense (o ya recibió su certificado)."
+    },
+    "whatToDo": {
+      "en": "Attend the oath ceremony with the documents listed on the notice. After naturalization, update SSA, passport, and voter registration as needed.",
+      "es": "Asista a la ceremonia de juramento con los documentos del aviso. Después de la naturalización, actualice SSA, pasaporte y registro de votante según sea necesario."
+    }
+  },
+  {
+    "slug": "unknown",
+    "match": [],
+    "tone": "neutral",
+    "isPositive": true,
+    "timelineStep": "review",
+    "plainEnglish": {
+      "en": "USCIS posted a status we do not have a custom explanation for yet. The official description below is still the source of truth — we show it so you are not left guessing.",
+      "es": "USCIS publicó un estado para el que aún no tenemos una explicación personalizada. La descripción oficial abajo sigue siendo la fuente de verdad: la mostramos para que no quede adivinando."
+    },
+    "whatToDo": {
+      "en": "Read the USCIS description carefully. If it mentions a deadline, notice, or appointment, act on that. When in doubt, a licensed immigration attorney can interpret the update for your situation.",
+      "es": "Lea la descripción de USCIS con cuidado. Si menciona un plazo, aviso o cita, actúe en consecuencia. Ante la duda, un abogado de inmigración con licencia puede interpretar la actualización para su situación."
+    }
+  }
+]

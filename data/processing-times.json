@@ -1,0 +1,79 @@
+{
+  "_meta": {
+    "note": "Approximate USCIS-published processing ranges in months. Update periodically from uscis.gov/processing-times. Values are national medians/typical ranges used for Phase 1 context — not personal predictions.",
+    "updated": "2026-07"
+  },
+  "forms": {
+    "I-90": {
+      "default": { "lowMonths": 2, "highMonths": 9 },
+      "centers": {}
+    },
+    "I-129": {
+      "default": { "lowMonths": 2, "highMonths": 8 },
+      "centers": {}
+    },
+    "I-129F": {
+      "default": { "lowMonths": 8, "highMonths": 16 },
+      "centers": {}
+    },
+    "I-130": {
+      "default": { "lowMonths": 10, "highMonths": 24 },
+      "centers": {
+        "NBC": { "lowMonths": 10, "highMonths": 20 },
+        "MSC": { "lowMonths": 10, "highMonths": 20 }
+      }
+    },
+    "I-131": {
+      "default": { "lowMonths": 4, "highMonths": 14 },
+      "centers": {}
+    },
+    "I-140": {
+      "default": { "lowMonths": 6, "highMonths": 14 },
+      "centers": {
+        "NSC": { "lowMonths": 5, "highMonths": 12 },
+        "TSC": { "lowMonths": 6, "highMonths": 14 }
+      }
+    },
+    "I-360": {
+      "default": { "lowMonths": 8, "highMonths": 20 },
+      "centers": {}
+    },
+    "I-485": {
+      "default": { "lowMonths": 10, "highMonths": 24 },
+      "centers": {
+        "NBC": { "lowMonths": 11, "highMonths": 22 }
+      }
+    },
+    "I-539": {
+      "default": { "lowMonths": 6, "highMonths": 16 },
+      "centers": {}
+    },
+    "I-751": {
+      "default": { "lowMonths": 14, "highMonths": 28 },
+      "centers": {}
+    },
+    "I-765": {
+      "default": { "lowMonths": 2, "highMonths": 8 },
+      "centers": {
+        "NBC": { "lowMonths": 2, "highMonths": 7 },
+        "MSC": { "lowMonths": 2, "highMonths": 7 }
+      }
+    },
+    "I-821": {
+      "default": { "lowMonths": 6, "highMonths": 16 },
+      "centers": {}
+    },
+    "I-821D": {
+      "default": { "lowMonths": 4, "highMonths": 12 },
+      "centers": {}
+    },
+    "N-400": {
+      "default": { "lowMonths": 6, "highMonths": 14 },
+      "centers": {}
+    },
+    "N-600": {
+      "default": { "lowMonths": 6, "highMonths": 14 },
+      "centers": {}
+    }
+  }
+}

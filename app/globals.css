@@ -1,26 +1,75 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * uscasestatus.com design system.
+ * Flat and clean: no gradients, no drop shadows, 0.5px borders.
+ */
+@theme {
+  /* Brand teal */
+  --color-brand-50: #e1f5ee;
+  --color-brand-500: #0f6e56;
+  --color-brand-700: #085041;
+
+  /* Surfaces */
+  --color-canvas: #fafafa;
+  --color-surface: #ffffff;
+
+  /* Ink */
+  --color-ink: #14211d;
+  --color-ink-muted: #5a6864;
+  --color-ink-subtle: #8b9994;
+
+  /* Hairlines */
+  --color-line: #e6e9e8;
+  --color-line-strong: #d3d8d6;
+
+  /* Case status semantics */
+  --color-status-pending: #b45309;
+  --color-status-pending-fill: #fef3c7;
+  --color-status-approved: #15803d;
+  --color-status-approved-fill: #dcfce7;
+  --color-status-alert: #b91c1c;
+  --color-status-alert-fill: #fee2e2;
+  --color-status-neutral: #475569;
+  --color-status-neutral-fill: #f1f5f9;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-md: 8px;
+  --radius-lg: 12px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Borders are 0.5px throughout — Tailwind's scale starts at 1px. */
+@utility border-hairline {
+  border-width: 0.5px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@utility border-t-hairline {
+  border-top-width: 0.5px;
+}
+
+@utility border-b-hairline {
+  border-bottom-width: 0.5px;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+  }
+
+  /* Receipt numbers are read character-by-character; keep digits unambiguous. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+  }
 }

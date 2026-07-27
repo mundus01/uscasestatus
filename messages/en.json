@@ -1,0 +1,174 @@
+{
+  "meta": {
+    "siteName": "uscasestatus.com",
+    "homeTitle": "Check your USCIS case status — and actually understand it",
+    "homeDescription": "Enter your USCIS receipt number for a live case status, explained in plain English, with a timeline and typical processing times. Free, no account needed."
+  },
+  "nav": {
+    "skipToContent": "Skip to content",
+    "home": "uscasestatus.com home",
+    "signIn": "Sign in",
+    "dashboard": "My cases",
+    "insights": "Insights"
+  },
+  "localeSwitcher": {
+    "label": "Language",
+    "en": "English",
+    "es": "Español"
+  },
+  "home": {
+    "heading": "Check your USCIS case status",
+    "subheading": "Live status straight from USCIS, explained in plain English — with your timeline and what to expect next.",
+    "trust": {
+      "free": "Always free",
+      "noAccount": "No account needed",
+      "noAds": "No ads, ever"
+    },
+    "howItWorks": {
+      "heading": "How it works",
+      "step1Title": "Enter your receipt number",
+      "step1Body": "The 13-character number on your USCIS notice, like IOE0912345678.",
+      "step2Title": "We check USCIS live",
+      "step2Body": "We read your current status the moment you ask — not from a stale copy.",
+      "step3Title": "Understand what it means",
+      "step3Body": "Plain-English meaning, what to do next, and how long cases like yours take."
+    },
+    "forms": {
+      "heading": "Forms we track",
+      "body": "Green cards, work permits, citizenship, travel documents and more."
+    }
+  },
+  "receipt": {
+    "label": "USCIS receipt number",
+    "placeholder": "IOE0912345678",
+    "help": "13 characters: 3 letters followed by 10 digits.",
+    "submit": "Check status",
+    "checking": "Checking…",
+    "errors": {
+      "empty": "Enter your receipt number to continue.",
+      "tooShort": "Receipt numbers are 13 characters. You have {count}.",
+      "tooLong": "Receipt numbers are 13 characters. You have {count}.",
+      "badPrefix": "\"{prefix}\" isn't a USCIS receipt prefix. Check the first three letters.",
+      "badFormat": "That doesn't look like a receipt number: 3 letters then 10 digits."
+    }
+  },
+  "case": {
+    "title": "Case {receipt}",
+    "officeLabel": "Filed with",
+    "unknownOffice": "A USCIS office we don't have a public name for",
+    "plainEnglishTitle": "What this means",
+    "whatToDoTitle": "What to do next",
+    "officialTitle": "Official USCIS description",
+    "timelineTitle": "Typical path for this form",
+    "processingTitle": "Processing time context",
+    "processingRange": "Cases like yours ({form}) typically take about {low}–{high} months according to published USCIS processing times.",
+    "processingProgress": "You appear to be about {months} months into processing.",
+    "processingDisclaimer": "These are published USCIS ranges, not a prediction for your case. Times vary by office, form category, and workload.",
+    "checked": {
+      "label": "Status check",
+      "live": "Checked live just now",
+      "cached": "Checked recently (cached)",
+      "mock": "Demo data (USCIS API not configured)"
+    },
+    "mockBannerTitle": "Demo mode",
+    "mockBannerBody": "Live USCIS credentials are not configured on this environment, so you are seeing a realistic demo status. Add USCIS_CLIENT_ID and USCIS_CLIENT_SECRET to check real cases.",
+    "timeline": {
+      "received": "Case received",
+      "biometrics": "Biometrics",
+      "review": "Under review",
+      "interview": "Interview",
+      "decision": "Decision",
+      "card": "Card produced / mailed"
+    },
+    "nearby": {
+      "title": "Nearby cases in our corpus",
+      "body": "Of {count} cases in the same receipt block we have seen so far:",
+      "approved": "Approved / card",
+      "pending": "In progress",
+      "alert": "RFE / denied"
+    },
+    "track": {
+      "title": "Get email alerts when this case changes",
+      "body": "Free. Confirm once by email — we'll only write when USCIS updates the status.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "submit": "Track this case",
+      "submitting": "Saving…",
+      "successConfirm": "Check your inbox and confirm the link to start alerts.",
+      "successAlready": "This case is already being tracked for that email.",
+      "errorGeneric": "We couldn't start tracking right now. Try again in a moment."
+    },
+    "errors": {
+      "notFoundTitle": "We couldn't find that case",
+      "notFoundBody": "USCIS has no record for this receipt number. Double-check the letters and digits on your notice, then try again.",
+      "upstreamTitle": "USCIS is unavailable right now",
+      "upstreamBody": "We couldn't reach USCIS. This is usually temporary — wait a few minutes and try again.",
+      "rateLimitedTitle": "Slow down for a moment",
+      "rateLimitedBody": "You've checked several cases in a short time. Please wait a few minutes, then try again.",
+      "tryAnother": "Try another receipt number"
+    }
+  },
+  "auth": {
+    "signInTitle": "Sign in to your cases",
+    "signInBody": "We'll email you a magic link — no password. Free forever.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "sendLink": "Email me a sign-in link",
+    "sending": "Sending…",
+    "linkSent": "If that email can receive mail, a sign-in link is on its way.",
+    "errorGeneric": "We couldn't send a sign-in link. Try again shortly."
+  },
+  "dashboard": {
+    "title": "My cases",
+    "subtitle": "Cases you're tracking. Alerts stay free.",
+    "empty": "You're not tracking any cases yet. Check a receipt, then tap “Track this case”.",
+    "checkCase": "Check a case",
+    "statusUnknown": "Status not synced yet — open the case to refresh."
+  },
+  "seo": {
+    "statusHubTitle": "USCIS case status explanations",
+    "statusHubDescription": "Plain-English guides to common USCIS case status messages — what they mean and what to do next.",
+    "statusHubBody": "Every common USCIS status, explained without legal jargon. Pick a message to learn what it means for your case.",
+    "statusPageTitle": "{status} ({form}) — what it means",
+    "whatItMeans": "What this means",
+    "whatToDo": "What to do next",
+    "checkYours": "Check your case",
+    "allStatuses": "All status guides",
+    "formTracker": "{form} case tracker",
+    "formTrackerTitle": "{form} case status tracker",
+    "formTrackerHeading": "Track your {form} case status",
+    "commonStatuses": "Common statuses for this form",
+    "moreProcessingTimes": "See processing time details",
+    "processingHubTitle": "USCIS processing times",
+    "processingHubDescription": "Published USCIS processing time ranges by form — context for how long cases like yours typically take.",
+    "processingHubBody": "These ranges come from published USCIS processing times. They are not a prediction for your specific case.",
+    "processingFormTitle": "{form} processing times",
+    "processingFormHeading": "{form} processing times",
+    "processingUnavailable": "We don't have published ranges for this form yet."
+  },
+  "insights": {
+    "title": "USCIS activity insights",
+    "description": "What our growing case corpus is seeing — counts and recent status changes.",
+    "body": "Built from live lookups and polite rechecks. Free forever. Numbers grow as people check cases.",
+    "corpusLabel": "Cases in corpus",
+    "eventsLabel": "Status changes observed",
+    "feedTitle": "Recent status changes",
+    "feedEmpty": "No status changes recorded yet. Check a sandbox case or wait for cron rechecks."
+  },
+  "status": {
+    "pending": "In progress",
+    "approved": "Approved",
+    "alert": "Needs attention",
+    "neutral": "Update"
+  },
+  "footer": {
+    "notAffiliated": "uscasestatus.com is a private service and is not affiliated with, endorsed by, or operated by U.S. Citizenship and Immigration Services or any government agency.",
+    "notLegalAdvice": "Information here is general guidance, not legal advice. For advice about your case, talk to a licensed immigration attorney or an accredited representative.",
+    "rights": "© {year} uscasestatus.com"
+  },
+  "errors": {
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "The page you're looking for doesn't exist. You can still check a case from the home page.",
+    "backHome": "Go to the home page"
+  }
+}

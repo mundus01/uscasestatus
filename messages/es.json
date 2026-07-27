@@ -1,0 +1,174 @@
+{
+  "meta": {
+    "siteName": "uscasestatus.com",
+    "homeTitle": "Consulta el estado de tu caso de USCIS — y entiéndelo de verdad",
+    "homeDescription": "Ingresa tu número de recibo de USCIS y recibe el estado en vivo, explicado en palabras sencillas, con tu cronología y los tiempos de procesamiento típicos. Gratis y sin crear cuenta."
+  },
+  "nav": {
+    "skipToContent": "Ir al contenido",
+    "home": "Inicio de uscasestatus.com",
+    "signIn": "Entrar",
+    "dashboard": "Mis casos",
+    "insights": "Datos"
+  },
+  "localeSwitcher": {
+    "label": "Idioma",
+    "en": "English",
+    "es": "Español"
+  },
+  "home": {
+    "heading": "Consulta el estado de tu caso de USCIS",
+    "subheading": "El estado en vivo directamente de USCIS, explicado en palabras sencillas — con tu cronología y qué esperar después.",
+    "trust": {
+      "free": "Siempre gratis",
+      "noAccount": "Sin crear cuenta",
+      "noAds": "Sin anuncios, nunca"
+    },
+    "howItWorks": {
+      "heading": "Cómo funciona",
+      "step1Title": "Ingresa tu número de recibo",
+      "step1Body": "El número de 13 caracteres que aparece en tu aviso de USCIS, por ejemplo IOE0912345678.",
+      "step2Title": "Consultamos USCIS en vivo",
+      "step2Body": "Leemos tu estado actual en el momento en que lo pides, no una copia desactualizada.",
+      "step3Title": "Entiende qué significa",
+      "step3Body": "El significado en palabras sencillas, qué hacer después y cuánto tardan los casos como el tuyo."
+    },
+    "forms": {
+      "heading": "Formularios que seguimos",
+      "body": "Residencia permanente, permisos de trabajo, ciudadanía, documentos de viaje y más."
+    }
+  },
+  "receipt": {
+    "label": "Número de recibo de USCIS",
+    "placeholder": "IOE0912345678",
+    "help": "13 caracteres: 3 letras seguidas de 10 dígitos.",
+    "submit": "Consultar estado",
+    "checking": "Consultando…",
+    "errors": {
+      "empty": "Ingresa tu número de recibo para continuar.",
+      "tooShort": "Los números de recibo tienen 13 caracteres. Tienes {count}.",
+      "tooLong": "Los números de recibo tienen 13 caracteres. Tienes {count}.",
+      "badPrefix": "«{prefix}» no es un prefijo de recibo de USCIS. Revisa las primeras tres letras.",
+      "badFormat": "Eso no parece un número de recibo: 3 letras y luego 10 dígitos."
+    }
+  },
+  "case": {
+    "title": "Caso {receipt}",
+    "officeLabel": "Presentado en",
+    "unknownOffice": "Una oficina de USCIS sin nombre público conocido",
+    "plainEnglishTitle": "Qué significa esto",
+    "whatToDoTitle": "Qué hacer ahora",
+    "officialTitle": "Descripción oficial de USCIS",
+    "timelineTitle": "Camino típico de este formulario",
+    "processingTitle": "Contexto de tiempos de procesamiento",
+    "processingRange": "Los casos como el tuyo ({form}) suelen tardar entre {low} y {high} meses según los tiempos publicados por USCIS.",
+    "processingProgress": "Parece que llevas unos {months} meses en procesamiento.",
+    "processingDisclaimer": "Estos son rangos publicados por USCIS, no una predicción para tu caso. Los tiempos varían según la oficina, la categoría del formulario y la carga de trabajo.",
+    "checked": {
+      "label": "Consulta de estado",
+      "live": "Consultado en vivo ahora mismo",
+      "cached": "Consultado recientemente (en caché)",
+      "mock": "Datos de demostración (API de USCIS no configurada)"
+    },
+    "mockBannerTitle": "Modo demostración",
+    "mockBannerBody": "No hay credenciales de USCIS en este entorno, así que estás viendo un estado de demostración realista. Agrega USCIS_CLIENT_ID y USCIS_CLIENT_SECRET para consultar casos reales.",
+    "timeline": {
+      "received": "Caso recibido",
+      "biometrics": "Biometría",
+      "review": "En revisión",
+      "interview": "Entrevista",
+      "decision": "Decisión",
+      "card": "Tarjeta producida / enviada"
+    },
+    "nearby": {
+      "title": "Casos cercanos en nuestro corpus",
+      "body": "De {count} casos del mismo bloque de recibo que hemos visto hasta ahora:",
+      "approved": "Aprobado / tarjeta",
+      "pending": "En proceso",
+      "alert": "RFE / denegado"
+    },
+    "track": {
+      "title": "Recibe alertas por correo cuando cambie este caso",
+      "body": "Gratis. Confirma una vez por correo — solo escribimos cuando USCIS actualice el estado.",
+      "emailLabel": "Correo",
+      "emailPlaceholder": "tu@ejemplo.com",
+      "submit": "Seguir este caso",
+      "submitting": "Guardando…",
+      "successConfirm": "Revisa tu bandeja y confirma el enlace para activar las alertas.",
+      "successAlready": "Ese correo ya está siguiendo este caso.",
+      "errorGeneric": "No pudimos empezar a seguir el caso ahora. Inténtalo en un momento."
+    },
+    "errors": {
+      "notFoundTitle": "No encontramos ese caso",
+      "notFoundBody": "USCIS no tiene un registro para este número de recibo. Revisa las letras y los dígitos de tu aviso e inténtalo de nuevo.",
+      "upstreamTitle": "USCIS no está disponible ahora",
+      "upstreamBody": "No pudimos contactar a USCIS. Suele ser temporal: espera unos minutos e inténtalo de nuevo.",
+      "rateLimitedTitle": "Espera un momento",
+      "rateLimitedBody": "Has consultado varios casos en poco tiempo. Espera unos minutos e inténtalo de nuevo.",
+      "tryAnother": "Probar otro número de recibo"
+    }
+  },
+  "auth": {
+    "signInTitle": "Entra a tus casos",
+    "signInBody": "Te enviamos un enlace mágico por correo — sin contraseña. Siempre gratis.",
+    "emailLabel": "Correo",
+    "emailPlaceholder": "tu@ejemplo.com",
+    "sendLink": "Enviarme un enlace",
+    "sending": "Enviando…",
+    "linkSent": "Si ese correo puede recibir mensajes, el enlace ya está en camino.",
+    "errorGeneric": "No pudimos enviar el enlace. Inténtalo en breve."
+  },
+  "dashboard": {
+    "title": "Mis casos",
+    "subtitle": "Casos que estás siguiendo. Las alertas siguen siendo gratis.",
+    "empty": "Aún no sigues ningún caso. Consulta un recibo y toca “Seguir este caso”.",
+    "checkCase": "Consultar un caso",
+    "statusUnknown": "Estado aún no sincronizado — abre el caso para actualizarlo."
+  },
+  "seo": {
+    "statusHubTitle": "Explicaciones de estados de USCIS",
+    "statusHubDescription": "Guías en lenguaje sencillo sobre mensajes comunes de estado de USCIS: qué significan y qué hacer.",
+    "statusHubBody": "Cada estado común de USCIS, explicado sin jerga legal. Elige un mensaje para entender qué implica para tu caso.",
+    "statusPageTitle": "{status} ({form}) — qué significa",
+    "whatItMeans": "Qué significa",
+    "whatToDo": "Qué hacer ahora",
+    "checkYours": "Consulta tu caso",
+    "allStatuses": "Todas las guías de estado",
+    "formTracker": "Seguimiento de {form}",
+    "formTrackerTitle": "Seguimiento del estado de {form}",
+    "formTrackerHeading": "Sigue el estado de tu caso {form}",
+    "commonStatuses": "Estados comunes de este formulario",
+    "moreProcessingTimes": "Ver detalles de tiempos de procesamiento",
+    "processingHubTitle": "Tiempos de procesamiento de USCIS",
+    "processingHubDescription": "Rangos publicados por USCIS según formulario — contexto sobre cuánto suelen tardar casos como el tuyo.",
+    "processingHubBody": "Estos rangos vienen de los tiempos publicados por USCIS. No son una predicción para tu caso específico.",
+    "processingFormTitle": "Tiempos de procesamiento de {form}",
+    "processingFormHeading": "Tiempos de procesamiento de {form}",
+    "processingUnavailable": "Aún no tenemos rangos publicados para este formulario."
+  },
+  "insights": {
+    "title": "Actividad de USCIS",
+    "description": "Lo que ve nuestro corpus de casos: conteos y cambios de estado recientes.",
+    "body": "Se construye con consultas en vivo y rechequeos moderados. Siempre gratis. Los números crecen cuando la gente consulta casos.",
+    "corpusLabel": "Casos en el corpus",
+    "eventsLabel": "Cambios de estado observados",
+    "feedTitle": "Cambios de estado recientes",
+    "feedEmpty": "Aún no hay cambios registrados. Consulta un caso de sandbox o espera los rechequeos."
+  },
+  "status": {
+    "pending": "En proceso",
+    "approved": "Aprobado",
+    "alert": "Requiere atención",
+    "neutral": "Actualización"
+  },
+  "footer": {
+    "notAffiliated": "uscasestatus.com es un servicio privado y no está afiliado, respaldado ni operado por el Servicio de Ciudadanía e Inmigración de Estados Unidos ni por ninguna agencia del gobierno.",
+    "notLegalAdvice": "La información aquí es orientación general, no asesoría legal. Para recibir asesoría sobre tu caso, consulta a un abogado de inmigración con licencia o a un representante acreditado.",
+    "rights": "© {year} uscasestatus.com"
+  },
+  "errors": {
+    "notFoundTitle": "Página no encontrada",
+    "notFoundBody": "La página que buscas no existe. Aún puedes consultar un caso desde la página de inicio.",
+    "backHome": "Ir a la página de inicio"
+  }
+}

@@ -1,0 +1,15 @@
+# uscasestatus.com
+
+> Free USCIS case status checker with plain-English explanations, timelines, processing-time context, email alerts, and growing nearby-case insights. Not affiliated with USCIS. Not legal advice.
+
+## Primary
+- [Home](https://uscasestatus.com/): Live case status lookup
+- [Status guides](https://uscasestatus.com/status): Plain-English status explanations
+- [Processing times](https://uscasestatus.com/processing-times): Published USCIS ranges by form
+- [Insights](https://uscasestatus.com/insights): Corpus activity summary
+- [Spanish home](https://uscasestatus.com/es): Misma app en español
+
+## Notes
+- Receipt format: 3-letter prefix + 10 digits (e.g. IOE0912345678)
+- Data source: official USCIS Case Status API (Torch) when configured
+- Always free; no ads

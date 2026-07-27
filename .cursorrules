@@ -52,16 +52,22 @@ Valid USCIS receipt number prefixes: IOE, WAC, EAC, LIN, SRC, YSC, ZAR, ZCH, ZHN
 Format: 3-letter prefix + 10 digits = 13 characters total
 Example: IOE0912345678 or WAC2190012345
 
-## USCIS polling
-The public USCIS case status URL is:
-https://egov.uscis.gov/casestatus/mycasestatus.do
-Method: POST
-Body: appReceiptNum=IOE0912345678&caseStatusSearchBtn=CHECK+STATUS
-Returns HTML — parse the status message from the h1 inside .rows div
+## USCIS Case Status API (official Torch API)
+Legacy HTML scraping (mycasestatus.do) is dead — Cloudflare blocks it.
+Use the official Case Status API with OAuth 2.0 client credentials:
+
+- Sandbox base: https://api-int.uscis.gov
+- Production base: https://api.uscis.gov
+- Token: POST /oauth/accesstoken (grant_type=client_credentials)
+- Case: GET /case-status/{receiptNumber} with Authorization: Bearer {token}
+- Env: USCIS_CLIENT_ID, USCIS_CLIENT_SECRET, USCIS_API_BASE (optional; defaults to sandbox)
+- When credentials are missing, lib/uscis falls back to deterministic mock fixtures for local UI work
+- Tokens expire ~30 minutes — cache and refresh server-side only; never expose credentials to the client
 
 ## Supabase schema
 - cases: id, receipt, form_type, last_status, last_checked, history (jsonb), created_at
 - alerts: id, receipt, email, phone, channels (jsonb), confirmed, user_id (nullable), created_at
+- lookups: id, receipt_block, form_type, status_slug, status_text, prefix, checked_at (anonymized corpus)
 - users: managed by Supabase Auth
 
 ## Coding style
