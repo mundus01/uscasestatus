@@ -2,64 +2,62 @@
 
 import { useLocale, useTranslations } from "next-intl";
 
-import { usePathname, useRouter } from "@/i18n/navigation";
-import { locales, type Locale } from "@/i18n/routing";
+import { usePathname } from "@/i18n/navigation";
+import { defaultLocale, locales, type Locale } from "@/i18n/routing";
 
 type LocaleSwitcherProps = {
   variant?: "header" | "footer";
 };
 
+/** Build a public URL for a locale. Avoids `/en` → `/` redirects that break soft nav. */
+function hrefForLocale(locale: Locale, pathname: string): string {
+  const path = pathname || "/";
+  if (locale === defaultLocale) return path;
+  return path === "/" ? `/${locale}` : `/${locale}${path}`;
+}
+
+/**
+ * Locale switching uses plain anchors (not useRouter.replace).
+ * With `localePrefix: "as-needed"`, next-intl's router.replace can update the
+ * cookie without navigating, and Link's forced `/en` prefix redirects flakily
+ * on mobile soft navigation.
+ */
 export function LocaleSwitcher({ variant = "header" }: LocaleSwitcherProps) {
   const t = useTranslations("localeSwitcher");
   const activeLocale = useLocale() as Locale;
   const pathname = usePathname();
-  const router = useRouter();
-
-  function switchTo(locale: Locale) {
-    if (locale === activeLocale) return;
-    router.replace(pathname, { locale });
-  }
-
-  if (variant === "footer") {
-    return (
-      <div className="footer-lang" role="group" aria-label={t("label")}>
-        {locales.map((locale) => {
-          const label = locale === "en" ? "English" : "Español";
-          if (locale === activeLocale) {
-            return <b key={locale}>{label}</b>;
-          }
-          return (
-            <button
-              key={locale}
-              type="button"
-              lang={locale}
-              onClick={() => switchTo(locale)}
-            >
-              <i>{label}</i>
-            </button>
-          );
-        })}
-      </div>
-    );
-  }
 
   return (
-    <div className="lang" role="group" aria-label={t("label")}>
+    <div
+      className={variant === "footer" ? "footer-lang" : "lang"}
+      role="group"
+      aria-label={t("label")}
+    >
       {locales.map((locale) => {
-        const isActive = locale === activeLocale;
-        const label = locale.toUpperCase();
-        if (isActive) {
-          return <b key={locale}>{label}</b>;
+        const label =
+          variant === "footer"
+            ? locale === "en"
+              ? "English"
+              : "Español"
+            : locale.toUpperCase();
+
+        if (locale === activeLocale) {
+          return (
+            <b key={locale} aria-current="true">
+              {label}
+            </b>
+          );
         }
+
         return (
-          <button
+          <a
             key={locale}
-            type="button"
+            href={hrefForLocale(locale, pathname)}
             lang={locale}
-            onClick={() => switchTo(locale)}
+            hrefLang={locale}
           >
-            <i>{label}</i>
-          </button>
+            {variant === "footer" ? <i>{label}</i> : label}
+          </a>
         );
       })}
     </div>

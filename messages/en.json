@@ -8,7 +8,11 @@
     "skipToContent": "Skip to content",
     "home": "uscasestatus.com home",
     "signIn": "Sign in",
+    "createAccount": "Create account",
     "dashboard": "My cases",
+    "checkCase": "Check a case",
+    "processingTimes": "Processing times",
+    "formGuides": "Form guides",
     "insights": "Insights"
   },
   "localeSwitcher": {

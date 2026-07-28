@@ -24,9 +24,9 @@ export async function Header() {
           <span className="name">uscasestatus</span>
         </Link>
         <nav className="mainnav">
-          <Link href="/">Check a case</Link>
-          <Link href="/processing-times">Processing times</Link>
-          <Link href="/forms/i-485">Form guides</Link>
+          <Link href="/">{t("checkCase")}</Link>
+          <Link href="/processing-times">{t("processingTimes")}</Link>
+          <Link href="/forms/i485-tracker">{t("formGuides")}</Link>
           <Link href="/insights">{t("insights")}</Link>
         </nav>
         <div className="header-r">
@@ -42,7 +42,7 @@ export async function Header() {
           )}
           {signedIn ? null : (
             <Link className="button is-small" href="/sign-in">
-              Create account
+              {t("createAccount")}
             </Link>
           )}
           <button className="burger" type="button" aria-label="Open menu">
