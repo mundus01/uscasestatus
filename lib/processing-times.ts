@@ -1,6 +1,17 @@
 import processingTimesData from "@/data/processing-times.json";
 
+import {
+  computeElapsed,
+  rangePosition,
+  resolveDecisionDate,
+  type Elapsed,
+  type RangePosition,
+} from "@/lib/forecast/elapsed";
 import type { ReceiptPrefix } from "@/lib/receipt";
+import { parseUscisDate } from "@/lib/uscis/dates";
+import type { UscisHistoryEvent } from "@/lib/uscis/types";
+
+export { parseUscisDate } from "@/lib/uscis/dates";
 
 type Range = { lowMonths: number; highMonths: number };
 
@@ -32,7 +43,13 @@ export type ProcessingTimeContext = {
   centerCode: string | null;
   lowMonths: number;
   highMonths: number;
+  /** @deprecated use elapsed.months — kept briefly for callers */
   monthsSinceFiled: number | null;
+  elapsed: Elapsed;
+  position: RangePosition;
+  isTerminal: boolean;
+  usedNationalFallback: boolean;
+  sourceLabel: "published_uscis_range";
 };
 
 export function getProcessingTimeContext(options: {
@@ -40,6 +57,9 @@ export function getProcessingTimeContext(options: {
   prefix: ReceiptPrefix;
   submittedDate: string | null;
   estimatedFilingDate: Date | null;
+  isTerminal?: boolean;
+  modifiedDate?: string | null;
+  history?: UscisHistoryEvent[];
 }): ProcessingTimeContext | null {
   if (!options.formType) return null;
 
@@ -47,43 +67,46 @@ export function getProcessingTimeContext(options: {
   if (!formTimes) return null;
 
   const centerCode = PREFIX_TO_CENTER[options.prefix] ?? null;
-  const range =
-    (centerCode && formTimes.centers[centerCode]) || formTimes.default;
+  const centerRange = centerCode ? formTimes.centers[centerCode] : undefined;
+  const range = centerRange ?? formTimes.default;
+  const usedNationalFallback = !centerRange;
+  const isTerminal = options.isTerminal ?? false;
+  const history = options.history ?? [];
 
-  const filedAt =
+  const receivedAt =
     parseUscisDate(options.submittedDate) ?? options.estimatedFilingDate;
-  const monthsSinceFiled = filedAt ? monthsBetween(filedAt, new Date()) : null;
+  const isEstimated = !parseUscisDate(options.submittedDate) && Boolean(receivedAt);
+
+  const decidedAt = resolveDecisionDate({
+    isTerminal,
+    modifiedDate: options.modifiedDate ?? null,
+    submittedDate: options.submittedDate,
+    history,
+  });
+
+  const elapsed = computeElapsed({
+    receivedAt,
+    decidedAt,
+    isTerminal,
+    receivedAtSource: parseUscisDate(options.submittedDate)
+      ? "receipt_notice"
+      : receivedAt
+        ? "first_event"
+        : null,
+    isEstimated,
+  });
 
   return {
     formType: options.formType,
     centerCode,
     lowMonths: range.lowMonths,
     highMonths: range.highMonths,
-    monthsSinceFiled,
+    monthsSinceFiled: elapsed.months,
+    elapsed,
+    position: rangePosition(elapsed.months, range.lowMonths, range.highMonths),
+    isTerminal,
+    usedNationalFallback,
+    sourceLabel: "published_uscis_range",
   };
 }
 
-/** Parses USCIS dates like "09-05-2023 14:28:46" or "09-05-2023". */
-export function parseUscisDate(value: string | null | undefined): Date | null {
-  if (!value) return null;
-  const match = value.trim().match(
-    /^(\d{1,2})-(\d{1,2})-(\d{4})(?:\s+(\d{1,2}):(\d{2}):(\d{2}))?$/,
-  );
-  if (!match) return null;
-
-  const month = Number(match[1]) - 1;
-  const day = Number(match[2]);
-  const year = Number(match[3]);
-  const hour = Number(match[4] ?? 0);
-  const minute = Number(match[5] ?? 0);
-  const second = Number(match[6] ?? 0);
-
-  const date = new Date(Date.UTC(year, month, day, hour, minute, second));
-  return Number.isNaN(date.getTime()) ? null : date;
-}
-
-function monthsBetween(start: Date, end: Date): number {
-  const ms = end.getTime() - start.getTime();
-  if (ms < 0) return 0;
-  return Math.round((ms / (1000 * 60 * 60 * 24 * 30.44)) * 10) / 10;
-}

@@ -67,8 +67,23 @@
     "checked": {
       "label": "Consulta de estado",
       "live": "Consultado en vivo ahora mismo",
+      "liveAt": "Consultado {time}",
       "cached": "Consultado recientemente (en caché)",
-      "mock": "Datos de demostración (API de USCIS no configurada)"
+      "mock": "Datos de demostración (API de USCIS no configurada)",
+      "checkAgain": "Volver a consultar",
+      "checking": "Consultando…",
+      "waitSeconds": "Espera {seconds}s",
+      "stale": "Última consulta {date} — no pudimos contactar a USCIS en el intento más reciente"
+    },
+    "nextSteps": {
+      "citation": "Orientación oficial de USCIS",
+      "fallbackTitle": "Qué hacer ahora"
+    },
+    "answer": {
+      "decided": "Decidido el {date} — {outcome}. Tiempo total desde el recibo: {months} meses.",
+      "pendingDays": "Día {days} desde el recibo.",
+      "pendingOver": "Día {days} — más largo que el rango publicado para este formulario. Puede ser elegible para una consulta de caso.",
+      "unknown": "Estado actual: {status}. Aún no tenemos datos suficientes para estimar tiempos de este formulario."
     },
     "mockBannerTitle": "Modo demostración",
     "mockBannerBody": "No hay credenciales de USCIS en este entorno, así que estás viendo un estado de demostración realista. Agrega USCIS_CLIENT_ID y USCIS_CLIENT_SECRET para consultar casos reales.",
@@ -78,14 +93,45 @@
       "review": "En revisión",
       "interview": "Entrevista",
       "decision": "Decisión",
-      "card": "Tarjeta producida / enviada"
+      "card": "Tarjeta producida / enviada",
+      "reportedByUscis": "Reportado por USCIS",
+      "detectedByUs": "Detectado por nosotros",
+      "singleEventNote": "Empezamos a seguir este caso el {date}, así que no se muestran actualizaciones anteriores.",
+      "showAll": "Ver las {count} actualizaciones",
+      "showFewer": "Ver menos"
+    },
+    "processing": {
+      "within": "Estás dentro del rango publicado de {low}–{high} meses.",
+      "under": "Estás antes del rango publicado (desde {low} meses).",
+      "over": "Superaste el límite superior publicado de {high} meses.",
+      "unknownPosition": "Aún no podemos ubicar este caso en el rango publicado.",
+      "decidedTotal": "Tiempo total del recibo a la decisión: {months} meses.",
+      "sourceFooter": "Fuente: tiempos de procesamiento publicados por USCIS.",
+      "insufficient": "Aún no tenemos fecha de presentación, así que no podemos ubicar este caso en el rango publicado. La fecha del aviso de recibo lo habilitaría.",
+      "missingForm": "Aún no hay un rango de procesamiento publicado para este formulario. Mostraremos el contexto cuando USCIS lo publique."
+    },
+    "inquiry": {
+      "title": "Puede ser elegible para una consulta de caso",
+      "body": "USCIS permite consultas cuando un caso está fuera del tiempo normal de procesamiento. Tenga listo el número de recibo, la fecha de presentación y los datos del solicitante. No redactamos la consulta por usted.",
+      "link": "Abrir herramientas de USCIS"
     },
     "nearby": {
       "title": "Casos cercanos en nuestro corpus",
       "body": "De {count} casos del mismo bloque de recibo que hemos visto hasta ahora:",
       "approved": "Aprobado / tarjeta",
       "pending": "En proceso",
-      "alert": "RFE / denegado"
+      "alert": "RFE / denegado",
+      "insufficient": "Aún no hay suficientes casos comparables ({n} de los ~{threshold} que necesitamos). Lo completaremos cuando más presentaciones de este bloque reporten actualizaciones."
+    },
+    "actions": {
+      "copy": "Copiar número de recibo",
+      "copied": "Copiado",
+      "uscis": "Consultar en USCIS",
+      "uscisHint": "Copia tu recibo y abre el sitio oficial de estado de USCIS"
+    },
+    "sources": {
+      "footer": "Estado consultado {checkedAt}. Los rangos publicados y las interpretaciones se explican en nuestra metodología.",
+      "methodology": "Metodología"
     },
     "track": {
       "title": "Recibe alertas por correo cuando cambie este caso",
@@ -101,12 +147,23 @@
     "errors": {
       "notFoundTitle": "No encontramos ese caso",
       "notFoundBody": "USCIS no tiene un registro para este número de recibo. Revisa las letras y los dígitos de tu aviso e inténtalo de nuevo.",
+      "notFoundReasonsTitle": "Motivos comunes",
+      "notFoundReason1": "El recibo es muy nuevo y aún no está en el sistema",
+      "notFoundReason2": "Un error tipográfico en las letras o dígitos",
+      "notFoundReason3": "El número pertenece a otra familia de formularios",
+      "notifyTitle": "¿Quieres un aviso más adelante?",
+      "notifyBody": "Vuelve a consultar en uno o dos días, o sigue un caso cuando USCIS muestre un estado — las alertas siguen siendo gratis.",
       "upstreamTitle": "USCIS no está disponible ahora",
       "upstreamBody": "No pudimos contactar a USCIS. Suele ser temporal: espera unos minutos e inténtalo de nuevo.",
       "rateLimitedTitle": "Espera un momento",
       "rateLimitedBody": "Has consultado varios casos en poco tiempo. Espera unos minutos e inténtalo de nuevo.",
-      "tryAnother": "Probar otro número de recibo"
+      "tryAnother": "Probar otro número de recibo",
+      "staleBanner": "Mostramos el último estado que tenemos — USCIS no respondió en la consulta más reciente."
     }
+  },
+  "methodology": {
+    "title": "Metodología",
+    "body": "Los estados de caso provienen de la API oficial de estado de casos de USCIS. Los rangos de procesamiento son tiempos publicados por USCIS según formulario (y oficina cuando hay datos). Los resúmenes de casos cercanos usan consultas anonimizadas de personas que revisaron bloques de recibo similares — nunca listamos los números de recibo de otras personas. El tiempo transcurrido en casos decididos se detiene en la fecha de la decisión. Este sitio no está afiliado a USCIS y no es asesoría legal."
   },
   "auth": {
     "signInTitle": "Entra a tus casos",

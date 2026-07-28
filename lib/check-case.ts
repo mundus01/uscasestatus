@@ -12,7 +12,10 @@ import { logLookup } from "@/lib/lookups";
 import { getProcessingTimeContext } from "@/lib/processing-times";
 import type { ReceiptPrefix } from "@/lib/receipt";
 import { validateReceipt } from "@/lib/receipt";
-import { buildTimeline } from "@/lib/timeline";
+import { normalizeStatus } from "@/lib/taxonomy/normalize";
+import type { StatusCode, StatusDef } from "@/lib/taxonomy/types";
+import { buildCaseTimeline, buildTimeline } from "@/lib/timeline";
+import type { CaseTimelineModel } from "@/lib/timeline";
 import { fetchUscisCase } from "@/lib/uscis/client";
 import type {
   StatusExplanation,
@@ -45,12 +48,19 @@ export type CheckCaseSuccess = {
   plainEnglish: string;
   whatToDo: string;
   explanationSlug: string;
+  statusCode: StatusCode;
+  statusDef: StatusDef;
+  isTerminal: boolean;
+  /** @deprecated prefer caseTimeline — stage-only rail */
   timeline: TimelineStep[];
+  caseTimeline: CaseTimelineModel;
   processingTime: ProcessingTimeContext | null;
   submittedDate: string | null;
   modifiedDate: string | null;
   checkedAt: string;
   source: "live" | "cache" | "mock";
+  /** True when serving last-known cache after an upstream failure. */
+  isStale: boolean;
   history: UscisCasePayload["history"];
 };
 
@@ -74,37 +84,66 @@ export async function checkCase(
 
   const { receipt, prefix } = validation;
 
-  const cached = options?.bypassCache ? null : await getCachedCase(receipt);
+  const cached = await getCachedCase(receipt);
   let payload: UscisCasePayload;
   let source: CheckCaseSuccess["source"];
+  let isStale = false;
 
-  if (cached) {
+  if (cached && !options?.bypassCache) {
     payload = cached;
     source = "cache";
   } else {
     const fetched = await fetchUscisCase(receipt);
     if (!fetched.ok) {
-      return {
-        ok: false,
-        code: fetched.code === "not_found" ? "not_found" : fetched.code === "unauthorized" ? "unauthorized" : "upstream",
-        message: fetched.message,
-      };
+      // Prefer last-known cache on upstream failure (§7 / §14 Error).
+      if (cached && fetched.code !== "not_found") {
+        payload = cached;
+        source = "cache";
+        isStale = true;
+      } else {
+        return {
+          ok: false,
+          code:
+            fetched.code === "not_found"
+              ? "not_found"
+              : fetched.code === "unauthorized"
+                ? "unauthorized"
+                : "upstream",
+          message: fetched.message,
+        };
+      }
+    } else {
+      payload = fetched.data;
+      source = fetched.source;
+      await setCachedCase(receipt, payload);
     }
-    payload = fetched.data;
-    source = fetched.source;
-    // Cache live and mock results so anxious refreshers share one upstream hit.
-    await setCachedCase(receipt, payload);
   }
 
   const explanation = findExplanation(payload.statusText.en);
+  const statusDef = normalizeStatus(payload.statusText.en);
   const copy = getExplanationCopy(explanation, locale);
   const formType = payload.formType;
   const timeline = buildTimeline(formType, explanation.timelineStep);
+  const checkedAt = new Date().toISOString();
+  const caseTimeline = buildCaseTimeline({
+    formType,
+    currentStep: explanation.timelineStep,
+    currentStatusText: payload.statusText.en,
+    statusCode: statusDef.code,
+    isTerminal: statusDef.isTerminal,
+    submittedDate: payload.submittedDate,
+    modifiedDate: payload.modifiedDate,
+    history: payload.history ?? [],
+    trackingStartedAt: checkedAt,
+  });
   const processingTime = getProcessingTimeContext({
     formType,
     prefix,
     submittedDate: payload.submittedDate,
     estimatedFilingDate: estimateFilingDateFromReceipt(receipt),
+    isTerminal: statusDef.isTerminal,
+    modifiedDate: payload.modifiedDate,
+    history: payload.history ?? [],
   });
 
   const success: CheckCaseSuccess = {
@@ -121,12 +160,17 @@ export async function checkCase(
     plainEnglish: copy.plainEnglish,
     whatToDo: copy.whatToDo,
     explanationSlug: explanation.slug,
+    statusCode: statusDef.code,
+    statusDef,
+    isTerminal: statusDef.isTerminal,
     timeline,
+    caseTimeline,
     processingTime,
     submittedDate: payload.submittedDate,
     modifiedDate: payload.modifiedDate,
-    checkedAt: new Date().toISOString(),
+    checkedAt,
     source,
+    isStale,
     history: payload.history,
   };
 

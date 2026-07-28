@@ -67,8 +67,23 @@
     "checked": {
       "label": "Status check",
       "live": "Checked live just now",
+      "liveAt": "Checked {time}",
       "cached": "Checked recently (cached)",
-      "mock": "Demo data (USCIS API not configured)"
+      "mock": "Demo data (USCIS API not configured)",
+      "checkAgain": "Check again",
+      "checking": "Checking…",
+      "waitSeconds": "Wait {seconds}s",
+      "stale": "Last checked {date} — we couldn't reach USCIS on the most recent attempt"
+    },
+    "nextSteps": {
+      "citation": "Official USCIS guidance",
+      "fallbackTitle": "What to do next"
+    },
+    "answer": {
+      "decided": "Decided {date} — {outcome}. Total time from receipt: {months} months.",
+      "pendingDays": "Day {days} since receipt.",
+      "pendingOver": "Day {days} — longer than the published range for this form. You may be eligible to submit a case inquiry.",
+      "unknown": "Current status: {status}. We don't have enough data to estimate timing for this form yet."
     },
     "mockBannerTitle": "Demo mode",
     "mockBannerBody": "Live USCIS credentials are not configured on this environment, so you are seeing a realistic demo status. Add USCIS_CLIENT_ID and USCIS_CLIENT_SECRET to check real cases.",
@@ -78,14 +93,45 @@
       "review": "Under review",
       "interview": "Interview",
       "decision": "Decision",
-      "card": "Card produced / mailed"
+      "card": "Card produced / mailed",
+      "reportedByUscis": "Reported by USCIS",
+      "detectedByUs": "Detected by us",
+      "singleEventNote": "We started tracking this case on {date}, so earlier updates aren't shown.",
+      "showAll": "Show all {count} updates",
+      "showFewer": "Show fewer"
+    },
+    "processing": {
+      "within": "You're within the published range of {low}–{high} months.",
+      "under": "You're earlier than the published range (from {low} months).",
+      "over": "You're past the published upper bound of {high} months.",
+      "unknownPosition": "We can't place this case on the published range yet.",
+      "decidedTotal": "Total time from receipt to decision: {months} months.",
+      "sourceFooter": "Source: published USCIS processing times.",
+      "insufficient": "We don't have a filing date yet, so we can't place this case on the published range. A receipt notice date would unlock this.",
+      "missingForm": "No published processing range for this form yet. We'll show context once USCIS ranges are available."
+    },
+    "inquiry": {
+      "title": "You may be eligible for a case inquiry",
+      "body": "USCIS allows inquiries when a case is outside normal processing time. Have your receipt number, filing date, and applicant details ready. We don't draft the inquiry for you.",
+      "link": "Open USCIS case tools"
     },
     "nearby": {
       "title": "Nearby cases in our corpus",
       "body": "Of {count} cases in the same receipt block we have seen so far:",
       "approved": "Approved / card",
       "pending": "In progress",
-      "alert": "RFE / denied"
+      "alert": "RFE / denied",
+      "insufficient": "Not enough comparable cases yet ({n} of the ~{threshold} we need). We'll fill this in as more filings in this receipt block report updates."
+    },
+    "actions": {
+      "copy": "Copy receipt number",
+      "copied": "Copied",
+      "uscis": "Check on USCIS",
+      "uscisHint": "Copies your receipt, then opens the official USCIS status site"
+    },
+    "sources": {
+      "footer": "Status checked {checkedAt}. Published ranges and interpretations are explained on our methodology page.",
+      "methodology": "Methodology"
     },
     "track": {
       "title": "Get email alerts when this case changes",
@@ -101,12 +147,23 @@
     "errors": {
       "notFoundTitle": "We couldn't find that case",
       "notFoundBody": "USCIS has no record for this receipt number. Double-check the letters and digits on your notice, then try again.",
+      "notFoundReasonsTitle": "Common reasons",
+      "notFoundReason1": "The receipt is brand new and not in the system yet",
+      "notFoundReason2": "A typo in the letters or digits",
+      "notFoundReason3": "The number is for a different agency form family",
+      "notifyTitle": "Want a heads-up later?",
+      "notifyBody": "Check again in a day or two, or track a case once USCIS shows a status — alerts stay free.",
       "upstreamTitle": "USCIS is unavailable right now",
       "upstreamBody": "We couldn't reach USCIS. This is usually temporary — wait a few minutes and try again.",
       "rateLimitedTitle": "Slow down for a moment",
       "rateLimitedBody": "You've checked several cases in a short time. Please wait a few minutes, then try again.",
-      "tryAnother": "Try another receipt number"
+      "tryAnother": "Try another receipt number",
+      "staleBanner": "Showing the last status we have — USCIS did not respond on the latest check."
     }
+  },
+  "methodology": {
+    "title": "Methodology",
+    "body": "Case statuses come from the official USCIS Case Status API. Processing ranges are published USCIS times by form (and office when available). Nearby-case summaries use anonymized lookups from people who checked similar receipt blocks — we never list other people's receipt numbers. Elapsed time for decided cases stops on the decision date. This site is not affiliated with USCIS and is not legal advice."
   },
   "auth": {
     "signInTitle": "Sign in to your cases",

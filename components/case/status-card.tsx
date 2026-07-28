@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Card, CardBody } from "@/components/ui/card";
 import { formatReceipt } from "@/lib/receipt";
@@ -11,7 +13,7 @@ type StatusCardProps = {
   tone: StatusTone;
   toneLabel: string;
   checkedLabel: string;
-  sourceLabel: string | null;
+  freshness: ReactNode;
   officeLabel: string;
   office: string;
 };
@@ -24,7 +26,7 @@ export function StatusCard({
   tone,
   toneLabel,
   checkedLabel,
-  sourceLabel,
+  freshness,
   officeLabel,
   office,
 }: StatusCardProps) {
@@ -49,7 +51,11 @@ export function StatusCard({
           <h1 className="text-2xl font-bold tracking-tight text-ink md:text-3xl">
             {statusText}
           </h1>
-          <p className="tabular mt-2 text-sm text-ink-muted">
+          <p
+            className="tabular mt-2 text-sm text-ink-muted"
+            title={receipt}
+            aria-label={receipt}
+          >
             {formatReceipt(receipt)}
           </p>
         </div>
@@ -61,9 +67,7 @@ export function StatusCard({
           </div>
           <div>
             <dt className="text-ink-subtle">{checkedLabel}</dt>
-            <dd className="mt-0.5 font-medium text-ink">
-              {sourceLabel ?? "—"}
-            </dd>
+            <dd className="mt-0.5 font-medium text-ink">{freshness}</dd>
           </div>
         </dl>
       </CardBody>

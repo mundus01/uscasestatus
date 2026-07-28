@@ -12,12 +12,15 @@ export type RateLimitResult = {
   reset: number;
 };
 
-type LimiterName = "check" | "track";
+type LimiterName = "check" | "track" | "refresh_ip" | "refresh_receipt";
 
 const WINDOWS: Record<LimiterName, { tokens: number; window: `${number} ${"s" | "m" | "h"}` }> = {
   // Generous enough for anxious refreshing, tight enough to protect USCIS.
   check: { tokens: 20, window: "10 m" },
   track: { tokens: 10, window: "1 h" },
+  // §7 refresh: 10/IP/hour, 1/receipt/60s (receipt window also enforced via cooldown key).
+  refresh_ip: { tokens: 10, window: "1 h" },
+  refresh_receipt: { tokens: 1, window: "1 m" },
 };
 
 const limiters = new Map<LimiterName, Ratelimit>();
