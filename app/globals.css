@@ -1,55 +1,50 @@
 @import "tailwindcss";
 
 /*
- * uscasestatus.com design system.
- * Flat and clean: no gradients, no drop shadows, 0.5px borders.
+ * Design tokens aligned to uscasestatus-final.html.
+ * Case result chrome uses mockup.css class names directly.
  */
 @theme {
-  /* Brand teal */
-  --color-brand-50: #e1f5ee;
-  --color-brand-500: #0f6e56;
-  --color-brand-700: #085041;
+  --color-brand-50: #e7f0fe;
+  --color-brand-500: #1474e1;
+  --color-brand-700: #00438e;
 
-  /* Surfaces */
-  --color-canvas: #fafafa;
+  --color-canvas: #ffffff;
   --color-surface: #ffffff;
 
-  /* Ink */
-  --color-ink: #14211d;
-  --color-ink-muted: #5a6864;
-  --color-ink-subtle: #8b9994;
+  --color-ink: #131349;
+  --color-ink-muted: #565656;
+  --color-ink-subtle: #747474;
 
-  /* Hairlines */
-  --color-line: #e6e9e8;
-  --color-line-strong: #d3d8d6;
+  --color-line: #e5e5e5;
+  --color-line-strong: #dbe6f5;
 
-  /* Case status semantics */
-  --color-status-pending: #b45309;
-  --color-status-pending-fill: #fef3c7;
-  --color-status-approved: #15803d;
-  --color-status-approved-fill: #dcfce7;
-  --color-status-alert: #b91c1c;
-  --color-status-alert-fill: #fee2e2;
-  --color-status-neutral: #475569;
-  --color-status-neutral-fill: #f1f5f9;
+  --color-status-pending: #8a6d00;
+  --color-status-pending-fill: #f9da4726;
+  --color-status-approved: #25d0a4;
+  --color-status-approved-fill: #c7f3e8;
+  --color-status-alert: #fa105d;
+  --color-status-alert-fill: #ffe4ee;
+  --color-status-neutral: #565656;
+  --color-status-neutral-fill: #f1f1f1;
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-figtree), "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-sora), "Sora", ui-sans-serif, system-ui, sans-serif;
 
   --radius-md: 8px;
-  --radius-lg: 12px;
+  --radius-lg: 16px;
 }
 
-/* Borders are 0.5px throughout — Tailwind's scale starts at 1px. */
 @utility border-hairline {
-  border-width: 0.5px;
+  border-width: 1px;
 }
 
 @utility border-t-hairline {
-  border-top-width: 0.5px;
+  border-top-width: 1px;
 }
 
 @utility border-b-hairline {
-  border-bottom-width: 0.5px;
+  border-bottom-width: 1px;
 }
 
 @layer base {
@@ -57,19 +52,8 @@
     -webkit-text-size-adjust: 100%;
   }
 
-  body {
-    background-color: var(--color-canvas);
-    color: var(--color-ink);
-  }
-
-  /* Receipt numbers are read character-by-character; keep digits unambiguous. */
   .tabular {
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.02em;
-  }
-
-  :focus-visible {
-    outline: 2px solid var(--color-brand-500);
-    outline-offset: 2px;
   }
 }

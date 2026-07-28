@@ -4,19 +4,9 @@ import { useState } from "react";
 
 type CaseActionsProps = {
   receipt: string;
-  copyLabel: string;
-  copiedLabel: string;
-  uscisLabel: string;
-  uscisHint: string;
 };
 
-export function CaseActions({
-  receipt,
-  copyLabel,
-  copiedLabel,
-  uscisLabel,
-  uscisHint,
-}: CaseActionsProps) {
+export function CaseActions({ receipt }: CaseActionsProps) {
   const [copied, setCopied] = useState(false);
 
   async function copyReceipt() {
@@ -35,21 +25,12 @@ export function CaseActions({
   }
 
   return (
-    <div className="flex flex-wrap gap-2">
-      <button
-        type="button"
-        onClick={copyReceipt}
-        className="rounded-md border-[0.5px] border-line bg-surface px-3 py-2 text-sm font-medium text-ink"
-      >
-        {copied ? copiedLabel : copyLabel}
+    <div className="footrow">
+      <button className="button is-tertiary is-small" type="button" onClick={copyReceipt}>
+        {copied ? "Copied" : "Copy receipt number"}
       </button>
-      <button
-        type="button"
-        onClick={openUscis}
-        className="rounded-md border-[0.5px] border-line bg-surface px-3 py-2 text-sm font-medium text-brand-700"
-        title={uscisHint}
-      >
-        {uscisLabel}
+      <button className="button is-tertiary is-small" type="button" onClick={openUscis}>
+        Check on USCIS
       </button>
     </div>
   );

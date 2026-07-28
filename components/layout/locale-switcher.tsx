@@ -4,43 +4,61 @@ import { useLocale, useTranslations } from "next-intl";
 
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { locales, type Locale } from "@/i18n/routing";
-import { cn } from "@/lib/cn";
 
-export function LocaleSwitcher() {
+type LocaleSwitcherProps = {
+  variant?: "header" | "footer";
+};
+
+export function LocaleSwitcher({ variant = "header" }: LocaleSwitcherProps) {
   const t = useTranslations("localeSwitcher");
-  const activeLocale = useLocale();
+  const activeLocale = useLocale() as Locale;
   const pathname = usePathname();
   const router = useRouter();
 
   function switchTo(locale: Locale) {
     if (locale === activeLocale) return;
-    // `pathname` is locale-agnostic, so the same page is kept across languages.
     router.replace(pathname, { locale });
   }
 
+  if (variant === "footer") {
+    return (
+      <div className="footer-lang" role="group" aria-label={t("label")}>
+        {locales.map((locale) => {
+          const label = locale === "en" ? "English" : "Español";
+          if (locale === activeLocale) {
+            return <b key={locale}>{label}</b>;
+          }
+          return (
+            <button
+              key={locale}
+              type="button"
+              lang={locale}
+              onClick={() => switchTo(locale)}
+            >
+              <i>{label}</i>
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
+
   return (
-    <div
-      className="flex items-center rounded-md border-hairline border-line bg-surface p-0.5"
-      role="group"
-      aria-label={t("label")}
-    >
+    <div className="lang" role="group" aria-label={t("label")}>
       {locales.map((locale) => {
         const isActive = locale === activeLocale;
+        const label = locale.toUpperCase();
+        if (isActive) {
+          return <b key={locale}>{label}</b>;
+        }
         return (
           <button
             key={locale}
             type="button"
             lang={locale}
             onClick={() => switchTo(locale)}
-            aria-current={isActive ? "true" : undefined}
-            className={cn(
-              "rounded-sm px-2.5 py-1 text-sm font-medium",
-              isActive
-                ? "bg-brand-50 text-brand-700"
-                : "text-ink-muted hover:text-ink",
-            )}
           >
-            {t(locale)}
+            <i>{label}</i>
           </button>
         );
       })}

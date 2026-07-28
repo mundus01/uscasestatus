@@ -13,8 +13,10 @@ type TimelineProps = {
   codeLabels: Record<string, string>;
   reportedByUscis: string;
   detectedByUs: string;
-  singleEventNote: (date: string) => string;
-  showAllLabel: (count: number) => string;
+  /** Template with `{date}` placeholder. */
+  singleEventNoteTemplate: string;
+  /** Template with `{count}` placeholder. */
+  showAllLabelTemplate: string;
   showFewerLabel: string;
   locale: string;
 };
@@ -26,8 +28,8 @@ export function CaseTimeline({
   codeLabels,
   reportedByUscis,
   detectedByUs,
-  singleEventNote,
-  showAllLabel,
+  singleEventNoteTemplate,
+  showAllLabelTemplate,
   showFewerLabel,
   locale,
 }: TimelineProps) {
@@ -40,7 +42,8 @@ export function CaseTimeline({
 
       {model.singleEventNote && model.trackingStartedAt ? (
         <p className="mt-2 text-sm text-ink-muted">
-          {singleEventNote(
+          {singleEventNoteTemplate.replace(
+            "{date}",
             new Date(model.trackingStartedAt).toLocaleDateString(locale, {
               year: "numeric",
               month: "short",
@@ -123,7 +126,10 @@ export function CaseTimeline({
         >
           {expanded
             ? showFewerLabel
-            : showAllLabel(model.totalActualEvents)}
+            : showAllLabelTemplate.replace(
+                "{count}",
+                String(model.totalActualEvents),
+              )}
         </button>
       ) : null}
     </section>

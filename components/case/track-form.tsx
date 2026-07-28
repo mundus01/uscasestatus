@@ -2,9 +2,11 @@
 
 import { useState, type FormEvent } from "react";
 
+import type { Locale } from "@/i18n/routing";
+
 type TrackFormProps = {
   receipt: string;
-  locale: string;
+  locale: Locale;
   title: string;
   body: string;
   emailLabel: string;
@@ -30,88 +32,67 @@ export function TrackForm({
   errorGeneric,
 }: TrackFormProps) {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "ok" | "error">(
+  const [status, setStatus] = useState<"idle" | "loading" | "ok" | "already" | "error">(
     "idle",
   );
-  const [message, setMessage] = useState<string | null>(null);
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent) {
     event.preventDefault();
     setStatus("loading");
-    setMessage(null);
-
     try {
       const response = await fetch("/api/track", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ receipt, email, locale }),
+        body: JSON.stringify({ receipt, email, locale, consent: true }),
       });
       const json = (await response.json()) as {
-        data: { alreadyTracked?: boolean; needsConfirmation?: boolean } | null;
-        error: { message?: string } | null;
+        data?: { alreadyTracked?: boolean };
+        error?: unknown;
       };
-
-      if (!response.ok || json.error) {
+      if (!response.ok) {
         setStatus("error");
-        setMessage(json.error?.message ?? errorGeneric);
         return;
       }
-
-      setStatus("ok");
-      setMessage(
-        json.data?.alreadyTracked ? successAlready : successConfirm,
-      );
+      setStatus(json.data?.alreadyTracked ? "already" : "ok");
     } catch {
       setStatus("error");
-      setMessage(errorGeneric);
     }
   }
 
   return (
-    <section className="rounded-lg border-[0.5px] border-line bg-surface p-5 md:p-6">
-      <h2 className="text-lg font-semibold text-ink">{title}</h2>
-      <p className="mt-1 text-sm text-ink-muted">{body}</p>
-
-      <form onSubmit={onSubmit} className="mt-4 space-y-3">
-        <div>
-          <label
-            htmlFor="track-email"
-            className="block text-sm font-medium text-ink"
-          >
-            {emailLabel}
-          </label>
-          <input
-            id="track-email"
-            name="email"
-            type="email"
-            required
-            autoComplete="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder={emailPlaceholder}
-            className="mt-1.5 w-full rounded-md border-[0.5px] border-line bg-canvas px-3 py-2.5 text-base text-ink outline-none focus:border-brand-500"
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={status === "loading"}
-          className="rounded-md bg-brand-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-60"
-        >
-          {status === "loading" ? submittingLabel : submitLabel}
-        </button>
-      </form>
-
-      {message ? (
-        <p
-          className={`mt-3 text-sm ${
-            status === "error" ? "text-status-alert" : "text-brand-700"
-          }`}
-          role="status"
-        >
-          {message}
-        </p>
-      ) : null}
+    <section className="card">
+      <div className="card-h">
+        <h3>{title}</h3>
+      </div>
+      <div className="card-b">
+        <p className="text-small grey">{body}</p>
+        {status === "ok" || status === "already" ? (
+          <p className="text-small" style={{ marginTop: "0.9rem" }}>
+            {status === "already" ? successAlready : successConfirm}
+          </p>
+        ) : (
+          <form className="alert-row" onSubmit={onSubmit}>
+            <input
+              type="email"
+              name="email"
+              required
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder={emailPlaceholder}
+              aria-label={emailLabel}
+              disabled={status === "loading"}
+            />
+            <button className="button" type="submit" disabled={status === "loading"}>
+              {status === "loading" ? submittingLabel : submitLabel}
+            </button>
+          </form>
+        )}
+        {status === "error" ? (
+          <p className="text-small" style={{ marginTop: "0.75rem", color: "var(--error)" }}>
+            {errorGeneric}
+          </p>
+        ) : null}
+      </div>
     </section>
   );
 }

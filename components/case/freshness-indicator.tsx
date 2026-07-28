@@ -10,7 +10,7 @@ type FreshnessIndicatorProps = {
   staleLabel: string;
   checkAgainLabel: string;
   checkingLabel: string;
-  waitLabel: (seconds: number) => string;
+  waitLabelTemplate: string;
   isStale: boolean;
   nextRefreshAvailableAt: string;
   locale: string;
@@ -23,7 +23,7 @@ export function FreshnessIndicator({
   staleLabel,
   checkAgainLabel,
   checkingLabel,
-  waitLabel,
+  waitLabelTemplate,
   isStale,
   nextRefreshAvailableAt,
   locale,
@@ -32,7 +32,6 @@ export function FreshnessIndicator({
   const [isPending, startTransition] = useTransition();
   const [nextAt, setNextAt] = useState(nextRefreshAvailableAt);
   const [now, setNow] = useState(() => Date.now());
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setNextAt(nextRefreshAvailableAt);
@@ -49,69 +48,46 @@ export function FreshnessIndicator({
 
   async function onRefresh() {
     if (onCooldown || isPending) return;
-    setError(null);
-
     try {
       const response = await fetch(`/api/case/${receipt}/refresh`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ locale }),
       });
-
-      const payload = (await response.json()) as {
-        data?: { freshness?: { nextRefreshAvailableAt?: string }; changed?: boolean };
-        error?: { message?: string };
-      };
-
       const headerNext = response.headers.get("X-Next-Refresh-At");
-      const fromBody = payload.data?.freshness?.nextRefreshAvailableAt;
-      if (headerNext || fromBody) {
-        setNextAt(headerNext ?? fromBody ?? nextAt);
-      } else if (response.status === 429) {
+      if (headerNext) setNextAt(headerNext);
+      else if (response.status === 429) {
         setNextAt(new Date(Date.now() + 60_000).toISOString());
       }
-
-      if (!response.ok && response.status !== 503) {
-        setError(payload.error?.message ?? "Refresh failed");
-        return;
+      if (response.ok || response.status === 503) {
+        startTransition(() => router.refresh());
       }
-
-      startTransition(() => {
-        router.refresh();
-      });
     } catch {
-      setError("Refresh failed");
+      /* ignore */
     }
   }
 
-  const label = isStale ? staleLabel : relativeLabel;
-
   return (
-    <div className="flex flex-wrap items-center gap-2 text-sm" aria-live="polite">
-      <time
-        dateTime={lastCheckedAt}
-        className={isStale ? "text-status-pending" : "text-ink"}
-      >
-        {label}
-      </time>
-      <button
-        type="button"
-        onClick={onRefresh}
-        disabled={onCooldown || isPending}
-        className="rounded-md border-[0.5px] border-line px-2 py-1 text-xs font-medium text-brand-700 disabled:opacity-50"
-        aria-label={checkAgainLabel}
-      >
-        {isPending
-          ? checkingLabel
-          : onCooldown
-            ? waitLabel(remainingSec)
-            : checkAgainLabel}
-      </button>
-      {error ? (
-        <span className="text-xs text-status-alert" role="alert">
-          {error}
-        </span>
-      ) : null}
-    </div>
+    <button
+      type="button"
+      onClick={onRefresh}
+      disabled={onCooldown || isPending}
+      title={isStale ? staleLabel : relativeLabel}
+      style={{
+        background: "none",
+        border: 0,
+        padding: 0,
+        color: "var(--blue-medium)",
+        font: "inherit",
+        cursor: onCooldown || isPending ? "default" : "pointer",
+        textDecoration: "underline",
+      }}
+    >
+      {isPending
+        ? checkingLabel
+        : onCooldown
+          ? waitLabelTemplate.replace("{seconds}", String(remainingSec))
+          : checkAgainLabel}
+    </button>
   );
 }

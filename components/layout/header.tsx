@@ -1,7 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
 import { LocaleSwitcher } from "@/components/layout/locale-switcher";
-import { Wordmark } from "@/components/layout/wordmark";
 import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 
@@ -18,34 +17,39 @@ export async function Header() {
   }
 
   return (
-    <header className="border-b-hairline border-line bg-surface">
-      <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-4 px-4 md:px-6">
-        <Link href="/" aria-label={t("home")} className="flex items-center">
-          <Wordmark />
+    <header className="site-header">
+      <div className="shell">
+        <Link className="brand" href="/" aria-label={t("home")}>
+          <span className="mark">CS</span>
+          <span className="name">uscasestatus</span>
         </Link>
-        <div className="flex items-center gap-3 md:gap-4">
-          <Link
-            href="/insights"
-            className="hidden text-sm font-medium text-ink-muted hover:text-ink sm:inline"
-          >
-            {t("insights")}
-          </Link>
+        <nav className="mainnav">
+          <Link href="/">Check a case</Link>
+          <Link href="/processing-times">Processing times</Link>
+          <Link href="/forms/i-485">Form guides</Link>
+          <Link href="/insights">{t("insights")}</Link>
+        </nav>
+        <div className="header-r">
+          <LocaleSwitcher />
           {signedIn ? (
-            <Link
-              href="/dashboard"
-              className="text-sm font-medium text-brand-700 hover:text-brand-500"
-            >
+            <Link className="signin" href="/dashboard">
               {t("dashboard")}
             </Link>
           ) : (
-            <Link
-              href="/sign-in"
-              className="text-sm font-medium text-ink-muted hover:text-ink"
-            >
+            <Link className="signin" href="/sign-in">
               {t("signIn")}
             </Link>
           )}
-          <LocaleSwitcher />
+          {signedIn ? null : (
+            <Link className="button is-small" href="/sign-in">
+              Create account
+            </Link>
+          )}
+          <button className="burger" type="button" aria-label="Open menu">
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
       </div>
     </header>

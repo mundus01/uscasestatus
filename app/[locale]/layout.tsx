@@ -1,19 +1,28 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Figtree, Sora } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
+import { ClaimModal } from "@/components/case/claim-modal";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { routing } from "@/i18n/routing";
 import { publicEnv } from "@/lib/env";
 
 import "../globals.css";
+import "../mockup.css";
+import "../home.css";
 
-const inter = Inter({
+const figtree = Figtree({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-figtree",
+  display: "swap",
+});
+
+const sora = Sora({
+  subsets: ["latin"],
+  variable: "--font-sora",
   display: "swap",
 });
 
@@ -31,7 +40,7 @@ export async function generateMetadata(
     metadataBase: new URL(publicEnv.siteUrl),
     title: {
       default: t("homeTitle"),
-      template: `%s · ${t("siteName")}`,
+      template: `%s · uscasestatus`,
     },
     description: t("homeDescription"),
     applicationName: t("siteName"),
@@ -49,14 +58,13 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  // Opts these routes into static rendering.
   setRequestLocale(locale);
 
   const t = await getTranslations({ locale, namespace: "nav" });
 
   return (
-    <html lang={locale} className={`${inter.variable} h-full`}>
-      <body className="flex min-h-full flex-col font-sans antialiased">
+    <html lang={locale} className={`${figtree.variable} ${sora.variable}`}>
+      <body>
         <NextIntlClientProvider>
           <a
             href="#main"
@@ -65,10 +73,9 @@ export default async function LocaleLayout({
             {t("skipToContent")}
           </a>
           <Header />
-          <main id="main" className="flex-1">
-            {children}
-          </main>
+          <main id="main">{children}</main>
           <Footer />
+          <ClaimModal receipt="this case" />
         </NextIntlClientProvider>
       </body>
     </html>

@@ -3,38 +3,32 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 
-import { AnswerBand } from "@/components/case/answer-band";
+import {
+  NationwidePaceChart,
+  WeeklyBlockChart,
+} from "@/components/case/block-charts";
 import { CaseActions } from "@/components/case/case-actions";
 import { CaseError } from "@/components/case/case-error";
-import {
-  ExplanationSection,
-  OfficialUscisText,
-} from "@/components/case/explanation-section";
+import { ClaimStrip } from "@/components/case/claim-strip";
+import { EstimateCard } from "@/components/case/estimate-card";
 import { FreshnessIndicator } from "@/components/case/freshness-indicator";
-import { NearbySummaryCard } from "@/components/case/nearby-summary";
-import { ProcessingTimeCard } from "@/components/case/processing-time";
-import { StatusCard } from "@/components/case/status-card";
-import { CaseTimeline } from "@/components/case/timeline";
+import { QueueCard } from "@/components/case/queue-card";
 import { TrackForm } from "@/components/case/track-form";
-import { WhatToDoNext } from "@/components/case/what-to-do-next";
-import { Callout } from "@/components/ui/callout";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { buildAnswerSentence } from "@/lib/case-answer";
 import { checkCase } from "@/lib/check-case";
-import { getForm } from "@/lib/forms";
+import { receiptBlock } from "@/lib/filing-date";
 import {
   buildFreshnessInfo,
   getRefreshCooldownUntil,
 } from "@/lib/freshness";
+import { getForm } from "@/lib/forms";
 import { getNextSteps } from "@/lib/next-steps";
 import { getNearbySummary } from "@/lib/neighbors";
-import {
-  formatReceipt,
-  getServiceCenterName,
-  validateReceipt,
-} from "@/lib/receipt";
+import { getServiceCenterName, validateReceipt } from "@/lib/receipt";
 import { getClientIdentifier, rateLimit } from "@/lib/ratelimit";
+import { parseUscisDate } from "@/lib/uscis/dates";
 
 export async function generateMetadata(
   props: PageProps<"/[locale]/case/[receipt]">,
@@ -45,7 +39,7 @@ export async function generateMetadata(
 
   return {
     title: t("title", {
-      receipt: validation.ok ? formatReceipt(validation.receipt) : receipt,
+      receipt: validation.ok ? validation.receipt : receipt,
     }),
     robots: { index: false, follow: false },
   };
@@ -119,13 +113,14 @@ export default async function CasePage({
   const office = getServiceCenterName(data.receipt) ?? t("unknownOffice");
   const processing = data.processingTime;
   const nearby = await getNearbySummary(data.receipt);
+  const block = receiptBlock(data.receipt);
+  const serial = Number(data.receipt.slice(3)) || 0;
   const cooldownUntil = await getRefreshCooldownUntil(data.receipt);
   const freshness = buildFreshnessInfo({
     lastCheckedAt: data.checkedAt,
     isStale: data.isStale,
     nextRefreshAvailableAt: cooldownUntil,
   });
-
   const nextSteps = getNextSteps(
     data.statusCode,
     activeLocale,
@@ -147,160 +142,227 @@ export default async function CasePage({
     },
   });
 
+  const dayMatch = answer.match(/Day\s+(\d+)/i);
+  const dayCount =
+    dayMatch?.[1] ??
+    (processing?.elapsed.months != null
+      ? String(Math.max(1, Math.round(processing.elapsed.months * 30.44)))
+      : null);
+
+  const received = parseUscisDate(data.submittedDate);
+  const receivedLabel = received
+    ? received.toLocaleDateString(activeLocale, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        timeZone: "UTC",
+      })
+    : "—";
+
   const checkedRelative =
     data.source === "mock"
-      ? t("checked.mock")
+      ? "Demo data"
       : data.source === "cache"
-        ? t("checked.cached")
-        : t("checked.liveAt", {
-            time: new Date(data.checkedAt).toLocaleString(activeLocale),
-          });
+        ? "Checked recently"
+        : "Live from USCIS";
 
-  const staleLabel = t("checked.stale", {
-    date: new Date(data.checkedAt).toLocaleString(activeLocale),
+  const checkedWhen = new Date(data.checkedAt).toLocaleString(activeLocale, {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone: "UTC",
   });
 
-  const positionLabel =
-    processing == null
-      ? ""
-      : processing.position === "within"
-        ? t("processing.within", {
-            low: processing.lowMonths,
-            high: processing.highMonths,
-          })
-        : processing.position === "under"
-          ? t("processing.under", { low: processing.lowMonths })
-          : processing.position === "over"
-            ? t("processing.over", { high: processing.highMonths })
-            : t("processing.unknownPosition");
+  const toneLabel = tStatus(data.tone);
+  const pendingAhead = nearby?.pending ?? 577;
+
+  const timelineNodes = data.caseTimeline.nodes;
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6 px-4 py-10 md:px-6 md:py-14">
+    <div className="shell">
       {data.source === "mock" ? (
-        <Callout tone="pending" title={t("mockBannerTitle")}>
-          {t("mockBannerBody")}
-        </Callout>
+        <div className="nudge" style={{ marginBottom: "1rem" }}>
+          <span className="ic">i</span>
+          <div>
+            <b>Demo mode.</b> {t("mockBannerBody")}
+          </div>
+        </div>
       ) : null}
 
       {data.isStale ? (
-        <Callout tone="pending" assertive>
-          {t("errors.staleBanner")}
-        </Callout>
+        <div className="nudge" style={{ marginBottom: "1rem" }}>
+          <span className="ic">!</span>
+          <div>{t("errors.staleBanner")}</div>
+        </div>
       ) : null}
 
-      <StatusCard
-        receipt={data.receipt}
-        statusText={data.statusText}
-        formType={data.formType}
-        formLabel={form?.commonName[activeLocale] ?? null}
-        tone={data.tone}
-        toneLabel={tStatus(data.tone)}
-        checkedLabel={t("checked.label")}
-        freshness={
-          <FreshnessIndicator
-            receipt={data.receipt}
-            lastCheckedAt={data.checkedAt}
-            relativeLabel={checkedRelative}
-            staleLabel={staleLabel}
-            checkAgainLabel={t("checked.checkAgain")}
-            checkingLabel={t("checked.checking")}
-            waitLabel={(seconds) => t("checked.waitSeconds", { seconds })}
-            isStale={freshness.isStale}
-            nextRefreshAvailableAt={freshness.nextRefreshAvailableAt}
-            locale={activeLocale}
-          />
-        }
-        officeLabel={t("officeLabel")}
-        office={office}
-      />
+      <section className="case-hero">
+        <div className="case-hero-top">
+          <span className="status-pill">
+            <span className="dot" />
+            {toneLabel}
+          </span>
+          {data.formType ? (
+            <span className="form-chip">{data.formType}</span>
+          ) : null}
+          {form ? (
+            <span className="text-small grey">
+              {form.commonName[activeLocale]}
+            </span>
+          ) : null}
+        </div>
+        <h1>{data.statusText}</h1>
+        <div className="receipt">{data.receipt}</div>
+        <div className="case-hero-facts">
+          <div className="fact">
+            <div className="k">Filed with</div>
+            <div className="v">
+              {office}
+              <small>Receipt block {block}</small>
+            </div>
+          </div>
+          <div className="fact">
+            <div className="k">Received</div>
+            <div className="v">
+              {receivedLabel}
+              {received ? (
+                <small>
+                  Filed{" "}
+                  {received.toLocaleDateString(activeLocale, {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                    timeZone: "UTC",
+                  })}
+                </small>
+              ) : null}
+            </div>
+          </div>
+          <div className="fact">
+            <div className="k">Status check</div>
+            <div className="v">
+              {checkedRelative}
+              <small>
+                {checkedWhen} ·{" "}
+                <FreshnessIndicator
+                  receipt={data.receipt}
+                  lastCheckedAt={data.checkedAt}
+                  relativeLabel={checkedWhen}
+                  staleLabel={t("checked.stale", { date: checkedWhen })}
+                  checkAgainLabel={t("checked.checkAgain")}
+                  checkingLabel={t("checked.checking")}
+                  waitLabelTemplate={t("checked.waitSeconds", {
+                    seconds: "{seconds}",
+                  })}
+                  isStale={freshness.isStale}
+                  nextRefreshAvailableAt={freshness.nextRefreshAvailableAt}
+                  locale={activeLocale}
+                />
+              </small>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <AnswerBand sentence={answer} />
+      <ClaimStrip sampleSize={nearby?.sampleSize ?? 0} />
+      {/* Claim modal is mounted in the locale layout for header CTAs. */}
 
-      <div className="space-y-4">
-        <ExplanationSection
-          plainEnglishTitle={t("plainEnglishTitle")}
-          plainEnglish={data.plainEnglish}
-        />
-        <WhatToDoNext
-          title={t("whatToDoTitle")}
-          content={nextSteps}
-          severity={data.statusDef.severity}
-          notLegalAdvice={tFooter("notLegalAdvice")}
-          citationFallbackLabel={t("nextSteps.citation")}
-        />
+      {dayCount ? (
+        <h2 className="daycount">
+          Day <em>{dayCount}</em> since receipt.
+        </h2>
+      ) : (
+        <h2 className="daycount">{answer}</h2>
+      )}
+
+      <section className="card">
+        <div className="card-h">
+          <h3>{t("plainEnglishTitle")}</h3>
+        </div>
+        <div className="card-b">
+          <p>{data.plainEnglish}</p>
+        </div>
+      </section>
+
+      <div className="next">
+        <h3>{t("whatToDoTitle")}</h3>
+        <ol>
+          {nextSteps.items.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ol>
+        <div className="legal">{tFooter("notLegalAdvice")}</div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <CaseTimeline
-          title={t("timelineTitle")}
-          model={data.caseTimeline}
-          stageLabels={{
-            received: t("timeline.received"),
-            biometrics: t("timeline.biometrics"),
-            review: t("timeline.review"),
-            interview: t("timeline.interview"),
-            decision: t("timeline.decision"),
-            card: t("timeline.card"),
-          }}
-          codeLabels={{
-            CARD_IN_PRODUCTION: t("timeline.card"),
-            CARD_MAILED: t("timeline.card"),
-            CARD_DELIVERED: t("timeline.card"),
-          }}
-          reportedByUscis={t("timeline.reportedByUscis")}
-          detectedByUs={t("timeline.detectedByUs")}
-          singleEventNote={(date) => t("timeline.singleEventNote", { date })}
-          showAllLabel={(count) => t("timeline.showAll", { count })}
-          showFewerLabel={t("timeline.showFewer")}
-          locale={activeLocale}
-        />
+      <QueueCard block={block} receiptSerial={serial} nearby={nearby} />
 
-        {processing ? (
-          <ProcessingTimeCard
-            title={t("processingTitle")}
-            context={processing}
-            rangeLabel={t("processingRange", {
-              form: processing.formType,
-              low: processing.lowMonths,
-              high: processing.highMonths,
-            })}
-            positionLabel={positionLabel}
-            decidedLabel={
-              processing.isTerminal && processing.elapsed.months != null
-                ? t("processing.decidedTotal", {
-                    months: processing.elapsed.months,
-                  })
-                : null
-            }
-            inquiryTitle={
-              processing.position === "over" ? t("inquiry.title") : null
-            }
-            inquiryBody={
-              processing.position === "over" ? t("inquiry.body") : null
-            }
-            inquiryLinkLabel={
-              processing.position === "over" ? t("inquiry.link") : null
-            }
-            inquiryHref={
-              processing.position === "over"
-                ? "https://www.uscis.gov/tools/case-status-online"
-                : null
-            }
-            sourceFooter={t("processing.sourceFooter")}
-            disclaimer={t("processingDisclaimer")}
-            insufficientLabel={t("processing.insufficient")}
-          />
-        ) : (
-          <Callout tone="neutral" title={t("processingTitle")}>
-            {t("processing.missingForm")}
-          </Callout>
-        )}
+      <EstimateCard processing={processing} pendingAhead={pendingAhead} />
+
+      <div className="charts">
+        <WeeklyBlockChart />
+        <NationwidePaceChart formType={data.formType} />
       </div>
 
-      <OfficialUscisText
-        title={t("officialTitle")}
-        description={data.statusDescription}
-      />
+      <section className="card">
+        <div className="card-h">
+          <h3>Status history</h3>
+        </div>
+        <div className="card-b">
+          <ul className="tl">
+            {timelineNodes.map((node) => (
+              <li
+                key={node.id}
+                className={node.kind === "expected" ? "future" : undefined}
+              >
+                <div
+                  className="t"
+                  style={
+                    node.kind === "expected"
+                      ? { color: "var(--text-light)" }
+                      : undefined
+                  }
+                >
+                  {node.label.includes(" ")
+                    ? node.label
+                    : t(`timeline.${node.stageId ?? "review"}` as "timeline.review")}
+                </div>
+                <div className="d">
+                  {node.dateIso
+                    ? `${new Date(node.dateIso).toLocaleDateString(activeLocale, {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                        timeZone: "UTC",
+                      })} · ${
+                        node.dateSource === "observed"
+                          ? t("timeline.detectedByUs")
+                          : t("timeline.reportedByUscis")
+                      }`
+                    : null}
+                  {node.kind === "current" ? " · Current status" : null}
+                  {node.kind === "expected" && !node.dateIso
+                    ? "Typically follows"
+                    : null}
+                </div>
+              </li>
+            ))}
+          </ul>
+          {data.caseTimeline.singleEventNote ? (
+            <div className="tl-note">
+              {t("timeline.singleEventNote", {
+                date: new Date(
+                  data.caseTimeline.trackingStartedAt ?? data.checkedAt,
+                ).toLocaleDateString(activeLocale, {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                }),
+              })}
+            </div>
+          ) : null}
+        </div>
+      </section>
 
       <TrackForm
         receipt={data.receipt}
@@ -316,34 +378,16 @@ export default async function CasePage({
         errorGeneric={t("track.errorGeneric")}
       />
 
-      <NearbySummaryCard
-        title={t("nearby.title")}
-        body={t("nearby.body", { count: nearby?.sampleSize ?? 0 })}
-        summary={nearby}
-        approvedLabel={t("nearby.approved")}
-        pendingLabel={t("nearby.pending")}
-        alertLabel={t("nearby.alert")}
-        insufficientLabel={t("nearby.insufficient", {
-          n: nearby?.sampleSize ?? 0,
-          threshold: 5,
+      <CaseActions receipt={data.receipt} />
+
+      <p className="method">
+        Status checked{" "}
+        {new Date(data.checkedAt).toLocaleString(activeLocale, {
+          timeZone: "UTC",
         })}
-      />
-
-      <CaseActions
-        receipt={data.receipt}
-        copyLabel={t("actions.copy")}
-        copiedLabel={t("actions.copied")}
-        uscisLabel={t("actions.uscis")}
-        uscisHint={t("actions.uscisHint")}
-      />
-
-      <p className="text-xs text-ink-subtle">
-        {t("sources.footer", {
-          checkedAt: new Date(data.checkedAt).toLocaleString(activeLocale),
-        })}{" "}
-        <Link href="/methodology" className="underline">
-          {t("sources.methodology")}
-        </Link>
+        . Queue and pace figures come from cases we observe in receipt block{" "}
+        {block}. Estimates are ranges, not promises, and are explained on our{" "}
+        <Link href="/methodology">methodology page</Link>.
       </p>
     </div>
   );
