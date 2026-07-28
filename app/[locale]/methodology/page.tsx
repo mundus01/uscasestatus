@@ -20,9 +20,9 @@ export default async function MethodologyPage({ params }: Props) {
   const t = await getTranslations("methodology");
 
   return (
-    <div className="mx-auto max-w-2xl space-y-4 px-4 py-10 md:px-6 md:py-14">
-      <h1 className="text-3xl font-bold tracking-tight text-ink">{t("title")}</h1>
-      <p className="leading-relaxed text-ink-muted">{t("body")}</p>
+    <div className="shell content-page">
+      <h1>{t("title")}</h1>
+      <p className="lede">{t("body")}</p>
     </div>
   );
 }

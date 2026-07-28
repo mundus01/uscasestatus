@@ -40,46 +40,36 @@ export default async function DashboardPage({
   const tracked = await listTrackedForUser(user.id, user.email);
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6 px-4 py-10 md:px-6 md:py-14">
-      <div>
-        <h1 className="text-2xl font-semibold text-ink">{t("title")}</h1>
-        <p className="mt-1 text-sm text-ink-muted">{t("subtitle")}</p>
-      </div>
+    <div className="shell content-page">
+      <h1>{t("title")}</h1>
+      <p className="lede">{t("subtitle")}</p>
 
       {tracked.length === 0 ? (
-        <div className="rounded-lg border-[0.5px] border-line bg-surface p-6">
-          <p className="text-sm text-ink-muted">{t("empty")}</p>
-          <Link
-            href="/"
-            className="mt-4 inline-block text-sm font-medium text-brand-700 underline"
-          >
-            {t("checkCase")}
-          </Link>
-        </div>
+        <section className="card">
+          <div className="card-b">
+            <p className="grey">{t("empty")}</p>
+            <div className="content-actions">
+              <Link href="/" className="button is-small">
+                {t("checkCase")}
+              </Link>
+            </div>
+          </div>
+        </section>
       ) : (
-        <ul className="space-y-3">
+        <ul className="content-list">
           {tracked.map((row) => (
             <li key={row.id}>
-              <Link
-                href={`/case/${row.receipt}`}
-                className="block rounded-lg border-[0.5px] border-line bg-surface p-4 transition-colors hover:border-brand-500"
-              >
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <p className="font-mono text-sm font-medium text-ink">
-                    {formatReceipt(row.receipt)}
-                  </p>
-                  {row.caseRow?.form_type ? (
-                    <p className="text-xs text-ink-muted">
-                      {row.caseRow.form_type}
-                    </p>
-                  ) : null}
-                </div>
-                <p className="mt-2 text-sm text-ink">
-                  {row.caseRow?.last_status ?? t("statusUnknown")}
-                </p>
-                {row.nickname ? (
-                  <p className="mt-1 text-xs text-ink-muted">{row.nickname}</p>
-                ) : null}
+              <Link href={`/case/${row.receipt}`}>
+                <span className="title">{formatReceipt(row.receipt)}</span>
+                <span className="sub">
+                  {[
+                    row.caseRow?.form_type,
+                    row.caseRow?.last_status ?? t("statusUnknown"),
+                    row.nickname,
+                  ]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </span>
               </Link>
             </li>
           ))}

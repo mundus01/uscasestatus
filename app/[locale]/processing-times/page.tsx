@@ -25,29 +25,24 @@ export default async function ProcessingTimesHubPage({
   const activeLocale = locale as Locale;
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8 px-4 py-10 md:px-6 md:py-14">
-      <div>
-        <h1 className="text-3xl font-semibold text-ink">
-          {t("processingHubTitle")}
-        </h1>
-        <p className="mt-2 text-ink-muted">{t("processingHubBody")}</p>
-      </div>
+    <div className="shell content-page">
+      <h1>{t("processingHubTitle")}</h1>
+      <p className="lede">{t("processingHubBody")}</p>
 
-      <ul className="grid gap-3 sm:grid-cols-2">
+      <div className="content-grid">
         {forms.map((form) => (
-          <li key={form.code}>
-            <Link
-              href={`/processing-times/${formToPathSlug(form.code)}`}
-              className="block rounded-lg border-[0.5px] border-line bg-surface p-4 hover:border-brand-500"
-            >
-              <p className="font-semibold text-ink">{form.code}</p>
-              <p className="mt-1 text-sm text-ink-muted">
-                {form.commonName[activeLocale]}
-              </p>
-            </Link>
-          </li>
+          <Link
+            key={form.code}
+            href={`/processing-times/${formToPathSlug(form.code)}`}
+            className="formcard"
+          >
+            <span className="code">{form.code}</span>
+            <span className="nm">
+              <b>{form.commonName[activeLocale]}</b>
+            </span>
+          </Link>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

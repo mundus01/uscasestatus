@@ -28,26 +28,21 @@ export default async function StatusHubPage({
   const primaryForm = forms.find((form) => form.code === "I-485") ?? forms[0];
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8 px-4 py-10 md:px-6 md:py-14">
-      <div>
-        <h1 className="text-3xl font-semibold text-ink">{t("statusHubTitle")}</h1>
-        <p className="mt-2 text-ink-muted">{t("statusHubBody")}</p>
-      </div>
+    <div className="shell content-page">
+      <h1>{t("statusHubTitle")}</h1>
+      <p className="lede">{t("statusHubBody")}</p>
 
-      <ul className="divide-y divide-line rounded-lg border-[0.5px] border-line bg-surface">
+      <ul className="content-list">
         {explanations.map((item) => (
           <li key={item.slug}>
             <Link
               href={`/status/${formToPathSlug(primaryForm.code)}/${item.slug}`}
-              className="block px-4 py-3 hover:bg-brand-50"
             >
-              <p className="font-medium text-ink">
+              <span className="title">
                 {item.plainEnglish[activeLocale].slice(0, 120)}
                 {item.plainEnglish[activeLocale].length > 120 ? "…" : ""}
-              </p>
-              <p className="mt-1 text-xs text-ink-muted">
-                {item.match[0] ?? item.slug}
-              </p>
+              </span>
+              <span className="sub">{item.match[0] ?? item.slug}</span>
             </Link>
           </li>
         ))}

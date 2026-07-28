@@ -19,20 +19,18 @@ export default async function SignInPage({
   const t = await getTranslations("auth");
 
   return (
-    <div className="mx-auto max-w-md px-4 py-14 md:px-6">
-      <h1 className="text-2xl font-semibold text-ink">{t("signInTitle")}</h1>
-      <p className="mt-2 text-sm text-ink-muted">{t("signInBody")}</p>
-      <div className="mt-8">
-        <SignInForm
-          locale={locale}
-          emailLabel={t("emailLabel")}
-          emailPlaceholder={t("emailPlaceholder")}
-          submitLabel={t("sendLink")}
-          submittingLabel={t("sending")}
-          successMessage={t("linkSent")}
-          errorMessage={t("errorGeneric")}
-        />
-      </div>
+    <div className="shell content-page content-narrow">
+      <h1>{t("signInTitle")}</h1>
+      <p className="lede">{t("signInBody")}</p>
+      <SignInForm
+        locale={locale}
+        emailLabel={t("emailLabel")}
+        emailPlaceholder={t("emailPlaceholder")}
+        submitLabel={t("sendLink")}
+        submittingLabel={t("sending")}
+        successMessage={t("linkSent")}
+        errorMessage={t("errorGeneric")}
+      />
     </div>
   );
 }

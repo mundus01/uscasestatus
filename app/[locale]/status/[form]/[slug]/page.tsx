@@ -54,39 +54,36 @@ export default async function StatusExplainerPage({
   const official = explanation.match[0] ?? explanation.slug;
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8 px-4 py-10 md:px-6 md:py-14">
-      <div>
-        <p className="text-sm font-medium text-brand-700">{form.code}</p>
-        <h1 className="mt-1 text-3xl font-semibold text-ink">{official}</h1>
-        <p className="mt-2 text-sm text-ink-muted">
-          {form.commonName[activeLocale]}
+    <div className="shell content-page">
+      <span className="eyebrow">{form.code}</span>
+      <h1>{official}</h1>
+      <p className="lede">{form.commonName[activeLocale]}</p>
+
+      <div className="content-stack">
+        <section className="card">
+          <div className="card-b">
+            <h2>{t("whatItMeans")}</h2>
+            <p className="grey">{copy.plainEnglish}</p>
+            <h2>{t("whatToDo")}</h2>
+            <p className="grey">{copy.whatToDo}</p>
+          </div>
+        </section>
+
+        <section className="card">
+          <div className="card-b receipt-box">
+            <h2>{t("checkYours")}</h2>
+            <ReceiptInput />
+          </div>
+        </section>
+
+        <p className="content-links">
+          <Link href="/status">{t("allStatuses")}</Link>
+          {" · "}
+          <Link href={`/forms/${form.trackerSlug}`}>
+            {t("formTracker", { form: form.code })}
+          </Link>
         </p>
       </div>
-
-      <section className="space-y-3 rounded-lg border-[0.5px] border-line bg-surface p-5 md:p-6">
-        <h2 className="text-lg font-semibold text-ink">{t("whatItMeans")}</h2>
-        <p className="text-ink">{copy.plainEnglish}</p>
-        <h2 className="pt-2 text-lg font-semibold text-ink">{t("whatToDo")}</h2>
-        <p className="text-ink">{copy.whatToDo}</p>
-      </section>
-
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold text-ink">{t("checkYours")}</h2>
-        <ReceiptInput />
-      </section>
-
-      <p className="text-sm text-ink-muted">
-        <Link href="/status" className="text-brand-700 underline">
-          {t("allStatuses")}
-        </Link>
-        {" · "}
-        <Link
-          href={`/forms/${form.trackerSlug}`}
-          className="text-brand-700 underline"
-        >
-          {t("formTracker", { form: form.code })}
-        </Link>
-      </p>
     </div>
   );
 }

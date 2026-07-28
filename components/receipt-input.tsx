@@ -1,10 +1,9 @@
 "use client";
 
-import { useId, useState, useTransition } from "react";
+import { useId, useState, useTransition, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
 
 import { useRouter } from "@/i18n/navigation";
-import { cn } from "@/lib/cn";
 import {
   RECEIPT_LENGTH,
   normalizeReceipt,
@@ -13,7 +12,7 @@ import {
 } from "@/lib/receipt";
 
 type ReceiptInputProps = {
-  /** Renders the larger hero treatment used on landing pages. */
+  /** Larger CTA button — same layout either way. */
   size?: "md" | "lg";
   className?: string;
   autoFocus?: boolean;
@@ -38,13 +37,7 @@ export function ReceiptInput({
   }>({ count: 0, prefix: "" });
   const [isPending, startTransition] = useTransition();
 
-  function handleChange(next: string) {
-    setValue(normalizeReceipt(next).slice(0, RECEIPT_LENGTH));
-    // Clear the previous complaint as soon as they start fixing it.
-    if (error) setError(null);
-  }
-
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const result = validateReceipt(value);
@@ -59,24 +52,25 @@ export function ReceiptInput({
     });
   }
 
-  const isLarge = size === "lg";
-
   return (
-    <form onSubmit={handleSubmit} className={cn("w-full", className)} noValidate>
-      <label
-        htmlFor={inputId}
-        className="block text-sm font-medium text-ink-muted"
-      >
+    <form
+      className={className ? `lookup ${className}` : "lookup"}
+      onSubmit={handleSubmit}
+      noValidate
+    >
+      <label htmlFor={inputId} className="sr-only">
         {t("label")}
       </label>
-
-      <div className={cn("mt-2 flex flex-col gap-2", isLarge && "sm:flex-row")}>
+      <div className="lookup-row">
         <input
           id={inputId}
           name="receipt"
           type="text"
           value={value}
-          onChange={(event) => handleChange(event.target.value)}
+          onChange={(event) => {
+            setValue(normalizeReceipt(event.target.value).slice(0, RECEIPT_LENGTH));
+            if (error) setError(null);
+          }}
           placeholder={t("placeholder")}
           autoComplete="off"
           autoCorrect="off"
@@ -85,41 +79,25 @@ export function ReceiptInput({
           inputMode="text"
           aria-describedby={error ? `${errorId} ${helpId}` : helpId}
           aria-invalid={error ? true : undefined}
-          className={cn(
-            "tabular w-full rounded-md border-hairline bg-surface px-4 text-ink",
-            "placeholder:text-ink-subtle focus:border-brand-500 focus:outline-none",
-            error ? "border-status-alert" : "border-line-strong",
-            isLarge ? "h-14 text-lg" : "h-12 text-base",
-          )}
+          disabled={isPending}
         />
-
         <button
+          className={size === "lg" ? "button is-large" : "button"}
           type="submit"
           disabled={isPending}
-          className={cn(
-            "shrink-0 rounded-md bg-brand-500 px-6 font-medium text-white",
-            "hover:bg-brand-700 disabled:opacity-70",
-            isLarge ? "h-14 text-lg" : "h-12 text-base",
-          )}
         >
           {isPending ? t("checking") : t("submit")}
         </button>
       </div>
-
       {error ? (
-        <p
-          id={errorId}
-          role="alert"
-          className="mt-2 text-sm text-status-alert"
-        >
+        <p id={errorId} className="helper is-error" role="alert">
           {t(`errors.${error}`, {
             count: errorContext.count,
             prefix: errorContext.prefix,
           })}
         </p>
       ) : null}
-
-      <p id={helpId} className="mt-2 text-sm text-ink-subtle">
+      <p id={helpId} className="helper">
         {t("help")}
       </p>
     </form>

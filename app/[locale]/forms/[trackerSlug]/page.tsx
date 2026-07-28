@@ -49,63 +49,58 @@ export default async function FormTrackerPage({
   const topStatuses = listExplanations().slice(0, 8);
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8 px-4 py-10 md:px-6 md:py-14">
-      <div>
-        <p className="text-sm font-medium text-brand-700">{form.code}</p>
-        <h1 className="mt-1 text-3xl font-semibold text-ink">
-          {t("formTrackerHeading", { form: form.code })}
-        </h1>
-        <p className="mt-2 text-ink-muted">
-          {form.shortDescription[activeLocale]}
-        </p>
-      </div>
+    <div className="shell content-page">
+      <span className="eyebrow">{form.code}</span>
+      <h1>{t("formTrackerHeading", { form: form.code })}</h1>
+      <p className="lede">{form.shortDescription[activeLocale]}</p>
 
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold text-ink">{t("checkYours")}</h2>
-        <ReceiptInput size="lg" />
-      </section>
-
-      {processing ? (
-        <section className="rounded-lg border-[0.5px] border-line bg-surface p-5">
-          <h2 className="text-lg font-semibold text-ink">
-            {tCase("processingTitle")}
-          </h2>
-          <p className="mt-2 text-sm text-ink">
-            {tCase("processingRange", {
-              form: form.code,
-              low: processing.lowMonths,
-              high: processing.highMonths,
-            })}
-          </p>
-          <p className="mt-2 text-xs text-ink-muted">
-            {tCase("processingDisclaimer")}
-          </p>
-          <Link
-            href={`/processing-times/${formToPathSlug(form.code)}`}
-            className="mt-3 inline-block text-sm font-medium text-brand-700 underline"
-          >
-            {t("moreProcessingTimes")}
-          </Link>
+      <div className="content-stack">
+        <section className="card">
+          <div className="card-b receipt-box">
+            <h2>{t("checkYours")}</h2>
+            <ReceiptInput size="lg" />
+          </div>
         </section>
-      ) : null}
 
-      <section>
-        <h2 className="text-lg font-semibold text-ink">{t("commonStatuses")}</h2>
-        <ul className="mt-3 divide-y divide-line rounded-lg border-[0.5px] border-line bg-surface">
-          {topStatuses.map((item) => (
-            <li key={item.slug}>
-              <Link
-                href={`/status/${formToPathSlug(form.code)}/${item.slug}`}
-                className="block px-4 py-3 text-sm hover:bg-brand-50"
-              >
-                <span className="font-medium text-ink">
-                  {item.match[0] ?? item.slug}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
+        {processing ? (
+          <section className="card">
+            <div className="card-b">
+              <h2>{tCase("processingTitle")}</h2>
+              <p className="grey">
+                {tCase("processingRange", {
+                  form: form.code,
+                  low: processing.lowMonths,
+                  high: processing.highMonths,
+                })}
+              </p>
+              <p className="content-note">{tCase("processingDisclaimer")}</p>
+              <div className="content-actions">
+                <Link
+                  href={`/processing-times/${formToPathSlug(form.code)}`}
+                  className="button is-secondary is-small"
+                >
+                  {t("moreProcessingTimes")}
+                </Link>
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        <section>
+          <h2>{t("commonStatuses")}</h2>
+          <ul className="content-list">
+            {topStatuses.map((item) => (
+              <li key={item.slug}>
+                <Link
+                  href={`/status/${formToPathSlug(form.code)}/${item.slug}`}
+                >
+                  <span className="title">{item.match[0] ?? item.slug}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
     </div>
   );
 }

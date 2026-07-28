@@ -46,44 +46,42 @@ export default async function ProcessingTimeFormPage({
   });
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8 px-4 py-10 md:px-6 md:py-14">
-      <div>
-        <h1 className="text-3xl font-semibold text-ink">
-          {t("processingFormHeading", { form: form.code })}
-        </h1>
-        <p className="mt-2 text-ink-muted">
-          {form.shortDescription[activeLocale]}
+    <div className="shell content-page">
+      <span className="eyebrow">{form.code}</span>
+      <h1>{t("processingFormHeading", { form: form.code })}</h1>
+      <p className="lede">{form.shortDescription[activeLocale]}</p>
+
+      <div className="content-stack">
+        {processing ? (
+          <section className="card">
+            <div className="card-b">
+              <p className="grey">
+                {tCase("processingRange", {
+                  form: form.code,
+                  low: processing.lowMonths,
+                  high: processing.highMonths,
+                })}
+              </p>
+              <p className="content-note">{tCase("processingDisclaimer")}</p>
+            </div>
+          </section>
+        ) : (
+          <p className="grey">{t("processingUnavailable")}</p>
+        )}
+
+        <section className="card">
+          <div className="card-b receipt-box">
+            <h2>{t("checkYours")}</h2>
+            <ReceiptInput />
+          </div>
+        </section>
+
+        <p className="content-links">
+          <Link href={`/forms/${form.trackerSlug}`}>
+            {t("formTracker", { form: form.code })}
+          </Link>
         </p>
       </div>
-
-      {processing ? (
-        <section className="rounded-lg border-[0.5px] border-line bg-surface p-5 md:p-6">
-          <p className="text-ink">
-            {tCase("processingRange", {
-              form: form.code,
-              low: processing.lowMonths,
-              high: processing.highMonths,
-            })}
-          </p>
-          <p className="mt-3 text-sm text-ink-muted">
-            {tCase("processingDisclaimer")}
-          </p>
-        </section>
-      ) : (
-        <p className="text-sm text-ink-muted">{t("processingUnavailable")}</p>
-      )}
-
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold text-ink">{t("checkYours")}</h2>
-        <ReceiptInput />
-      </section>
-
-      <Link
-        href={`/forms/${form.trackerSlug}`}
-        className="text-sm font-medium text-brand-700 underline"
-      >
-        {t("formTracker", { form: form.code })}
-      </Link>
     </div>
   );
 }

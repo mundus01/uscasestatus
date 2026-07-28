@@ -57,32 +57,27 @@ export function SignInForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-3">
-      <div>
-        <label htmlFor="sign-in-email" className="block text-sm font-medium text-ink">
-          {emailLabel}
-        </label>
-        <input
-          id="sign-in-email"
-          type="email"
-          required
-          autoComplete="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          placeholder={emailPlaceholder}
-          className="mt-1.5 w-full rounded-md border-[0.5px] border-line bg-canvas px-3 py-2.5 text-base text-ink outline-none focus:border-brand-500"
-        />
-      </div>
+    <form onSubmit={onSubmit} className="auth-form">
+      <label htmlFor="sign-in-email">{emailLabel}</label>
+      <input
+        id="sign-in-email"
+        type="email"
+        required
+        autoComplete="email"
+        value={email}
+        onChange={(event) => setEmail(event.target.value)}
+        placeholder={emailPlaceholder}
+      />
       <button
         type="submit"
         disabled={status === "loading"}
-        className="rounded-md bg-brand-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-60"
+        className="button"
       >
         {status === "loading" ? submittingLabel : submitLabel}
       </button>
       {message ? (
         <p
-          className={`text-sm ${status === "error" ? "text-status-alert" : "text-brand-700"}`}
+          className={status === "error" ? "helper is-error" : "helper"}
           role="status"
         >
           {message}
