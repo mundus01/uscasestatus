@@ -23,7 +23,7 @@
   --neutral-lighter:#fafafa;
   --sora:var(--font-sora),'Sora',sans-serif;
   --figtree:var(--font-figtree),'Figtree',sans-serif;
-  --shell:1000px;
+  --shell:1200px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
