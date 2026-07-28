@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition, type FormEvent } from "react";
+import { useTranslations } from "next-intl";
 
 import { useRouter } from "@/i18n/navigation";
 import {
@@ -10,6 +11,7 @@ import {
 } from "@/lib/receipt";
 
 export function HomeAlertCta() {
+  const t = useTranslations("home.alerts");
   const router = useRouter();
   const [receipt, setReceipt] = useState("");
   const [email, setEmail] = useState("");
@@ -20,16 +22,15 @@ export function HomeAlertCta() {
     event.preventDefault();
     const result = validateReceipt(receipt);
     if (!result.ok) {
-      setMessage("Enter a valid 13-character receipt number first.");
+      setMessage(t("badReceipt"));
       return;
     }
     if (!email.includes("@")) {
-      setMessage("Enter an email address.");
+      setMessage(t("badEmail"));
       return;
     }
     setMessage(null);
     startTransition(() => {
-      // Land on the case page with track form ready; tracking API needs that flow.
       router.push(`/case/${result.receipt}`);
     });
   }
@@ -39,8 +40,8 @@ export function HomeAlertCta() {
       <div className="row">
         <input
           type="text"
-          placeholder="Receipt number"
-          aria-label="Receipt number"
+          placeholder={t("receiptPlaceholder")}
+          aria-label={t("receiptLabel")}
           value={receipt}
           onChange={(event) =>
             setReceipt(normalizeReceipt(event.target.value).slice(0, RECEIPT_LENGTH))
@@ -51,17 +52,17 @@ export function HomeAlertCta() {
       <div className="row">
         <input
           type="email"
-          placeholder="you@example.com"
-          aria-label="Email"
+          placeholder={t("emailPlaceholder")}
+          aria-label={t("emailLabel")}
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           disabled={isPending}
         />
         <button className="button" type="submit" disabled={isPending}>
-          Track it
+          {t("submit")}
         </button>
       </div>
-      <small>Free. One confirmation email, then only real updates.</small>
+      <small>{t("note")}</small>
       {message ? (
         <small className="is-error" role="alert">
           {message}

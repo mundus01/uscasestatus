@@ -42,6 +42,7 @@
 .q3{background:var(--skyblue);flex:577}.q4{background:var(--neutral-light);flex:3654}
 .qyou{position:absolute;top:-9px;bottom:-9px;left:calc(1292/4962*100%);width:3px;background:var(--blue-dark);border-radius:2px}
 .qyou::after{content:"You · #1,308";position:absolute;top:-25px;left:50%;transform:translateX(-50%);white-space:nowrap;font-family:var(--font-sora),Sora,sans-serif;font-size:.68rem;font-weight:600;background:var(--blue-dark);color:#fff;padding:.18rem .55rem;border-radius:100rem}
+html[lang="es"] .qyou::after{content:"Tú · #1,308"}
 .qlegend{display:flex;flex-wrap:wrap;gap:.6rem 1.5rem;margin-top:1.1rem;font-size:.78rem;color:var(--text-grey)}
 .qlegend .sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:.4rem;vertical-align:-1px}
 .qlegend .sw-success{background:var(--success)}
@@ -90,7 +91,9 @@
 .alert-form small{font-size:.75rem;color:var(--text-light);padding-left:.5rem}
 
 /* ============================ FAQ */
-.faq{display:grid;gap:.6rem;max-width:760px}
+/* Match the alerts CTA shell width (not the narrower FAQ mockup column). */
+.section:has(.faq) .section-head{max-width:none}
+.faq{display:grid;gap:.6rem}
 .faq details{background:#fff;border:1px solid var(--border-primary);border-radius:.75rem;overflow:hidden}
 .faq summary{padding:1.05rem 1.25rem;font-weight:600;color:var(--blue-dark);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem;font-size:.95rem}
 .faq summary::-webkit-details-marker{display:none}

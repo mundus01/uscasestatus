@@ -1,7 +1,10 @@
+import { getTranslations } from "next-intl/server";
+
 import { LocaleSwitcher } from "@/components/layout/locale-switcher";
 import { Link } from "@/i18n/navigation";
 
 export async function Footer() {
+  const t = await getTranslations("footer");
   const year = new Date().getFullYear();
 
   return (
@@ -13,90 +16,87 @@ export async function Footer() {
               <span className="mark">CS</span>
               <span className="name">uscasestatus</span>
             </Link>
-            <p>
-              Plain-language USCIS case tracking. We turn a one-line status into
-              something you can actually act on — and we show our math.
-            </p>
+            <p>{t("blurb")}</p>
             <LocaleSwitcher variant="footer" />
           </div>
 
           <div className="fcol">
-            <h4>Check a case</h4>
+            <h4>{t("checkHeading")}</h4>
             <ul>
               <li>
-                <Link href="/">Look up a receipt number</Link>
+                <Link href="/">{t("lookup")}</Link>
               </li>
               <li>
-                <Link href="/dashboard">Track my cases</Link>
+                <Link href="/dashboard">{t("trackCases")}</Link>
               </li>
               <li>
-                <Link href="/">Email alerts</Link>
+                <Link href="/">{t("emailAlerts")}</Link>
               </li>
               <li>
-                <Link href="/methodology">Receipt number decoder</Link>
+                <Link href="/methodology">{t("decoder")}</Link>
               </li>
             </ul>
           </div>
 
           <div className="fcol">
-            <h4>Understand</h4>
+            <h4>{t("understandHeading")}</h4>
             <ul>
               <li>
-                <Link href="/status">What each status means</Link>
+                <Link href="/status">{t("statusMeans")}</Link>
               </li>
               <li>
-                <Link href="/methodology">How we estimate timelines</Link>
+                <Link href="/methodology">{t("estimateHow")}</Link>
               </li>
               <li>
-                <Link href="/processing-times">Processing times</Link>
+                <Link href="/processing-times">{t("processingTimes")}</Link>
               </li>
               <li>
-                <Link href="/insights">Visa bulletin</Link>
+                <Link href="/insights">{t("visaBulletin")}</Link>
               </li>
               <li>
-                <Link href="/status">Responding to an RFE</Link>
+                <Link href="/status">{t("rfe")}</Link>
               </li>
             </ul>
           </div>
 
           <div className="fcol">
-            <h4>Form guides</h4>
+            <h4>{t("formsHeading")}</h4>
             <ul>
               <li>
-                <Link href="/forms/i130-tracker">I-130 · Family petition</Link>
+                <Link href="/forms/i130-tracker">{t("formI130")}</Link>
               </li>
               <li>
-                <Link href="/forms/i140-tracker">I-140 · Worker petition</Link>
+                <Link href="/forms/i140-tracker">{t("formI140")}</Link>
               </li>
               <li>
-                <Link href="/forms/i485-tracker">I-485 · Adjust status</Link>
+                <Link href="/forms/i485-tracker">{t("formI485")}</Link>
               </li>
               <li>
-                <Link href="/forms/i765-tracker">I-765 · Work permit</Link>
+                <Link href="/forms/i765-tracker">{t("formI765")}</Link>
               </li>
               <li>
-                <Link href="/forms/n400-tracker">N-400 · Naturalization</Link>
+                <Link href="/forms/n400-tracker">{t("formN400")}</Link>
               </li>
             </ul>
           </div>
 
           <div className="fcol">
-            <h4>Company</h4>
+            <h4>{t("companyHeading")}</h4>
             <ul>
               <li>
-                <Link href="/methodology">About us</Link>
+                <Link href="/methodology">{t("about")}</Link>
               </li>
               <li>
-                <Link href="/methodology">Methodology</Link>
+                <Link href="/methodology">{t("methodology")}</Link>
               </li>
               <li>
-                <Link href="/insights">Insights</Link>
+                <Link href="/insights">{t("insights")}</Link>
               </li>
               <li>
-                <Link href="/">Contact support</Link>
+                <Link href="/">{t("contact")}</Link>
               </li>
               <li>
-                <Link href="/">Report a problem</Link>
+                <Link href="/">{t("report")}</Link>
               </li>
             </ul>
           </div>
@@ -108,34 +108,24 @@ export async function Footer() {
           </span>
           <div className="cols">
             <p>
-              <b>uscasestatus is an independent service.</b> We are not
-              affiliated with, endorsed by, or connected to U.S. Citizenship and
-              Immigration Services, the Department of Homeland Security, or any
-              government agency. Official case information is always available
-              free at uscis.gov.
+              <b>{t("disclaimerLead")}</b> {t("disclaimerGov")}
             </p>
-            <p>
-              Nothing on this site is legal advice, and we are not a law firm.
-              Estimates are statistical ranges based on observed case data, not
-              predictions about your case. For advice about your situation, talk
-              to a licensed immigration attorney or a DOJ-accredited
-              representative.
-            </p>
+            <p>{t("disclaimerLegal")}</p>
           </div>
         </div>
 
         <div className="footer-bottom">
-          <small>© {year} uscasestatus</small>
+          <small>{t("copyright", { year })}</small>
           <small className="sync">
             <span className="led" />
-            USCIS data synced 12 minutes ago
+            {t("synced")}
           </small>
           <nav>
-            <Link href="/methodology">Privacy</Link>
-            <Link href="/methodology">Terms</Link>
-            <Link href="/methodology">Cookie preferences</Link>
-            <Link href="/methodology">Accessibility</Link>
-            <Link href="/methodology">Do not sell my info</Link>
+            <Link href="/methodology">{t("privacy")}</Link>
+            <Link href="/methodology">{t("terms")}</Link>
+            <Link href="/methodology">{t("cookies")}</Link>
+            <Link href="/methodology">{t("accessibility")}</Link>
+            <Link href="/methodology">{t("doNotSell")}</Link>
           </nav>
         </div>
       </div>

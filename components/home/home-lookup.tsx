@@ -12,7 +12,8 @@ import {
 } from "@/lib/receipt";
 
 export function HomeLookup() {
-  const t = useTranslations("receipt");
+  const t = useTranslations("home.hero");
+  const tReceipt = useTranslations("receipt");
   const router = useRouter();
   const [value, setValue] = useState("");
   const [error, setError] = useState<ReceiptErrorCode | null>(null);
@@ -47,24 +48,21 @@ export function HomeLookup() {
             setValue(normalizeReceipt(event.target.value).slice(0, RECEIPT_LENGTH));
             if (error) setError(null);
           }}
-          placeholder="Enter your receipt number"
-          aria-label="Receipt number"
+          placeholder={t("placeholder")}
+          aria-label={t("receiptLabel")}
           autoComplete="off"
           spellCheck={false}
           disabled={isPending}
           aria-invalid={error ? true : undefined}
         />
         <button className="button is-large" type="submit" disabled={isPending}>
-          {isPending ? t("checking") : "Check status"}
+          {isPending ? tReceipt("checking") : t("submit")}
         </button>
       </div>
-      <p className="helper">
-        Thirteen characters, starting with three letters — like IOE0935126486 or
-        MSC2190012345. It&apos;s on your receipt notice (Form I-797).
-      </p>
+      <p className="helper">{t("helper")}</p>
       {error ? (
         <p className="helper is-error" role="alert">
-          {t(`errors.${error}`, errorContext)}
+          {tReceipt(`errors.${error}`, errorContext)}
         </p>
       ) : null}
     </form>
