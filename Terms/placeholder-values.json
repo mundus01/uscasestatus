@@ -1,0 +1,62 @@
+{
+  "_instructions": "Fill in every value below, then run: python3 fill-placeholders.py. Leave a value as null to keep it highlighted as unfilled. See placeholders.md for guidance on each field.",
+
+  "_1_company": {
+    "ENTITY_NAME": "USCaseStatus",
+    "ENTITY_FULL": "Mundus Consult LLC",
+    "ENTITY_ADDRESS": "Texas, USA",
+    "ENTITY_NAME_ADDRESS": "Mundus Consult LLC, Texas, USA",
+    "GOVERNING_STATE": "Texas"
+  },
+
+  "_2_contact_emails": {
+    "EMAIL_PRIVACY": "info@uscasestatus.com",
+    "EMAIL_SECURITY": "info@uscasestatus.com",
+    "EMAIL_LEGAL": "info@uscasestatus.com",
+    "EMAIL_A11Y": "info@uscasestatus.com",
+    "PHONE_TOLLFREE": null,
+    "DPO_CONTACT": "info@uscasestatus.com"
+  },
+
+  "_3_vendors": {
+    "VENDOR_HOSTING": "Supabase",
+    "VENDOR_EMAIL": "Resend",
+    "VENDOR_ERRORS": null,
+    "VENDOR_ANALYTICS": null,
+    "VENDOR_PAYMENTS": "Stripe"
+  },
+
+  "_4_urls": {
+    "TRANSPARENCY_REPORT_URL": null,
+    "BREACH_REPORT_URL": "https://uscasestatus.com/breach-report",
+    "CHANGELOG_URL": "https://uscasestatus.com/changelog",
+    "POLICY_ARCHIVE_URL": "https://uscasestatus.com/policy-archive",
+    "TERMS_ARCHIVE_URL": "https://uscasestatus.com/terms-archive"
+  },
+
+  "_5_policy_decisions": {
+    "MIN_CELL_SIZE": "25",
+    "TRANSFER_MECHANISM": null,
+    "LIABILITY_CAP": null
+  },
+
+  "_6_accessibility": {
+    "A11Y_AUDITOR": null,
+    "A11Y_LAST_AUDIT": null,
+    "A11Y_NEXT_AUDIT": null,
+    "A11Y_LAST_REVIEW": null,
+    "A11Y_FIX_DUE_1": null,
+    "A11Y_FIX_DUE_2": null,
+    "A11Y_FIX_DUE_3": null
+  },
+
+  "_7_ccpa_metrics": {
+    "METRICS_YEAR": null,
+    "M_KNOW": null,
+    "M_DELETE": null,
+    "M_CORRECT": null,
+    "M_OPTOUT": null,
+    "M_DENIED": null,
+    "M_MEDIAN_DAYS": null
+  }
+}

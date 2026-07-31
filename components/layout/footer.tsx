@@ -121,11 +121,11 @@ export async function Footer() {
             {t("synced")}
           </small>
           <nav>
-            <Link href="/methodology">{t("privacy")}</Link>
-            <Link href="/methodology">{t("terms")}</Link>
-            <Link href="/methodology">{t("cookies")}</Link>
-            <Link href="/methodology">{t("accessibility")}</Link>
-            <Link href="/methodology">{t("doNotSell")}</Link>
+            <a href="/privacy.html">{t("privacy")}</a>
+            <a href="/terms.html">{t("terms")}</a>
+            <a href="/cookies.html">{t("cookies")}</a>
+            <a href="/accessibility.html">{t("accessibility")}</a>
+            <a href="/do-not-sell.html">{t("doNotSell")}</a>
           </nav>
         </div>
       </div>

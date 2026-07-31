@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accessibility &middot; uscasestatus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue-dark:#131349;--skyblue:#1474e1;--blue-medium:#3076bd;--navy:#00438e;
+  --text-dark-grey:#404040;--text-grey:#565656;--text-light:#747474;
+  --border-primary:#e5e5e5;--success:#25d0a4;--bg-light-green:#c7f3e8;
+  --error:#fa105d;--warning:#f9da47;--bg-warning:#f9da4726;
+  --blue-light:#e7f0fe;--cloud-blue:#f5faff;--pale-blue:#e7f1fc;--bg-gray:#eef1f5;
+  --neutral-light:#f1f1f1;--neutral-lighter:#fafafa;
+  --sora:'Sora',sans-serif;--figtree:'Figtree',sans-serif;--shell:1000px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:5rem}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{font-family:var(--figtree);font-size:1rem;line-height:1.5;color:var(--text-dark-grey);background:#fff;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,h5,h6{font-family:var(--sora);font-weight:600;color:var(--blue-dark);line-height:1.3}
+a{color:var(--blue-medium);text-decoration:underline;text-underline-offset:2px}
+:focus-visible{outline:3px solid var(--skyblue);outline-offset:2px;border-radius:4px}
+.button{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;background:var(--skyblue);color:#fff;border:1px solid transparent;border-radius:100rem;padding:.625rem 2rem;font-family:var(--figtree);font-size:1rem;font-weight:600;text-decoration:none;cursor:pointer;transition:transform .25s ease-in-out}
+.button:hover{transform:scale(.95)}
+.button.is-small{padding:.5rem 1.25rem;font-size:.85rem}
+.button.is-secondary{background:transparent;border-color:var(--skyblue);color:var(--skyblue)}
+.button.is-tertiary{background:transparent;border-color:var(--border-primary);color:var(--blue-dark)}
+.eyebrow{color:var(--blue-medium);letter-spacing:2px;text-transform:uppercase;font-size:.7rem;font-weight:600}
+.shell{max-width:var(--shell);margin:0 auto;padding-left:1.5rem;padding-right:1.5rem}
+
+/* header */
+.site-header{background:#fff;border-bottom:1px solid var(--border-primary);position:sticky;top:0;z-index:40}
+.site-header .shell{display:flex;align-items:center;gap:2rem;padding-top:.75rem;padding-bottom:.75rem}
+.brand{display:flex;align-items:center;gap:.55rem;text-decoration:none;flex:0 0 auto}
+.brand .mark{width:28px;height:28px;border-radius:.5rem;background:var(--blue-dark);display:grid;place-items:center;color:#fff;font-family:var(--sora);font-weight:600;font-size:.75rem}
+.brand .name{font-family:var(--sora);font-weight:600;color:var(--blue-dark);font-size:1.05rem}
+.mainnav{display:flex;gap:1.5rem;align-items:center}
+.mainnav a{color:var(--text-grey);text-decoration:none;font-size:.9rem;font-weight:500;padding:.25rem 0;border-bottom:2px solid transparent}
+.mainnav a:hover{color:var(--blue-dark)}
+.header-r{margin-left:auto;display:flex;align-items:center;gap:1rem}
+.lang{display:flex;border:1px solid var(--border-primary);border-radius:100rem;overflow:hidden;font-size:.72rem}
+.lang b{background:var(--blue-light);color:var(--blue-dark);padding:.25rem .7rem;font-weight:600}
+.lang i{padding:.25rem .7rem;color:var(--text-light);font-style:normal}
+.header-r .signin{color:var(--text-grey);text-decoration:none;font-size:.9rem;font-weight:500}
+.burger{display:none;background:none;border:1px solid var(--border-primary);border-radius:.5rem;padding:.4rem .55rem;cursor:pointer}
+.burger span{display:block;width:16px;height:2px;background:var(--blue-dark);margin:3px 0;border-radius:2px}
+
+/* legal hero */
+.legal-hero{background:var(--cloud-blue);border-bottom:1px solid var(--border-primary);padding:3rem 0 2.5rem}
+.legal-hero h1{font-size:2.5rem;line-height:1.15;margin:.6rem 0 .75rem}
+.legal-hero .lede{font-size:1.05rem;color:var(--text-grey);max-width:70ch}
+.dates{display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:1.5rem;font-size:.82rem;color:var(--text-light)}
+.dates b{color:var(--blue-dark);font-weight:600}
+.legal-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.75rem}
+.legal-tabs a{background:#fff;border:1px solid var(--border-primary);border-radius:100rem;padding:.4rem 1rem;font-size:.82rem;font-weight:500;color:var(--text-grey);text-decoration:none}
+.legal-tabs a:hover{border-color:var(--skyblue);color:var(--blue-dark)}
+.legal-tabs a[aria-current]{background:var(--blue-dark);border-color:var(--blue-dark);color:#fff;font-weight:600}
+
+/* layout */
+.legal-layout{display:grid;grid-template-columns:230px 1fr;gap:3rem;padding:3rem 0 4rem;align-items:start}
+.toc{position:sticky;top:5rem}
+.toc h4{font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue-medium);margin-bottom:.85rem}
+.toc ul{list-style:none;display:grid;gap:.5rem;border-left:2px solid var(--border-primary);padding-left:1rem}
+.toc a{color:var(--text-grey);text-decoration:none;font-size:.83rem;line-height:1.4;display:block}
+.toc a:hover{color:var(--blue-dark)}
+
+/* content */
+.content h2{font-size:1.35rem;margin:2.75rem 0 .9rem;scroll-margin-top:5rem}
+.content h2:first-child{margin-top:0}
+.content h3{font-size:1rem;margin:1.75rem 0 .6rem}
+.content p{margin-bottom:1rem;line-height:1.7}
+.content ul,.content ol{margin:0 0 1.15rem 1.25rem;display:grid;gap:.5rem;line-height:1.65}
+.content li{padding-left:.25rem}
+.content strong{color:var(--blue-dark);font-weight:600}
+.plain{background:var(--bg-light-green);border-radius:.75rem;padding:1rem 1.25rem;margin:0 0 1.25rem}
+.plain b{display:block;font-family:var(--sora);font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:#12433a;margin-bottom:.35rem}
+.plain p{margin:0;font-size:.92rem;color:#173f37;line-height:1.6}
+.callout{border:1px solid var(--border-primary);border-left:3px solid var(--skyblue);background:var(--cloud-blue);border-radius:.5rem;padding:1rem 1.25rem;margin:1.25rem 0;font-size:.92rem;line-height:1.65}
+.callout.warn{border-left-color:var(--warning);background:var(--bg-warning)}
+.callout.strong{border-left-color:var(--error);background:#fa105d0f}
+.callout p:last-child{margin-bottom:0}
+table{width:100%;border-collapse:collapse;margin:1.25rem 0;font-size:.85rem}
+th{text-align:left;background:var(--bg-gray);color:var(--blue-dark);font-family:var(--sora);font-weight:600;font-size:.78rem;padding:.7rem .85rem;border:1px solid var(--border-primary)}
+td{padding:.7rem .85rem;border:1px solid var(--border-primary);vertical-align:top;line-height:1.55}
+td b{color:var(--blue-dark)}
+.na{color:var(--text-light)}
+.yes{color:#12433a;font-weight:600}
+.no{color:var(--error);font-weight:600}
+.placeholder{background:var(--bg-warning);border-radius:.25rem;padding:.05rem .35rem;font-weight:600;color:#6b5600}
+
+/* forms */
+.form-card{background:#fff;border:1px solid var(--border-primary);border-radius:1rem;padding:1.75rem;margin:1.5rem 0}
+.field{margin-bottom:1.15rem}
+.field label{display:block;font-size:.85rem;font-weight:600;color:var(--blue-dark);margin-bottom:.35rem}
+.field .hint{font-size:.75rem;color:var(--text-light);margin-top:.25rem;line-height:1.5}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--border-primary);border-radius:.5rem;padding:.65rem .85rem;font-family:var(--figtree);font-size:.95rem;color:var(--text-dark-grey);background:#fff}
+.field textarea{min-height:90px;resize:vertical}
+.radio-row{display:flex;gap:.5rem;flex-wrap:wrap}
+.radio-row label{flex:1;min-width:150px;border:1px solid var(--border-primary);border-radius:.5rem;padding:.6rem .8rem;font-size:.88rem;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:.5rem;margin:0}
+.radio-row input{width:auto;accent-color:var(--skyblue)}
+.radio-row label:has(input:checked){border-color:var(--skyblue);background:var(--cloud-blue);color:var(--blue-dark);font-weight:600}
+
+/* cookie toggles */
+.ck{border:1px solid var(--border-primary);border-radius:.75rem;padding:1.15rem 1.35rem;margin-bottom:.85rem;display:flex;gap:1.25rem;align-items:flex-start}
+.ck .txt{flex:1}
+.ck h3{margin:0 0 .3rem;font-size:.98rem}
+.ck p{margin:0;font-size:.85rem;color:var(--text-grey);line-height:1.6}
+.ck .tag{display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;border-radius:100rem;padding:.15rem .6rem;margin-left:.5rem;vertical-align:2px}
+.tag.req{background:var(--bg-gray);color:var(--text-grey)}
+.tag.opt{background:var(--blue-light);color:var(--blue-dark)}
+.switch{flex:0 0 auto;width:46px;height:26px;border-radius:100rem;background:var(--neutral-light);border:0;position:relative;cursor:pointer;transition:background .2s;margin-top:.15rem}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #13134933;transition:left .2s}
+.switch[aria-checked="true"]{background:var(--skyblue)}
+.switch[aria-checked="true"]::after{left:23px}
+.switch[disabled]{opacity:.55;cursor:not-allowed}
+.ck-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border-primary)}
+
+/* footer */
+.site-footer{background:var(--blue-dark);color:#a9b6d4}
+.footer-top{padding:3.5rem 0 2.5rem;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:2.5rem}
+.footer-brand .brand .name{color:#fff}
+.footer-brand .brand .mark{background:#ffffff17;color:#fff}
+.footer-brand p{font-size:.85rem;line-height:1.6;margin-top:.9rem;max-width:34ch}
+.footer-lang{display:inline-flex;border:1px solid #ffffff2e;border-radius:100rem;overflow:hidden;font-size:.72rem;margin-top:1.15rem}
+.footer-lang b{background:#ffffff1f;color:#fff;padding:.28rem .8rem;font-weight:600}
+.footer-lang i{padding:.28rem .8rem;color:#8f9dbd;font-style:normal}
+.fcol h4{font-family:var(--sora);font-size:.78rem;font-weight:600;color:#fff;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1rem}
+.fcol ul{list-style:none;display:grid;gap:.6rem}
+.fcol a{color:#a9b6d4;text-decoration:none;font-size:.875rem;line-height:1.4}
+.fcol a:hover{color:#fff;text-decoration:underline}
+.footer-disclaimer{border-top:1px solid #ffffff1f;padding:1.5rem 0;display:flex;gap:1rem;align-items:flex-start}
+.footer-disclaimer .flag{flex:0 0 auto;width:22px;height:22px;border-radius:.4rem;background:#ffffff17;display:grid;place-items:center;color:#7fb4f5;font-size:.7rem;font-weight:700;font-family:var(--sora);margin-top:.1rem}
+.footer-disclaimer .cols{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;flex:1}
+.footer-disclaimer p{font-size:.78rem;line-height:1.65;color:#8f9dbd}
+.footer-disclaimer b{color:#c9d4ec;font-weight:600}
+.footer-bottom{border-top:1px solid #ffffff1f;padding:1.25rem 0 2rem;display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap}
+.footer-bottom small{font-size:.78rem;color:#8f9dbd}
+.footer-bottom nav{margin-left:auto;display:flex;gap:1.25rem;flex-wrap:wrap}
+.footer-bottom nav a{color:#8f9dbd;text-decoration:none;font-size:.78rem}
+.footer-bottom nav a:hover{color:#fff;text-decoration:underline}
+.sync{display:inline-flex;align-items:center;gap:.4rem}
+.sync .led{width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 0 3px #25d0a433}
+
+@media(max-width:900px){.footer-top{grid-template-columns:1fr 1fr 1fr;gap:2rem}.footer-brand{grid-column:1/-1}}
+@media(max-width:820px){
+  .mainnav{display:none}.burger{display:block;order:3}.header-r .signin{display:none}
+  .legal-layout{grid-template-columns:1fr;gap:1.5rem;padding:2rem 0 3rem}
+  .toc{position:static;border-bottom:1px solid var(--border-primary);padding-bottom:1.25rem}
+  .legal-hero h1{font-size:1.75rem}
+  .footer-top{grid-template-columns:1fr 1fr}
+  .footer-disclaimer .cols{grid-template-columns:1fr;gap:.6rem}
+  .footer-bottom nav{margin-left:0;width:100%}
+  table{display:block;overflow-x:auto}
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="shell">
+    <a class="brand" href="/"><span class="mark">CS</span><span class="name">uscasestatus</span></a>
+    <nav class="mainnav">
+      <a href="/">Check a case</a>
+      <a href="#">Processing times</a>
+      <a href="#">Form guides</a>
+      <a href="#">Insights</a>
+    </nav>
+    <div class="header-r">
+      <div class="lang"><b>EN</b><i>ES</i></div>
+      <a class="signin" href="#">Sign in</a>
+      <a class="button is-small" href="#">Create account</a>
+      <button class="burger" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<section class="legal-hero">
+  <div class="shell">
+    <span class="eyebrow">Legal</span>
+    <h1>Accessibility statement</h1>
+    <p class="lede">How we build this site so it works with screen readers, keyboards, magnification, and translation — plus what still needs fixing.</p>
+    <div class="dates"><span>Last reviewed <b>July 28, 2026</b></span><span>Target <b>WCAG 2.2 Level AA</b></span></div>
+    <nav class="legal-tabs" aria-label="Legal pages">
+      <a href="privacy.html">Privacy policy</a>
+      <a href="terms.html">Terms of service</a>
+      <a href="cookies.html">Cookie preferences</a>
+      <a href="accessibility.html" aria-current="page">Accessibility</a>
+      <a href="do-not-sell.html">Do not sell my info</a>
+    </nav>
+  </div>
+</section>
+
+<div class="shell">
+  <div class="legal-layout">
+    <aside class="toc"><h4>On this page</h4><ul>
+        <li><a href="#commit">Our commitment</a></li>
+        <li><a href="#standard">Standard we follow</a></li>
+        <li><a href="#status">Conformance status</a></li>
+        <li><a href="#done">What we've done</a></li>
+        <li><a href="#known">Known limitations</a></li>
+        <li><a href="#language">Language and plain writing</a></li>
+        <li><a href="#assistive">Tested with</a></li>
+        <li><a href="#feedback">Tell us about a problem</a></li>
+        <li><a href="#alt">Alternatives</a></li>
+        <li><a href="#changesa">Review schedule</a></li>
+      </ul></aside>
+    <article class="content">
+
+<div class="plain"><b>In plain language</b><p>This site should work if you use a screen reader, navigate by keyboard, need large text, or have low vision. If something doesn't work for you, email us and we'll fix it — and in the meantime we'll get you the information another way.</p></div>
+
+<h2 id="commit">Our commitment</h2>
+<p>People using this site are often under stress, sometimes on an old phone, sometimes reading in a second language, sometimes with a disability. Accessibility isn't a compliance exercise for us; it's a condition of the site being any use at all. We design for that.</p>
+
+<h2 id="standard">The standard we follow</h2>
+<p>We aim to meet <strong>Web Content Accessibility Guidelines (WCAG) 2.2, Level AA</strong>, published by the W3C. We also design toward the Section 508 standards and the plain-language principles in the Plain Writing Act, though as a private company we are not directly subject to either.</p>
+
+<h2 id="status">Conformance status</h2>
+<p><strong>Partially conformant with WCAG 2.2 Level AA.</strong> "Partially conformant" means most of the site meets the standard but some content does not yet. We list what we know about below rather than claiming full conformance we haven't verified.</p>
+<p>Last audited: <span class="placeholder">{{A11Y_LAST_AUDIT}}</span> by <span class="placeholder">{{A11Y_AUDITOR}}</span>. Next audit due: <span class="placeholder">{{A11Y_NEXT_AUDIT}}</span>.</p>
+
+<h2 id="done">What we've done</h2>
+<ul>
+  <li><strong>Keyboard.</strong> Every interactive element is reachable and operable by keyboard, with a visible focus indicator that meets contrast requirements. No keyboard traps.</li>
+  <li><strong>Screen readers.</strong> Semantic HTML throughout, one <code>h1</code> per page and a logical heading order, labels tied to every form field, and descriptive text alternatives for every chart and diagram.</li>
+  <li><strong>Charts.</strong> Every visualization carries a text description conveying the same information, and the key figures also appear as text in the surrounding paragraphs. No information is available only as a graphic.</li>
+  <li><strong>Colour.</strong> Body text meets a contrast ratio of at least 4.5:1 and large text at least 3:1. <strong>Colour is never the only way we convey meaning</strong> &mdash; status is always accompanied by a word, and chart segments are labelled with numbers in the legend.</li>
+  <li><strong>Zoom and reflow.</strong> The site works at 200% zoom and reflows to a 320px viewport without horizontal scrolling.</li>
+  <li><strong>Motion.</strong> We honour <code>prefers-reduced-motion</code> and disable transitions for anyone who has asked their system to reduce animation. Nothing auto-plays, flashes, or moves without user action.</li>
+  <li><strong>Timing.</strong> No time limits on reading or completing forms.</li>
+  <li><strong>Errors.</strong> Form errors are described in text, tied to the field programmatically, and explain how to fix the problem.</li>
+</ul>
+
+<h2 id="known">Known limitations</h2>
+<p>We would rather tell you than let you discover these:</p>
+<table>
+  <tr><th style="width:30%">Issue</th><th>Impact and workaround</th><th style="width:18%">Fix due</th></tr>
+  <tr><td><b>Queue chart on small screens</b></td><td>The position marker label can overlap adjacent labels below 360px. The same figures appear as text immediately below the chart.</td><td><span class="placeholder">{{A11Y_FIX_DUE_1}}</span></td></tr>
+  <tr><td><b>Older PDF notices</b></td><td>Some archived guidance PDFs are not tagged for screen readers. Email us and we will send an accessible version within two business days.</td><td><span class="placeholder">{{A11Y_FIX_DUE_2}}</span></td></tr>
+  <tr><td><b>Third-party embeds</b></td><td>Where we embed content we do not control, we cannot guarantee its accessibility. We are working to replace remaining embeds with native content.</td><td><span class="placeholder">{{A11Y_FIX_DUE_3}}</span></td></tr>
+</table>
+
+<h2 id="language">Language and plain writing</h2>
+<p>Accessibility includes being understandable. We write short sentences, avoid idioms that don't translate, define legal and immigration terms the first time we use them, and explain every statistic in words as well as numbers. The site is available in English and Spanish, and the Spanish version is written by a human translator rather than generated automatically. If a page reads as confusing or condescending, that's a bug &mdash; please report it.</p>
+
+<h2 id="assistive">Tested with</h2>
+<ul>
+  <li>NVDA with Firefox and Chrome on Windows</li>
+  <li>VoiceOver with Safari on macOS and iOS</li>
+  <li>TalkBack with Chrome on Android</li>
+  <li>Keyboard-only navigation across all browsers</li>
+  <li>Browser zoom to 400% and OS-level text scaling</li>
+  <li>Windows High Contrast Mode and forced-colors mode</li>
+</ul>
+<p><span class="placeholder">[Confirm this list matches the testing actually performed.]</span></p>
+
+<h2 id="feedback">Tell us about a problem</h2>
+<p>If you hit a barrier, please tell us. You do not need to know the technical term for what went wrong &mdash; "I can't read the chart with my screen reader" is a perfect bug report.</p>
+<div class="form-card">
+  <div class="field"><label for="a11y-page">Which page?</label><input id="a11y-page" type="text" placeholder="Paste the address, or describe it"></div>
+  <div class="field"><label for="a11y-what">What happened?</label><textarea id="a11y-what" placeholder="Describe what you were trying to do and what got in the way."></textarea></div>
+  <div class="field"><label for="a11y-tech">What are you using? (optional)</label><input id="a11y-tech" type="text" placeholder="e.g. VoiceOver on iPhone, or keyboard only"></div>
+  <div class="field"><label for="a11y-email">Email, if you'd like a reply</label><input id="a11y-email" type="email" placeholder="you@example.com"><div class="hint">Optional. We use it only to reply about this report.</div></div>
+  <button class="button">Send report</button>
+</div>
+<p>You can also email info@uscasestatus.com or write to Texas, USA.</p>
+<p><strong>We acknowledge every report within 2 business days</strong> and aim to resolve or provide a workaround within <strong>10 business days</strong>. If a fix will take longer, we will tell you why and give you a date.</p>
+
+<h2 id="alt">Alternative ways to get the information</h2>
+<p>If any part of the site is unusable for you, email info@uscasestatus.com with your receipt number and we will send the same information as plain text or in another format you can use, at no charge. You should never have to fight the interface to find out about your own case.</p>
+
+<h2 id="changesa">Review schedule</h2>
+<p>We review this statement and re-test the site at least every <strong>six months</strong>, and after any significant redesign. This statement was last reviewed on <span class="placeholder">{{A11Y_LAST_REVIEW}}</span>.</p>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="/"><span class="mark">CS</span><span class="name">uscasestatus</span></a>
+        <p>Plain-language USCIS case tracking. We turn a one-line status into something you can actually act on &mdash; and we show our math.</p>
+        <div class="footer-lang"><b>English</b><i>Espa&ntilde;ol</i></div>
+      </div>
+      <div class="fcol"><h4>Check a case</h4><ul>
+        <li><a href="/">Look up a receipt number</a></li>
+        <li><a href="#">Track my cases</a></li><li><a href="#">Email alerts</a></li>
+        <li><a href="#">Receipt number decoder</a></li></ul></div>
+      <div class="fcol"><h4>Understand</h4><ul>
+        <li><a href="#">What each status means</a></li><li><a href="#">How we estimate timelines</a></li>
+        <li><a href="#">Processing times</a></li><li><a href="#">Visa bulletin</a></li>
+        <li><a href="#">Responding to an RFE</a></li></ul></div>
+      <div class="fcol"><h4>Form guides</h4><ul>
+        <li><a href="#">I-130 &middot; Family petition</a></li><li><a href="#">I-140 &middot; Worker petition</a></li>
+        <li><a href="#">I-485 &middot; Adjust status</a></li><li><a href="#">I-765 &middot; Work permit</a></li>
+        <li><a href="#">N-400 &middot; Naturalization</a></li></ul></div>
+      <div class="fcol"><h4>Company</h4><ul>
+        <li><a href="#">About us</a></li><li><a href="#">Methodology</a></li><li><a href="#">Insights</a></li>
+        <li><a href="#">Contact support</a></li><li><a href="#">Report a problem</a></li></ul></div>
+    </div>
+    <div class="footer-disclaimer">
+      <span class="flag" aria-hidden="true">!</span>
+      <div class="cols">
+        <p><b>uscasestatus is an independent service.</b> We are not affiliated with, endorsed by, or connected to U.S. Citizenship and Immigration Services, the Department of Homeland Security, or any government agency. Official case information is always available free at uscis.gov.</p>
+        <p>Nothing on this site is legal advice, and we are not a law firm. Estimates are statistical ranges based on observed case data, not predictions about your case. For advice about your situation, talk to a licensed immigration attorney or a DOJ-accredited representative.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <small>&copy; 2026 uscasestatus</small>
+      <small class="sync"><span class="led"></span>USCIS data synced 12 minutes ago</small>
+      <nav>
+        <a href="privacy.html">Privacy</a><a href="terms.html">Terms</a>
+        <a href="cookies.html">Cookie preferences</a><a href="accessibility.html">Accessibility</a>
+        <a href="do-not-sell.html">Do not sell my info</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

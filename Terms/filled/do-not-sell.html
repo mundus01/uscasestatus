@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Do not sell my info &middot; uscasestatus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue-dark:#131349;--skyblue:#1474e1;--blue-medium:#3076bd;--navy:#00438e;
+  --text-dark-grey:#404040;--text-grey:#565656;--text-light:#747474;
+  --border-primary:#e5e5e5;--success:#25d0a4;--bg-light-green:#c7f3e8;
+  --error:#fa105d;--warning:#f9da47;--bg-warning:#f9da4726;
+  --blue-light:#e7f0fe;--cloud-blue:#f5faff;--pale-blue:#e7f1fc;--bg-gray:#eef1f5;
+  --neutral-light:#f1f1f1;--neutral-lighter:#fafafa;
+  --sora:'Sora',sans-serif;--figtree:'Figtree',sans-serif;--shell:1000px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:5rem}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{font-family:var(--figtree);font-size:1rem;line-height:1.5;color:var(--text-dark-grey);background:#fff;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,h5,h6{font-family:var(--sora);font-weight:600;color:var(--blue-dark);line-height:1.3}
+a{color:var(--blue-medium);text-decoration:underline;text-underline-offset:2px}
+:focus-visible{outline:3px solid var(--skyblue);outline-offset:2px;border-radius:4px}
+.button{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;background:var(--skyblue);color:#fff;border:1px solid transparent;border-radius:100rem;padding:.625rem 2rem;font-family:var(--figtree);font-size:1rem;font-weight:600;text-decoration:none;cursor:pointer;transition:transform .25s ease-in-out}
+.button:hover{transform:scale(.95)}
+.button.is-small{padding:.5rem 1.25rem;font-size:.85rem}
+.button.is-secondary{background:transparent;border-color:var(--skyblue);color:var(--skyblue)}
+.button.is-tertiary{background:transparent;border-color:var(--border-primary);color:var(--blue-dark)}
+.eyebrow{color:var(--blue-medium);letter-spacing:2px;text-transform:uppercase;font-size:.7rem;font-weight:600}
+.shell{max-width:var(--shell);margin:0 auto;padding-left:1.5rem;padding-right:1.5rem}
+
+/* header */
+.site-header{background:#fff;border-bottom:1px solid var(--border-primary);position:sticky;top:0;z-index:40}
+.site-header .shell{display:flex;align-items:center;gap:2rem;padding-top:.75rem;padding-bottom:.75rem}
+.brand{display:flex;align-items:center;gap:.55rem;text-decoration:none;flex:0 0 auto}
+.brand .mark{width:28px;height:28px;border-radius:.5rem;background:var(--blue-dark);display:grid;place-items:center;color:#fff;font-family:var(--sora);font-weight:600;font-size:.75rem}
+.brand .name{font-family:var(--sora);font-weight:600;color:var(--blue-dark);font-size:1.05rem}
+.mainnav{display:flex;gap:1.5rem;align-items:center}
+.mainnav a{color:var(--text-grey);text-decoration:none;font-size:.9rem;font-weight:500;padding:.25rem 0;border-bottom:2px solid transparent}
+.mainnav a:hover{color:var(--blue-dark)}
+.header-r{margin-left:auto;display:flex;align-items:center;gap:1rem}
+.lang{display:flex;border:1px solid var(--border-primary);border-radius:100rem;overflow:hidden;font-size:.72rem}
+.lang b{background:var(--blue-light);color:var(--blue-dark);padding:.25rem .7rem;font-weight:600}
+.lang i{padding:.25rem .7rem;color:var(--text-light);font-style:normal}
+.header-r .signin{color:var(--text-grey);text-decoration:none;font-size:.9rem;font-weight:500}
+.burger{display:none;background:none;border:1px solid var(--border-primary);border-radius:.5rem;padding:.4rem .55rem;cursor:pointer}
+.burger span{display:block;width:16px;height:2px;background:var(--blue-dark);margin:3px 0;border-radius:2px}
+
+/* legal hero */
+.legal-hero{background:var(--cloud-blue);border-bottom:1px solid var(--border-primary);padding:3rem 0 2.5rem}
+.legal-hero h1{font-size:2.5rem;line-height:1.15;margin:.6rem 0 .75rem}
+.legal-hero .lede{font-size:1.05rem;color:var(--text-grey);max-width:70ch}
+.dates{display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:1.5rem;font-size:.82rem;color:var(--text-light)}
+.dates b{color:var(--blue-dark);font-weight:600}
+.legal-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.75rem}
+.legal-tabs a{background:#fff;border:1px solid var(--border-primary);border-radius:100rem;padding:.4rem 1rem;font-size:.82rem;font-weight:500;color:var(--text-grey);text-decoration:none}
+.legal-tabs a:hover{border-color:var(--skyblue);color:var(--blue-dark)}
+.legal-tabs a[aria-current]{background:var(--blue-dark);border-color:var(--blue-dark);color:#fff;font-weight:600}
+
+/* layout */
+.legal-layout{display:grid;grid-template-columns:230px 1fr;gap:3rem;padding:3rem 0 4rem;align-items:start}
+.toc{position:sticky;top:5rem}
+.toc h4{font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue-medium);margin-bottom:.85rem}
+.toc ul{list-style:none;display:grid;gap:.5rem;border-left:2px solid var(--border-primary);padding-left:1rem}
+.toc a{color:var(--text-grey);text-decoration:none;font-size:.83rem;line-height:1.4;display:block}
+.toc a:hover{color:var(--blue-dark)}
+
+/* content */
+.content h2{font-size:1.35rem;margin:2.75rem 0 .9rem;scroll-margin-top:5rem}
+.content h2:first-child{margin-top:0}
+.content h3{font-size:1rem;margin:1.75rem 0 .6rem}
+.content p{margin-bottom:1rem;line-height:1.7}
+.content ul,.content ol{margin:0 0 1.15rem 1.25rem;display:grid;gap:.5rem;line-height:1.65}
+.content li{padding-left:.25rem}
+.content strong{color:var(--blue-dark);font-weight:600}
+.plain{background:var(--bg-light-green);border-radius:.75rem;padding:1rem 1.25rem;margin:0 0 1.25rem}
+.plain b{display:block;font-family:var(--sora);font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:#12433a;margin-bottom:.35rem}
+.plain p{margin:0;font-size:.92rem;color:#173f37;line-height:1.6}
+.callout{border:1px solid var(--border-primary);border-left:3px solid var(--skyblue);background:var(--cloud-blue);border-radius:.5rem;padding:1rem 1.25rem;margin:1.25rem 0;font-size:.92rem;line-height:1.65}
+.callout.warn{border-left-color:var(--warning);background:var(--bg-warning)}
+.callout.strong{border-left-color:var(--error);background:#fa105d0f}
+.callout p:last-child{margin-bottom:0}
+table{width:100%;border-collapse:collapse;margin:1.25rem 0;font-size:.85rem}
+th{text-align:left;background:var(--bg-gray);color:var(--blue-dark);font-family:var(--sora);font-weight:600;font-size:.78rem;padding:.7rem .85rem;border:1px solid var(--border-primary)}
+td{padding:.7rem .85rem;border:1px solid var(--border-primary);vertical-align:top;line-height:1.55}
+td b{color:var(--blue-dark)}
+.na{color:var(--text-light)}
+.yes{color:#12433a;font-weight:600}
+.no{color:var(--error);font-weight:600}
+.placeholder{background:var(--bg-warning);border-radius:.25rem;padding:.05rem .35rem;font-weight:600;color:#6b5600}
+
+/* forms */
+.form-card{background:#fff;border:1px solid var(--border-primary);border-radius:1rem;padding:1.75rem;margin:1.5rem 0}
+.field{margin-bottom:1.15rem}
+.field label{display:block;font-size:.85rem;font-weight:600;color:var(--blue-dark);margin-bottom:.35rem}
+.field .hint{font-size:.75rem;color:var(--text-light);margin-top:.25rem;line-height:1.5}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--border-primary);border-radius:.5rem;padding:.65rem .85rem;font-family:var(--figtree);font-size:.95rem;color:var(--text-dark-grey);background:#fff}
+.field textarea{min-height:90px;resize:vertical}
+.radio-row{display:flex;gap:.5rem;flex-wrap:wrap}
+.radio-row label{flex:1;min-width:150px;border:1px solid var(--border-primary);border-radius:.5rem;padding:.6rem .8rem;font-size:.88rem;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:.5rem;margin:0}
+.radio-row input{width:auto;accent-color:var(--skyblue)}
+.radio-row label:has(input:checked){border-color:var(--skyblue);background:var(--cloud-blue);color:var(--blue-dark);font-weight:600}
+
+/* cookie toggles */
+.ck{border:1px solid var(--border-primary);border-radius:.75rem;padding:1.15rem 1.35rem;margin-bottom:.85rem;display:flex;gap:1.25rem;align-items:flex-start}
+.ck .txt{flex:1}
+.ck h3{margin:0 0 .3rem;font-size:.98rem}
+.ck p{margin:0;font-size:.85rem;color:var(--text-grey);line-height:1.6}
+.ck .tag{display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;border-radius:100rem;padding:.15rem .6rem;margin-left:.5rem;vertical-align:2px}
+.tag.req{background:var(--bg-gray);color:var(--text-grey)}
+.tag.opt{background:var(--blue-light);color:var(--blue-dark)}
+.switch{flex:0 0 auto;width:46px;height:26px;border-radius:100rem;background:var(--neutral-light);border:0;position:relative;cursor:pointer;transition:background .2s;margin-top:.15rem}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #13134933;transition:left .2s}
+.switch[aria-checked="true"]{background:var(--skyblue)}
+.switch[aria-checked="true"]::after{left:23px}
+.switch[disabled]{opacity:.55;cursor:not-allowed}
+.ck-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border-primary)}
+
+/* footer */
+.site-footer{background:var(--blue-dark);color:#a9b6d4}
+.footer-top{padding:3.5rem 0 2.5rem;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:2.5rem}
+.footer-brand .brand .name{color:#fff}
+.footer-brand .brand .mark{background:#ffffff17;color:#fff}
+.footer-brand p{font-size:.85rem;line-height:1.6;margin-top:.9rem;max-width:34ch}
+.footer-lang{display:inline-flex;border:1px solid #ffffff2e;border-radius:100rem;overflow:hidden;font-size:.72rem;margin-top:1.15rem}
+.footer-lang b{background:#ffffff1f;color:#fff;padding:.28rem .8rem;font-weight:600}
+.footer-lang i{padding:.28rem .8rem;color:#8f9dbd;font-style:normal}
+.fcol h4{font-family:var(--sora);font-size:.78rem;font-weight:600;color:#fff;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1rem}
+.fcol ul{list-style:none;display:grid;gap:.6rem}
+.fcol a{color:#a9b6d4;text-decoration:none;font-size:.875rem;line-height:1.4}
+.fcol a:hover{color:#fff;text-decoration:underline}
+.footer-disclaimer{border-top:1px solid #ffffff1f;padding:1.5rem 0;display:flex;gap:1rem;align-items:flex-start}
+.footer-disclaimer .flag{flex:0 0 auto;width:22px;height:22px;border-radius:.4rem;background:#ffffff17;display:grid;place-items:center;color:#7fb4f5;font-size:.7rem;font-weight:700;font-family:var(--sora);margin-top:.1rem}
+.footer-disclaimer .cols{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;flex:1}
+.footer-disclaimer p{font-size:.78rem;line-height:1.65;color:#8f9dbd}
+.footer-disclaimer b{color:#c9d4ec;font-weight:600}
+.footer-bottom{border-top:1px solid #ffffff1f;padding:1.25rem 0 2rem;display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap}
+.footer-bottom small{font-size:.78rem;color:#8f9dbd}
+.footer-bottom nav{margin-left:auto;display:flex;gap:1.25rem;flex-wrap:wrap}
+.footer-bottom nav a{color:#8f9dbd;text-decoration:none;font-size:.78rem}
+.footer-bottom nav a:hover{color:#fff;text-decoration:underline}
+.sync{display:inline-flex;align-items:center;gap:.4rem}
+.sync .led{width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 0 3px #25d0a433}
+
+@media(max-width:900px){.footer-top{grid-template-columns:1fr 1fr 1fr;gap:2rem}.footer-brand{grid-column:1/-1}}
+@media(max-width:820px){
+  .mainnav{display:none}.burger{display:block;order:3}.header-r .signin{display:none}
+  .legal-layout{grid-template-columns:1fr;gap:1.5rem;padding:2rem 0 3rem}
+  .toc{position:static;border-bottom:1px solid var(--border-primary);padding-bottom:1.25rem}
+  .legal-hero h1{font-size:1.75rem}
+  .footer-top{grid-template-columns:1fr 1fr}
+  .footer-disclaimer .cols{grid-template-columns:1fr;gap:.6rem}
+  .footer-bottom nav{margin-left:0;width:100%}
+  table{display:block;overflow-x:auto}
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="shell">
+    <a class="brand" href="index.html"><span class="mark">CS</span><span class="name">uscasestatus</span></a>
+    <nav class="mainnav">
+      <a href="index.html">Check a case</a>
+      <a href="#">Processing times</a>
+      <a href="#">Form guides</a>
+      <a href="#">Insights</a>
+    </nav>
+    <div class="header-r">
+      <div class="lang"><b>EN</b><i>ES</i></div>
+      <a class="signin" href="#">Sign in</a>
+      <a class="button is-small" href="#">Create account</a>
+      <button class="burger" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<section class="legal-hero">
+  <div class="shell">
+    <span class="eyebrow">Legal</span>
+    <h1>Do not sell or share my personal information</h1>
+    <p class="lede">We don't sell your data. Here is the opt-out mechanism anyway, along with every other privacy request you can make.</p>
+    <div class="dates"><span>Last updated <b>July 28, 2026</b></span><span>Applies to <b>all users</b></span></div>
+    <nav class="legal-tabs" aria-label="Legal pages">
+      <a href="privacy.html">Privacy policy</a>
+      <a href="terms.html">Terms of service</a>
+      <a href="cookies.html">Cookie preferences</a>
+      <a href="accessibility.html">Accessibility</a>
+      <a href="do-not-sell.html" aria-current="page">Do not sell my info</a>
+    </nav>
+  </div>
+</section>
+
+<div class="shell">
+  <div class="legal-layout">
+    <aside class="toc"><h4>On this page</h4><ul>
+        <li><a href="#answer">The short answer</a></li>
+        <li><a href="#rights">Your rights</a></li>
+        <li><a href="#request">Submit a request</a></li>
+        <li><a href="#sensitive">Sensitive information</a></li>
+        <li><a href="#gpcd">Global Privacy Control</a></li>
+        <li><a href="#agent">Authorized agents</a></li>
+        <li><a href="#verify">How we verify you</a></li>
+        <li><a href="#timing">How long it takes</a></li>
+        <li><a href="#appeal">If we say no</a></li>
+        <li><a href="#metrics">Request metrics</a></li>
+      </ul></aside>
+    <article class="content">
+
+<h2 id="answer">The short answer</h2>
+<div class="callout"><p><strong>We do not sell your personal information, and we never have.</strong> We do not share it for cross-context behavioral advertising. We do not run ads. We have no data-broker relationships. There is no revenue stream on this site that depends on your data, and if we ever wanted to create one we would have to ask your permission first.</p></div>
+<p>California law requires us to give you a way to opt out anyway. This page is that mechanism, and it also handles every other privacy request we can act on &mdash; access, correction, and deletion.</p>
+
+<h2 id="rights">Your rights</h2>
+<p>Under the California Consumer Privacy Act as amended by the California Privacy Rights Act, California residents have the rights below. <strong>We extend all of them to every user, regardless of where you live.</strong> Similar rights exist under the laws of Virginia, Colorado, Connecticut, Utah, Texas, Oregon, Montana, and other states.</p>
+<table>
+  <tr><th style="width:32%">Right</th><th>What it means here</th></tr>
+  <tr><td><b>Know</b></td><td>Get a list of the categories and the specific pieces of personal information we hold about you, where we got them, why we have them, and who has received them.</td></tr>
+  <tr><td><b>Delete</b></td><td>Have your personal information permanently erased. Completed within 30 days.</td></tr>
+  <tr><td><b>Correct</b></td><td>Fix anything inaccurate. Most fields you can edit yourself in Settings.</td></tr>
+  <tr><td><b>Opt out of sale or sharing</b></td><td>Nothing to opt out of &mdash; we don't sell or share &mdash; but you may submit a request and we will record it.</td></tr>
+  <tr><td><b>Limit use of sensitive personal information</b></td><td>We already use sensitive information only to provide the service you asked for. You may confirm this restriction, or delete the information entirely.</td></tr>
+  <tr><td><b>Portability</b></td><td>Download everything we hold about you in a machine-readable format.</td></tr>
+  <tr><td><b>Non-discrimination</b></td><td>We will never deny service, charge more, or give you a worse experience for exercising any of these rights. We do not offer financial incentives in exchange for your data.</td></tr>
+</table>
+
+<h2 id="request">Submit a request</h2>
+<p>If you have an account, the fastest route is <strong>Settings &rarr; Privacy</strong>, where access, export, correction, and deletion are all self-service and take effect immediately. Otherwise, use this form.</p>
+<div class="form-card">
+  <div class="field">
+    <label>What would you like us to do?</label>
+    <div class="radio-row">
+      <label><input type="radio" name="req" checked> Tell me what you hold</label>
+      <label><input type="radio" name="req"> Delete my data</label>
+    </div>
+    <div class="radio-row" style="margin-top:.5rem">
+      <label><input type="radio" name="req"> Correct my data</label>
+      <label><input type="radio" name="req"> Opt out of sale or sharing</label>
+    </div>
+    <div class="radio-row" style="margin-top:.5rem">
+      <label><input type="radio" name="req"> Limit use of sensitive information</label>
+      <label><input type="radio" name="req"> Export a copy of my data</label>
+    </div>
+  </div>
+  <div class="field">
+    <label for="dns-email">Email address on your account</label>
+    <input id="dns-email" type="email" placeholder="you@example.com">
+    <div class="hint">We send a confirmation link to this address to verify it is you. We will never ask you for identity documents, a Social Security number, or an A-number.</div>
+  </div>
+  <div class="field">
+    <label for="dns-state">State or country of residence</label>
+    <select id="dns-state"><option>Select</option><option>California</option><option>Another U.S. state</option><option>Outside the United States</option></select>
+    <div class="hint">Used only to apply the right legal timeline. We honor these requests regardless of your answer.</div>
+  </div>
+  <div class="field">
+    <label for="dns-note">Anything else we should know? (optional)</label>
+    <textarea id="dns-note" placeholder="For example, a specific receipt number you want removed."></textarea>
+  </div>
+  <div class="field">
+    <label class="radio-row" style="min-width:0"><input type="checkbox"> <span style="font-weight:400;font-size:.85rem">I am submitting this request on my own behalf, or I am an authorized agent with written permission.</span></label>
+  </div>
+  <button class="button">Submit request</button>
+</div>
+<p>You can also email info@uscasestatus.com, or call our toll-free line at <span class="placeholder">{{PHONE_TOLLFREE}}</span>. <span class="placeholder">[CCPA requires a toll-free number for businesses that operate offline; confirm applicability with counsel.]</span></p>
+
+<h2 id="sensitive">A note on sensitive information</h2>
+<p>Since January 1, 2024, California law treats information revealing <strong>citizenship or immigration status</strong> as sensitive personal information. That covers the country of birth and petition category you may have given us. We use it only to compute statistics for cases comparable to yours and to send alerts you asked for &mdash; never to profile you, never for marketing, and never for any purpose you would not reasonably expect. You can remove these fields at any time from Settings without deleting your whole account.</p>
+
+<h2 id="gpcd">Global Privacy Control</h2>
+<p>We honor the <strong>GPC</strong> browser signal as a valid opt-out request under California law. If your browser sends it, we register the opt-out automatically &mdash; you don't need to fill in this form. You can check whether your browser sends GPC at <a href="#">globalprivacycontrol.org</a>.</p>
+
+<h2 id="agent">Authorized agents</h2>
+<p>You may designate someone to submit a request for you &mdash; a family member, an attorney, or an accredited representative. The agent must provide written permission signed by you, and we may contact you directly to confirm. We do not charge for this.</p>
+
+<h2 id="verify">How we verify you</h2>
+<p>We verify by sending a confirmation link to the email address on the account. That is the whole process. <strong>We will never ask you to upload a passport, green card, driver's licence, or any other identity document to exercise a privacy right</strong> &mdash; asking people in the immigration system to hand over documents in order to protect their privacy would be absurd, and we won't do it.</p>
+<p>If you have no account and no email on file, there may be nothing associated with you to act on, since anonymous lookups are not stored against a person. We will tell you if that's the case.</p>
+
+<h2 id="timing">How long it takes</h2>
+<table>
+  <tr><th style="width:42%">Step</th><th>Timing</th></tr>
+  <tr><td>Acknowledgment of your request</td><td>Within 10 business days</td></tr>
+  <tr><td>Substantive response</td><td>Within 45 calendar days</td></tr>
+  <tr><td>Extension, if needed &mdash; with notice and reason</td><td>One additional 45 days</td></tr>
+  <tr><td>Deletion completed in production systems</td><td>Within 30 days of verification</td></tr>
+  <tr><td>Deletion completed in backups</td><td>Within 35 days</td></tr>
+  <tr><td>Self-service deletion from Settings</td><td>Immediate deactivation; same erasure schedule</td></tr>
+</table>
+
+<h2 id="appeal">If we say no</h2>
+<p>We will explain why in writing, in plain language, and tell you what part of the request we could not fulfill. You may appeal by replying to that email or writing to info@uscasestatus.com with "Appeal" in the subject. We respond to appeals within <strong>45 days</strong>. If you remain unsatisfied, you may complain to the California Privacy Protection Agency, your state attorney general, or your local supervisory authority.</p>
+
+<h2 id="metrics">Request metrics</h2>
+<p>We publish annual statistics on privacy requests received, complied with, denied, and median response time, as required for larger businesses under California regulations and as a matter of practice regardless of whether the threshold applies to us.</p>
+<table>
+  <tr><th>Metric</th><th><span class="placeholder">{{METRICS_YEAR}}</span></th></tr>
+  <tr><td>Requests to know</td><td><span class="placeholder">{{M_KNOW}}</span></td></tr>
+  <tr><td>Requests to delete</td><td><span class="placeholder">{{M_DELETE}}</span></td></tr>
+  <tr><td>Requests to correct</td><td><span class="placeholder">{{M_CORRECT}}</span></td></tr>
+  <tr><td>Requests to opt out of sale or sharing</td><td><span class="placeholder">{{M_OPTOUT}}</span></td></tr>
+  <tr><td>Requests denied, and why</td><td><span class="placeholder">{{M_DENIED}}</span></td></tr>
+  <tr><td>Median days to respond</td><td><span class="placeholder">{{M_MEDIAN_DAYS}}</span></td></tr>
+</table>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="index.html"><span class="mark">CS</span><span class="name">uscasestatus</span></a>
+        <p>Plain-language USCIS case tracking. We turn a one-line status into something you can actually act on &mdash; and we show our math.</p>
+        <div class="footer-lang"><b>English</b><i>Espa&ntilde;ol</i></div>
+      </div>
+      <div class="fcol"><h4>Check a case</h4><ul>
+        <li><a href="index.html">Look up a receipt number</a></li>
+        <li><a href="#">Track my cases</a></li><li><a href="#">Email alerts</a></li>
+        <li><a href="#">Receipt number decoder</a></li></ul></div>
+      <div class="fcol"><h4>Understand</h4><ul>
+        <li><a href="#">What each status means</a></li><li><a href="#">How we estimate timelines</a></li>
+        <li><a href="#">Processing times</a></li><li><a href="#">Visa bulletin</a></li>
+        <li><a href="#">Responding to an RFE</a></li></ul></div>
+      <div class="fcol"><h4>Form guides</h4><ul>
+        <li><a href="#">I-130 &middot; Family petition</a></li><li><a href="#">I-140 &middot; Worker petition</a></li>
+        <li><a href="#">I-485 &middot; Adjust status</a></li><li><a href="#">I-765 &middot; Work permit</a></li>
+        <li><a href="#">N-400 &middot; Naturalization</a></li></ul></div>
+      <div class="fcol"><h4>Company</h4><ul>
+        <li><a href="#">About us</a></li><li><a href="#">Methodology</a></li><li><a href="#">Insights</a></li>
+        <li><a href="#">Contact support</a></li><li><a href="#">Report a problem</a></li></ul></div>
+    </div>
+    <div class="footer-disclaimer">
+      <span class="flag" aria-hidden="true">!</span>
+      <div class="cols">
+        <p><b>uscasestatus is an independent service.</b> We are not affiliated with, endorsed by, or connected to U.S. Citizenship and Immigration Services, the Department of Homeland Security, or any government agency. Official case information is always available free at uscis.gov.</p>
+        <p>Nothing on this site is legal advice, and we are not a law firm. Estimates are statistical ranges based on observed case data, not predictions about your case. For advice about your situation, talk to a licensed immigration attorney or a DOJ-accredited representative.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <small>&copy; 2026 uscasestatus</small>
+      <small class="sync"><span class="led"></span>USCIS data synced 12 minutes ago</small>
+      <nav>
+        <a href="privacy.html">Privacy</a><a href="terms.html">Terms</a>
+        <a href="cookies.html">Cookie preferences</a><a href="accessibility.html">Accessibility</a>
+        <a href="do-not-sell.html">Do not sell my info</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

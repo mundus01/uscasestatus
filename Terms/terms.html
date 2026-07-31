@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of service &middot; uscasestatus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue-dark:#131349;--skyblue:#1474e1;--blue-medium:#3076bd;--navy:#00438e;
+  --text-dark-grey:#404040;--text-grey:#565656;--text-light:#747474;
+  --border-primary:#e5e5e5;--success:#25d0a4;--bg-light-green:#c7f3e8;
+  --error:#fa105d;--warning:#f9da47;--bg-warning:#f9da4726;
+  --blue-light:#e7f0fe;--cloud-blue:#f5faff;--pale-blue:#e7f1fc;--bg-gray:#eef1f5;
+  --neutral-light:#f1f1f1;--neutral-lighter:#fafafa;
+  --sora:'Sora',sans-serif;--figtree:'Figtree',sans-serif;--shell:1000px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:5rem}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{font-family:var(--figtree);font-size:1rem;line-height:1.5;color:var(--text-dark-grey);background:#fff;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,h5,h6{font-family:var(--sora);font-weight:600;color:var(--blue-dark);line-height:1.3}
+a{color:var(--blue-medium);text-decoration:underline;text-underline-offset:2px}
+:focus-visible{outline:3px solid var(--skyblue);outline-offset:2px;border-radius:4px}
+.button{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;background:var(--skyblue);color:#fff;border:1px solid transparent;border-radius:100rem;padding:.625rem 2rem;font-family:var(--figtree);font-size:1rem;font-weight:600;text-decoration:none;cursor:pointer;transition:transform .25s ease-in-out}
+.button:hover{transform:scale(.95)}
+.button.is-small{padding:.5rem 1.25rem;font-size:.85rem}
+.button.is-secondary{background:transparent;border-color:var(--skyblue);color:var(--skyblue)}
+.button.is-tertiary{background:transparent;border-color:var(--border-primary);color:var(--blue-dark)}
+.eyebrow{color:var(--blue-medium);letter-spacing:2px;text-transform:uppercase;font-size:.7rem;font-weight:600}
+.shell{max-width:var(--shell);margin:0 auto;padding-left:1.5rem;padding-right:1.5rem}
+
+/* header */
+.site-header{background:#fff;border-bottom:1px solid var(--border-primary);position:sticky;top:0;z-index:40}
+.site-header .shell{display:flex;align-items:center;gap:2rem;padding-top:.75rem;padding-bottom:.75rem}
+.brand{display:flex;align-items:center;gap:.55rem;text-decoration:none;flex:0 0 auto}
+.brand .mark{width:28px;height:28px;border-radius:.5rem;background:var(--blue-dark);display:grid;place-items:center;color:#fff;font-family:var(--sora);font-weight:600;font-size:.75rem}
+.brand .name{font-family:var(--sora);font-weight:600;color:var(--blue-dark);font-size:1.05rem}
+.mainnav{display:flex;gap:1.5rem;align-items:center}
+.mainnav a{color:var(--text-grey);text-decoration:none;font-size:.9rem;font-weight:500;padding:.25rem 0;border-bottom:2px solid transparent}
+.mainnav a:hover{color:var(--blue-dark)}
+.header-r{margin-left:auto;display:flex;align-items:center;gap:1rem}
+.lang{display:flex;border:1px solid var(--border-primary);border-radius:100rem;overflow:hidden;font-size:.72rem}
+.lang b{background:var(--blue-light);color:var(--blue-dark);padding:.25rem .7rem;font-weight:600}
+.lang i{padding:.25rem .7rem;color:var(--text-light);font-style:normal}
+.header-r .signin{color:var(--text-grey);text-decoration:none;font-size:.9rem;font-weight:500}
+.burger{display:none;background:none;border:1px solid var(--border-primary);border-radius:.5rem;padding:.4rem .55rem;cursor:pointer}
+.burger span{display:block;width:16px;height:2px;background:var(--blue-dark);margin:3px 0;border-radius:2px}
+
+/* legal hero */
+.legal-hero{background:var(--cloud-blue);border-bottom:1px solid var(--border-primary);padding:3rem 0 2.5rem}
+.legal-hero h1{font-size:2.5rem;line-height:1.15;margin:.6rem 0 .75rem}
+.legal-hero .lede{font-size:1.05rem;color:var(--text-grey);max-width:70ch}
+.dates{display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:1.5rem;font-size:.82rem;color:var(--text-light)}
+.dates b{color:var(--blue-dark);font-weight:600}
+.legal-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.75rem}
+.legal-tabs a{background:#fff;border:1px solid var(--border-primary);border-radius:100rem;padding:.4rem 1rem;font-size:.82rem;font-weight:500;color:var(--text-grey);text-decoration:none}
+.legal-tabs a:hover{border-color:var(--skyblue);color:var(--blue-dark)}
+.legal-tabs a[aria-current]{background:var(--blue-dark);border-color:var(--blue-dark);color:#fff;font-weight:600}
+
+/* layout */
+.legal-layout{display:grid;grid-template-columns:230px 1fr;gap:3rem;padding:3rem 0 4rem;align-items:start}
+.toc{position:sticky;top:5rem}
+.toc h4{font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue-medium);margin-bottom:.85rem}
+.toc ul{list-style:none;display:grid;gap:.5rem;border-left:2px solid var(--border-primary);padding-left:1rem}
+.toc a{color:var(--text-grey);text-decoration:none;font-size:.83rem;line-height:1.4;display:block}
+.toc a:hover{color:var(--blue-dark)}
+
+/* content */
+.content h2{font-size:1.35rem;margin:2.75rem 0 .9rem;scroll-margin-top:5rem}
+.content h2:first-child{margin-top:0}
+.content h3{font-size:1rem;margin:1.75rem 0 .6rem}
+.content p{margin-bottom:1rem;line-height:1.7}
+.content ul,.content ol{margin:0 0 1.15rem 1.25rem;display:grid;gap:.5rem;line-height:1.65}
+.content li{padding-left:.25rem}
+.content strong{color:var(--blue-dark);font-weight:600}
+.plain{background:var(--bg-light-green);border-radius:.75rem;padding:1rem 1.25rem;margin:0 0 1.25rem}
+.plain b{display:block;font-family:var(--sora);font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:#12433a;margin-bottom:.35rem}
+.plain p{margin:0;font-size:.92rem;color:#173f37;line-height:1.6}
+.callout{border:1px solid var(--border-primary);border-left:3px solid var(--skyblue);background:var(--cloud-blue);border-radius:.5rem;padding:1rem 1.25rem;margin:1.25rem 0;font-size:.92rem;line-height:1.65}
+.callout.warn{border-left-color:var(--warning);background:var(--bg-warning)}
+.callout.strong{border-left-color:var(--error);background:#fa105d0f}
+.callout p:last-child{margin-bottom:0}
+table{width:100%;border-collapse:collapse;margin:1.25rem 0;font-size:.85rem}
+th{text-align:left;background:var(--bg-gray);color:var(--blue-dark);font-family:var(--sora);font-weight:600;font-size:.78rem;padding:.7rem .85rem;border:1px solid var(--border-primary)}
+td{padding:.7rem .85rem;border:1px solid var(--border-primary);vertical-align:top;line-height:1.55}
+td b{color:var(--blue-dark)}
+.na{color:var(--text-light)}
+.yes{color:#12433a;font-weight:600}
+.no{color:var(--error);font-weight:600}
+.placeholder{background:var(--bg-warning);border-radius:.25rem;padding:.05rem .35rem;font-weight:600;color:#6b5600}
+
+/* forms */
+.form-card{background:#fff;border:1px solid var(--border-primary);border-radius:1rem;padding:1.75rem;margin:1.5rem 0}
+.field{margin-bottom:1.15rem}
+.field label{display:block;font-size:.85rem;font-weight:600;color:var(--blue-dark);margin-bottom:.35rem}
+.field .hint{font-size:.75rem;color:var(--text-light);margin-top:.25rem;line-height:1.5}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--border-primary);border-radius:.5rem;padding:.65rem .85rem;font-family:var(--figtree);font-size:.95rem;color:var(--text-dark-grey);background:#fff}
+.field textarea{min-height:90px;resize:vertical}
+.radio-row{display:flex;gap:.5rem;flex-wrap:wrap}
+.radio-row label{flex:1;min-width:150px;border:1px solid var(--border-primary);border-radius:.5rem;padding:.6rem .8rem;font-size:.88rem;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:.5rem;margin:0}
+.radio-row input{width:auto;accent-color:var(--skyblue)}
+.radio-row label:has(input:checked){border-color:var(--skyblue);background:var(--cloud-blue);color:var(--blue-dark);font-weight:600}
+
+/* cookie toggles */
+.ck{border:1px solid var(--border-primary);border-radius:.75rem;padding:1.15rem 1.35rem;margin-bottom:.85rem;display:flex;gap:1.25rem;align-items:flex-start}
+.ck .txt{flex:1}
+.ck h3{margin:0 0 .3rem;font-size:.98rem}
+.ck p{margin:0;font-size:.85rem;color:var(--text-grey);line-height:1.6}
+.ck .tag{display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;border-radius:100rem;padding:.15rem .6rem;margin-left:.5rem;vertical-align:2px}
+.tag.req{background:var(--bg-gray);color:var(--text-grey)}
+.tag.opt{background:var(--blue-light);color:var(--blue-dark)}
+.switch{flex:0 0 auto;width:46px;height:26px;border-radius:100rem;background:var(--neutral-light);border:0;position:relative;cursor:pointer;transition:background .2s;margin-top:.15rem}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #13134933;transition:left .2s}
+.switch[aria-checked="true"]{background:var(--skyblue)}
+.switch[aria-checked="true"]::after{left:23px}
+.switch[disabled]{opacity:.55;cursor:not-allowed}
+.ck-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border-primary)}
+
+/* footer */
+.site-footer{background:var(--blue-dark);color:#a9b6d4}
+.footer-top{padding:3.5rem 0 2.5rem;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:2.5rem}
+.footer-brand .brand .name{color:#fff}
+.footer-brand .brand .mark{background:#ffffff17;color:#fff}
+.footer-brand p{font-size:.85rem;line-height:1.6;margin-top:.9rem;max-width:34ch}
+.footer-lang{display:inline-flex;border:1px solid #ffffff2e;border-radius:100rem;overflow:hidden;font-size:.72rem;margin-top:1.15rem}
+.footer-lang b{background:#ffffff1f;color:#fff;padding:.28rem .8rem;font-weight:600}
+.footer-lang i{padding:.28rem .8rem;color:#8f9dbd;font-style:normal}
+.fcol h4{font-family:var(--sora);font-size:.78rem;font-weight:600;color:#fff;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1rem}
+.fcol ul{list-style:none;display:grid;gap:.6rem}
+.fcol a{color:#a9b6d4;text-decoration:none;font-size:.875rem;line-height:1.4}
+.fcol a:hover{color:#fff;text-decoration:underline}
+.footer-disclaimer{border-top:1px solid #ffffff1f;padding:1.5rem 0;display:flex;gap:1rem;align-items:flex-start}
+.footer-disclaimer .flag{flex:0 0 auto;width:22px;height:22px;border-radius:.4rem;background:#ffffff17;display:grid;place-items:center;color:#7fb4f5;font-size:.7rem;font-weight:700;font-family:var(--sora);margin-top:.1rem}
+.footer-disclaimer .cols{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;flex:1}
+.footer-disclaimer p{font-size:.78rem;line-height:1.65;color:#8f9dbd}
+.footer-disclaimer b{color:#c9d4ec;font-weight:600}
+.footer-bottom{border-top:1px solid #ffffff1f;padding:1.25rem 0 2rem;display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap}
+.footer-bottom small{font-size:.78rem;color:#8f9dbd}
+.footer-bottom nav{margin-left:auto;display:flex;gap:1.25rem;flex-wrap:wrap}
+.footer-bottom nav a{color:#8f9dbd;text-decoration:none;font-size:.78rem}
+.footer-bottom nav a:hover{color:#fff;text-decoration:underline}
+.sync{display:inline-flex;align-items:center;gap:.4rem}
+.sync .led{width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 0 3px #25d0a433}
+
+@media(max-width:900px){.footer-top{grid-template-columns:1fr 1fr 1fr;gap:2rem}.footer-brand{grid-column:1/-1}}
+@media(max-width:820px){
+  .mainnav{display:none}.burger{display:block;order:3}.header-r .signin{display:none}
+  .legal-layout{grid-template-columns:1fr;gap:1.5rem;padding:2rem 0 3rem}
+  .toc{position:static;border-bottom:1px solid var(--border-primary);padding-bottom:1.25rem}
+  .legal-hero h1{font-size:1.75rem}
+  .footer-top{grid-template-columns:1fr 1fr}
+  .footer-disclaimer .cols{grid-template-columns:1fr;gap:.6rem}
+  .footer-bottom nav{margin-left:0;width:100%}
+  table{display:block;overflow-x:auto}
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="shell">
+    <a class="brand" href="index.html"><span class="mark">CS</span><span class="name">uscasestatus</span></a>
+    <nav class="mainnav">
+      <a href="index.html">Check a case</a>
+      <a href="#">Processing times</a>
+      <a href="#">Form guides</a>
+      <a href="#">Insights</a>
+    </nav>
+    <div class="header-r">
+      <div class="lang"><b>EN</b><i>ES</i></div>
+      <a class="signin" href="#">Sign in</a>
+      <a class="button is-small" href="#">Create account</a>
+      <button class="burger" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<section class="legal-hero">
+  <div class="shell">
+    <span class="eyebrow">Legal</span>
+    <h1>Terms of service</h1>
+    <p class="lede">The agreement between you and us. The important parts: we are not the government, we are not lawyers, and our estimates are statistics rather than promises.</p>
+    <div class="dates"><span>Last updated <b>July 28, 2026</b></span><span>Effective <b>August 27, 2026</b></span><span>Version <b>1.0</b></span></div>
+    <nav class="legal-tabs" aria-label="Legal pages">
+      <a href="privacy.html">Privacy policy</a>
+      <a href="terms.html" aria-current="page">Terms of service</a>
+      <a href="cookies.html">Cookie preferences</a>
+      <a href="accessibility.html">Accessibility</a>
+      <a href="do-not-sell.html">Do not sell my info</a>
+    </nav>
+  </div>
+</section>
+
+<div class="shell">
+  <div class="legal-layout">
+    <aside class="toc"><h4>On this page</h4><ul>
+        <li><a href="#agreement">Agreement</a></li>
+        <li><a href="#what">What this service is</a></li>
+        <li><a href="#notlegal">Not legal advice</a></li>
+        <li><a href="#notgov">Not a government service</a></li>
+        <li><a href="#accuracy">Accuracy and estimates</a></li>
+        <li><a href="#accounts">Your account</a></li>
+        <li><a href="#acceptable">Acceptable use</a></li>
+        <li><a href="#content">Your content</a></li>
+        <li><a href="#ip">Our content</a></li>
+        <li><a href="#availability">Availability</a></li>
+        <li><a href="#fees">Fees</a></li>
+        <li><a href="#termination">Termination</a></li>
+        <li><a href="#disclaimer">Disclaimers</a></li>
+        <li><a href="#liability">Limitation of liability</a></li>
+        <li><a href="#indemnity">Indemnification</a></li>
+        <li><a href="#disputes">Disputes</a></li>
+        <li><a href="#law">Governing law</a></li>
+        <li><a href="#changes">Changes to these terms</a></li>
+        <li><a href="#misc">Other terms</a></li>
+        <li><a href="#contactt">Contact</a></li>
+      </ul></aside>
+    <article class="content">
+
+<div class="callout warn"><p><b>Draft for legal review.</b> Liability, arbitration, and governing-law provisions in particular must be reviewed by counsel and adjusted to your jurisdiction and risk posture before publication.</p></div>
+
+<div class="plain"><b>The short version</b><p>We give you context about your USCIS case. We are not the government and not lawyers, our estimates are statistics rather than promises, you keep ownership of what you enter, and you can leave whenever you want. Please don't scrape us or use us to snoop on other people's cases.</p></div>
+
+<h2 id="agreement">Agreement</h2>
+<p>These Terms of Service are an agreement between you and <span class="placeholder">{{ENTITY_NAME}}</span> ("uscasestatus," "we," "us"). By using our website or services, you agree to them. If you do not agree, please do not use the service. Our <a href="privacy.html">Privacy Policy</a> is part of this agreement.</p>
+<p>You must be at least 16 years old to create an account.</p>
+
+<h2 id="what">What this service is</h2>
+<p>uscasestatus retrieves the publicly available status of USCIS cases by receipt number and presents it with context: what the status means, how many comparable cases are ahead of yours, how quickly comparable cases are being decided, and an estimated range for when something may happen next. You may optionally create an account to track cases, receive alerts, and add details about your filing.</p>
+
+<h2 id="notlegal">This is not legal advice</h2>
+<div class="callout strong"><p><strong>We are not a law firm and we do not provide legal advice.</strong> Nothing on this site creates an attorney-client relationship. Information here is general and educational. Immigration law is complex and consequential, and the right answer depends on facts we do not know about you. <strong>For advice about your situation, consult a licensed immigration attorney or a representative accredited by the Department of Justice.</strong> Free and low-cost help may be available; the DOJ maintains a list of accredited representatives and recognized organizations.</p></div>
+<p>Be cautious of anyone who charges you for immigration advice without being a licensed attorney or accredited representative. In many states this is illegal, and it is sometimes called a "notario" scam.</p>
+
+<h2 id="notgov">We are not a government service</h2>
+<p>We are independent. We are not affiliated with, endorsed by, authorized by, or connected to USCIS, the Department of Homeland Security, the Department of State, or any government agency. We cannot expedite your case, contact USCIS on your behalf, submit anything to USCIS, or influence any decision. Official case information is always available free at uscis.gov.</p>
+
+<h2 id="accuracy">Accuracy and estimates</h2>
+<ul>
+  <li>Case statuses come from USCIS systems. If USCIS is wrong, delayed, or unavailable, so are we.</li>
+  <li>USCIS publishes only a case's <em>current</em> status, not its full history. Events before we began observing a case may be missing.</li>
+  <li>Queue positions and pace figures are derived from cases we observe in a receipt block. <strong>USCIS does not decide cases in strict receipt order</strong>, so a queue position is a reference point, not a countdown.</li>
+  <li><strong>Estimates are statistical ranges describing groups of cases. They are not predictions about your case and are not guarantees.</strong> Your case may be decided much sooner or much later than any range we show.</li>
+  <li>Approval rates describe historical outcomes for comparable cases. They say nothing about the merits of your case.</li>
+  <li>We may be wrong. If you find an error, please tell us.</li>
+</ul>
+<p><strong>Do not make legal, financial, travel, employment, or immigration decisions based solely on information from this site.</strong></p>
+
+<h2 id="accounts">Your account</h2>
+<ul>
+  <li>Provide accurate information and keep your credentials secure. You are responsible for activity under your account.</li>
+  <li>Tell us promptly at <span class="placeholder">{{EMAIL_SECURITY}}</span> if you suspect unauthorized access.</li>
+  <li>If you track a case that belongs to someone else, you confirm you have their permission to do so.</li>
+  <li>One person per account. Do not share credentials.</li>
+</ul>
+
+<h2 id="acceptable">Acceptable use</h2>
+<p>You agree not to:</p>
+<ul>
+  <li>Scrape, crawl, or bulk-harvest data from the service, or use automated tools to submit receipt numbers you do not have a legitimate interest in;</li>
+  <li>Enumerate receipt numbers to discover information about cases that are not yours;</li>
+  <li>Use the service to locate, monitor, investigate, or surveil any individual;</li>
+  <li>Use the service, or data obtained from it, for immigration enforcement purposes;</li>
+  <li>Resell, sublicense, or commercially redistribute our data or output without written permission;</li>
+  <li>Interfere with the service, circumvent rate limits, or probe our security without authorization;</li>
+  <li>Misrepresent yourself as affiliated with us or with any government agency;</li>
+  <li>Use the service to provide legal advice to others for a fee unless you are properly licensed to do so.</li>
+</ul>
+<p>We may suspend or terminate accounts that violate these rules. Security researchers acting in good faith should contact <span class="placeholder">{{EMAIL_SECURITY}}</span>; we will not pursue claims against research conducted under our disclosure policy.</p>
+
+<h2 id="content">Your content</h2>
+<p>You keep ownership of everything you enter. You grant us a limited, non-exclusive, revocable license to store and process it solely to operate the service for you, as described in the Privacy Policy. That license ends when you delete the content. We do not use your content to train machine-learning models that serve other customers, and we do not publish it.</p>
+
+<h2 id="ip">Our content</h2>
+<p>The site design, code, written explanations, methodology, and aggregate statistics are ours or our licensors', and are protected by copyright and other laws. You may use the service for personal, non-commercial purposes. Underlying case status information originates with USCIS and, as a U.S. government work, is not subject to our copyright claim.</p>
+<p>You may quote or cite our aggregate statistics with attribution to uscasestatus and a link. Bulk reproduction requires written permission.</p>
+
+<h2 id="availability">Availability</h2>
+<p>We provide the service "as is" and do not guarantee uninterrupted availability. We depend on USCIS systems we do not control. We may modify, suspend, or discontinue features at any time; if we discontinue the service entirely, we will give at least 30 days' notice and an opportunity to export your data, as described in the Privacy Policy.</p>
+
+<h2 id="fees">Fees</h2>
+<p>Core case lookups, alerts, and every statistic about your own case are free. <span class="placeholder">[If paid tiers exist, describe pricing, billing cycle, renewal, and refund policy here.]</span> We will never place information about your own case behind a paywall.</p>
+
+<h2 id="termination">Termination</h2>
+<p>You may stop using the service and delete your account at any time from Settings. We may suspend or terminate your access if you materially breach these terms, if required by law, or if we discontinue the service. If we terminate your account other than for breach, we will give you notice and an opportunity to export your data.</p>
+
+<h2 id="disclaimer">Disclaimers</h2>
+<p>TO THE FULLEST EXTENT PERMITTED BY LAW, THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE," WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, NON-INFRINGEMENT, AND ANY WARRANTY THAT THE SERVICE WILL BE ACCURATE, TIMELY, UNINTERRUPTED, OR ERROR-FREE. WE DO NOT WARRANT THE ACCURACY, COMPLETENESS, OR TIMELINESS OF ANY CASE STATUS, STATISTIC, OR ESTIMATE.</p>
+
+<h2 id="liability">Limitation of liability</h2>
+<p>TO THE FULLEST EXTENT PERMITTED BY LAW, WE WILL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, OR FOR LOST PROFITS, LOST OPPORTUNITIES, OR IMMIGRATION OUTCOMES, ARISING FROM OR RELATED TO YOUR USE OF THE SERVICE. OUR TOTAL AGGREGATE LIABILITY WILL NOT EXCEED THE GREATER OF <span class="placeholder">{{LIABILITY_CAP}}</span> OR THE AMOUNT YOU PAID US IN THE TWELVE MONTHS BEFORE THE CLAIM AROSE.</p>
+<p>Some jurisdictions do not allow certain limitations, so parts of the above may not apply to you. Nothing here limits liability for fraud, gross negligence, willful misconduct, or anything that cannot be limited by law.</p>
+
+<h2 id="indemnity">Indemnification</h2>
+<p>You agree to indemnify and hold us harmless from claims arising out of your misuse of the service, your violation of these terms, or your violation of the rights of another person &mdash; including tracking a case without authorization.</p>
+
+<h2 id="disputes">Disputes</h2>
+<p><span class="placeholder">[Counsel to select an approach. If arbitration is used, include a plain-language explanation, a 30-day opt-out right, a small-claims carve-out, and confirm enforceability for consumer contracts in your jurisdiction. Given that this user base is disproportionately non-native English speakers, we recommend an informal-resolution-first clause and, at minimum, no class-action waiver applied to statutory privacy claims.]</span></p>
+<p>Before filing any formal claim, please contact <span class="placeholder">{{EMAIL_LEGAL}}</span>. We commit to attempting a good-faith resolution within 60 days.</p>
+
+<h2 id="law">Governing law</h2>
+<p>These terms are governed by the laws of <span class="placeholder">{{GOVERNING_STATE}}</span>, without regard to conflict-of-law rules. Nothing in this section deprives you of the protection of mandatory consumer-protection laws in your place of residence.</p>
+
+<h2 id="changes">Changes to these terms</h2>
+<p>We follow the same process as our Privacy Policy. For material changes we will email you at least <strong>30 days in advance</strong>, show a <strong>plain-language before-and-after summary</strong> of what changed, and <strong>require you to actively agree</strong> before continuing to use your account. Continued use alone is not consent. Non-material corrections are posted with an updated date in our changelog. Previous versions remain available at <span class="placeholder">{{TERMS_ARCHIVE_URL}}</span>.</p>
+
+<h2 id="misc">Other terms</h2>
+<ul>
+  <li><strong>Entire agreement.</strong> These terms and the Privacy Policy are the whole agreement between us.</li>
+  <li><strong>Severability.</strong> If a provision is unenforceable, the rest stays in force.</li>
+  <li><strong>No waiver.</strong> Not enforcing a provision once does not waive it.</li>
+  <li><strong>Assignment.</strong> You may not assign these terms. We may assign them in a merger or sale, subject to the notice and choice commitments in our Privacy Policy.</li>
+  <li><strong>Language.</strong> We publish these terms in English and Spanish. <span class="placeholder">[Specify which controls in case of conflict.]</span></li>
+</ul>
+
+<h2 id="contactt">Contact</h2>
+<p><span class="placeholder">{{EMAIL_LEGAL}}</span> &middot; <span class="placeholder">{{ENTITY_NAME_ADDRESS}}</span></p>
+
+    </article>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="index.html"><span class="mark">CS</span><span class="name">uscasestatus</span></a>
+        <p>Plain-language USCIS case tracking. We turn a one-line status into something you can actually act on &mdash; and we show our math.</p>
+        <div class="footer-lang"><b>English</b><i>Espa&ntilde;ol</i></div>
+      </div>
+      <div class="fcol"><h4>Check a case</h4><ul>
+        <li><a href="index.html">Look up a receipt number</a></li>
+        <li><a href="#">Track my cases</a></li><li><a href="#">Email alerts</a></li>
+        <li><a href="#">Receipt number decoder</a></li></ul></div>
+      <div class="fcol"><h4>Understand</h4><ul>
+        <li><a href="#">What each status means</a></li><li><a href="#">How we estimate timelines</a></li>
+        <li><a href="#">Processing times</a></li><li><a href="#">Visa bulletin</a></li>
+        <li><a href="#">Responding to an RFE</a></li></ul></div>
+      <div class="fcol"><h4>Form guides</h4><ul>
+        <li><a href="#">I-130 &middot; Family petition</a></li><li><a href="#">I-140 &middot; Worker petition</a></li>
+        <li><a href="#">I-485 &middot; Adjust status</a></li><li><a href="#">I-765 &middot; Work permit</a></li>
+        <li><a href="#">N-400 &middot; Naturalization</a></li></ul></div>
+      <div class="fcol"><h4>Company</h4><ul>
+        <li><a href="#">About us</a></li><li><a href="#">Methodology</a></li><li><a href="#">Insights</a></li>
+        <li><a href="#">Contact support</a></li><li><a href="#">Report a problem</a></li></ul></div>
+    </div>
+    <div class="footer-disclaimer">
+      <span class="flag" aria-hidden="true">!</span>
+      <div class="cols">
+        <p><b>uscasestatus is an independent service.</b> We are not affiliated with, endorsed by, or connected to U.S. Citizenship and Immigration Services, the Department of Homeland Security, or any government agency. Official case information is always available free at uscis.gov.</p>
+        <p>Nothing on this site is legal advice, and we are not a law firm. Estimates are statistical ranges based on observed case data, not predictions about your case. For advice about your situation, talk to a licensed immigration attorney or a DOJ-accredited representative.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <small>&copy; 2026 uscasestatus</small>
+      <small class="sync"><span class="led"></span>USCIS data synced 12 minutes ago</small>
+      <nav>
+        <a href="privacy.html">Privacy</a><a href="terms.html">Terms</a>
+        <a href="cookies.html">Cookie preferences</a><a href="accessibility.html">Accessibility</a>
+        <a href="do-not-sell.html">Do not sell my info</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
