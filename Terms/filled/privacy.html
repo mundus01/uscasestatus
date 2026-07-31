@@ -161,9 +161,9 @@ td b{color:var(--blue-dark)}
 <body>
 <header class="site-header">
   <div class="shell">
-    <a class="brand" href="/"><span class="mark">CS</span><span class="name">uscasestatus</span></a>
+    <a class="brand" href="index.html"><span class="mark">CS</span><span class="name">uscasestatus</span></a>
     <nav class="mainnav">
-      <a href="/">Check a case</a>
+      <a href="index.html">Check a case</a>
       <a href="#">Processing times</a>
       <a href="#">Form guides</a>
       <a href="#">Insights</a>
@@ -184,11 +184,11 @@ td b{color:var(--blue-dark)}
     <p class="lede">What we collect, why we collect it, who else sees it, and how to make us delete it. Written to be read, not to be skimmed past.</p>
     <div class="dates"><span>Last updated <b>July 28, 2026</b></span><span>Effective <b>August 27, 2026</b></span><span>Version <b>1.0</b></span></div>
     <nav class="legal-tabs" aria-label="Legal pages">
-      <a href="/privacy" aria-current="page">Privacy policy</a>
-      <a href="/terms">Terms of service</a>
-      <a href="/cookies">Cookie preferences</a>
-      <a href="/accessibility">Accessibility</a>
-      <a href="/do-not-sell">Do not sell my info</a>
+      <a href="privacy.html" aria-current="page">Privacy policy</a>
+      <a href="terms.html">Terms of service</a>
+      <a href="cookies.html">Cookie preferences</a>
+      <a href="accessibility.html">Accessibility</a>
+      <a href="do-not-sell.html">Do not sell my info</a>
     </nav>
   </div>
 </section>
@@ -215,13 +215,10 @@ td b{color:var(--blue-dark)}
         <li><a href="#ownership">If our ownership changes</a></li>
         <li><a href="#ccpa">California privacy rights</a></li>
         <li><a href="#children">Children</a></li>
-        <li><a href="#international">Users outside the U.S.</a></li>
         <li><a href="#changes">Changes to this policy</a></li>
         <li><a href="#contact">Contact us</a></li>
       </ul></aside>
     <article class="content">
-
-<div class="callout warn"><p><b>Draft for legal review.</b> Text marked <span class="placeholder">like this</span> is a placeholder that must be replaced with real values, and this document must be reviewed by qualified counsel before publication.</p></div>
 
 <h2 id="summary">The short version</h2>
 <div class="plain"><b>In plain language</b><p>We collect as little as we can, we never sell it, and you can delete all of it at any time from your account settings. Because our users are people navigating the immigration system, we treat immigration-related information as highly sensitive and we will not hand it over to any government agency without valid legal process.</p></div>
@@ -306,8 +303,6 @@ td b{color:var(--blue-dark)}
   <tr><th style="width:24%">Recipient</th><th style="width:22%">Purpose</th><th>What they receive &amp; may do with it</th></tr>
   <tr><td><b>Supabase</b></td><td>Hosting and databases</td><td>All stored data, encrypted at rest. Contractually prohibited from accessing or using it for any purpose other than providing infrastructure.</td></tr>
   <tr><td><b>Resend</b></td><td>Sending alert and account emails</td><td>Your email address and the content of the alert. May not use it to market to you or add you to any list.</td></tr>
-  <tr><td><b><span class="placeholder">{{VENDOR_ERRORS}}</span></b></td><td>Diagnosing crashes</td><td>Technical error data. Configured to scrub personal fields before transmission.</td></tr>
-  <tr><td><b><span class="placeholder">{{VENDOR_ANALYTICS}}</span></b></td><td>Counting page views</td><td>Aggregate, cookieless page-view counts. Receives no account identifiers and no receipt numbers.</td></tr>
   <tr><td><b>Stripe</b></td><td>Processing payments, if applicable</td><td>Payment details you enter directly with them. Acts as an independent controller for fraud prevention as described in their own policy.</td></tr>
   <tr><td><b>USCIS</b></td><td>Retrieving case status</td><td>Only the receipt number, in order to ask for its public status. We send no information about <em>you</em> to USCIS &mdash; not your name, email, IP address, or case profile.</td></tr>
 </table>
@@ -332,7 +327,6 @@ td b{color:var(--blue-dark)}
   <li>We require valid legal process. We evaluate every request for legal sufficiency and scope, and we object to requests that are overbroad, defective, or that seek more than the requester is entitled to.</li>
   <li>We disclose the narrowest set of data responsive to a valid request.</li>
   <li><strong>We will notify you before disclosing your information</strong> so that you have an opportunity to object, unless we are legally prohibited from doing so or there is an emergency involving a risk of death or serious physical injury. Where a non-disclosure order applies, we will notify you as soon as it expires.</li>
-  <li>We publish a transparency report at <span class="placeholder">{{TRANSPARENCY_REPORT_URL}}</span> every six months, stating the number of government requests received, the number complied with, and the number of users affected.</li>
 </ul>
 <p>You should be aware that the case status information we display is already held by USCIS. Deleting your account with us does not remove anything from USCIS's own records.</p>
 
@@ -390,7 +384,7 @@ td b{color:var(--blue-dark)}
   <li>Choose <strong>Delete specific case details</strong> (removes profile fields but keeps your account) or <strong>Delete my account and all data</strong>.</li>
   <li>Confirm. You will receive a confirmation email immediately.</li>
 </ol>
-<p>If you cannot access your account, email info@uscasestatus.com from the address on the account, or use the form on our <a href="/do-not-sell">privacy request page</a>. We may need to verify your identity, which we do by sending a confirmation link to the email on the account &mdash; we will not ask you for identity documents.</p>
+<p>If you cannot access your account, email info@uscasestatus.com from the address on the account, or use the form on our <a href="do-not-sell.html">privacy request page</a>. We may need to verify your identity, which we do by sending a confirmation link to the email on the account &mdash; we will not ask you for identity documents.</p>
 <h3>How fast deletion happens</h3>
 <ul>
   <li><strong>Immediately:</strong> your account is deactivated and your data becomes inaccessible through the service.</li>
@@ -444,18 +438,15 @@ td b{color:var(--blue-dark)}
   <li><strong>Right to know</strong> what we collect, why, and who receives it &mdash; including the specific pieces of information we hold.</li>
   <li><strong>Right to delete</strong> your personal information.</li>
   <li><strong>Right to correct</strong> inaccurate personal information.</li>
-  <li><strong>Right to opt out of sale or sharing.</strong> We do not sell or share, so there is nothing to opt out of &mdash; but the mechanism exists at <a href="/do-not-sell">Do not sell my info</a> regardless.</li>
+  <li><strong>Right to opt out of sale or sharing.</strong> We do not sell or share, so there is nothing to opt out of &mdash; but the mechanism exists at <a href="do-not-sell.html">Do not sell my info</a> regardless.</li>
   <li><strong>Right to limit use of sensitive personal information.</strong> We already limit our use to providing the service you requested.</li>
   <li><strong>Right to non-discrimination.</strong> We will never deny service, charge a different price, or degrade quality because you exercised a privacy right. We do not offer financial incentives for data.</li>
 </ul>
-<p>To exercise any right, use the <a href="/do-not-sell">privacy request form</a> or email info@uscasestatus.com. We respond within 45 days and may extend once by another 45 days with notice. An authorized agent may submit a request on your behalf with written permission. We verify identity via the email address on the account, and we never require identity documents.</p>
+<p>To exercise any right, use the <a href="do-not-sell.html">privacy request form</a> or email info@uscasestatus.com. We respond within 45 days and may extend once by another 45 days with notice. An authorized agent may submit a request on your behalf with written permission. We verify identity via the email address on the account, and we never require identity documents.</p>
 <p>Residents of Virginia, Colorado, Connecticut, Utah, Texas, Oregon, Montana, and other states with comprehensive privacy laws have substantially similar rights, including the right to appeal a denied request. To appeal, reply to our decision email or write to info@uscasestatus.com with "Appeal" in the subject line.</p>
 
 <h2 id="children">Children</h2>
 <p>Our service is not directed to children under 16, and we do not knowingly collect personal information from them. We recognize that minors are beneficiaries on many immigration petitions; a parent or guardian may track such a case using their own adult account. If you believe a child has provided us information, contact info@uscasestatus.com and we will delete it. <strong>We do not sell or share the personal information of any user under 16 under any circumstances.</strong></p>
-
-<h2 id="international">Users outside the U.S.</h2>
-<p>We operate in the United States and store data there. If you access the service from elsewhere, your information will be transferred to and processed in the U.S., where privacy laws may differ from those in your country. Where required, we rely on <span class="placeholder">{{TRANSFER_MECHANISM}}</span>. Users in the EEA and UK have rights of access, rectification, erasure, restriction, portability, and objection, and may lodge a complaint with a supervisory authority.</p>
 
 <h2 id="changes">Changes to this policy</h2>
 <div class="plain"><b>In plain language</b><p>For minor edits we'll tell you. For anything that actually affects your data, we will ask you to agree first — and we will show you a short summary of what changed, not just a new document.</p></div>
@@ -488,12 +479,12 @@ Data protection contact: info@uscasestatus.com</p>
   <div class="shell">
     <div class="footer-top">
       <div class="footer-brand">
-        <a class="brand" href="/"><span class="mark">CS</span><span class="name">uscasestatus</span></a>
+        <a class="brand" href="index.html"><span class="mark">CS</span><span class="name">uscasestatus</span></a>
         <p>Plain-language USCIS case tracking. We turn a one-line status into something you can actually act on &mdash; and we show our math.</p>
         <div class="footer-lang"><b>English</b><i>Espa&ntilde;ol</i></div>
       </div>
       <div class="fcol"><h4>Check a case</h4><ul>
-        <li><a href="/">Look up a receipt number</a></li>
+        <li><a href="index.html">Look up a receipt number</a></li>
         <li><a href="#">Track my cases</a></li><li><a href="#">Email alerts</a></li>
         <li><a href="#">Receipt number decoder</a></li></ul></div>
       <div class="fcol"><h4>Understand</h4><ul>
@@ -519,9 +510,9 @@ Data protection contact: info@uscasestatus.com</p>
       <small>&copy; 2026 uscasestatus</small>
       <small class="sync"><span class="led"></span>USCIS data synced 12 minutes ago</small>
       <nav>
-        <a href="/privacy">Privacy</a><a href="/terms">Terms</a>
-        <a href="/cookies">Cookie preferences</a><a href="/accessibility">Accessibility</a>
-        <a href="/do-not-sell">Do not sell my info</a>
+        <a href="privacy.html">Privacy</a><a href="terms.html">Terms</a>
+        <a href="cookies.html">Cookie preferences</a><a href="accessibility.html">Accessibility</a>
+        <a href="do-not-sell.html">Do not sell my info</a>
       </nav>
     </div>
   </div>
