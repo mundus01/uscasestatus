@@ -5,11 +5,11 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   // Legal route handlers read these HTML files at request time.
   outputFileTracingIncludes: {
-    "/privacy": ["./public/privacy.html"],
-    "/terms": ["./public/terms.html"],
-    "/cookies": ["./public/cookies.html"],
-    "/accessibility": ["./public/accessibility.html"],
-    "/do-not-sell": ["./public/do-not-sell.html"],
+    "/[locale]/privacy": ["./public/privacy.html"],
+    "/[locale]/terms": ["./public/terms.html"],
+    "/[locale]/cookies": ["./public/cookies.html"],
+    "/[locale]/accessibility": ["./public/accessibility.html"],
+    "/[locale]/do-not-sell": ["./public/do-not-sell.html"],
   },
 };
 

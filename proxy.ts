@@ -31,9 +31,5 @@ export const config = {
   // Skip Next internals, API routes, generated icons, and anything with a
   // file extension. Icon routes have no extension (`/icon`, `/apple-icon`) so
   // they must be listed explicitly or i18n rewrites them to `/en/icon` → 404.
-  // Skip API, assets, icons, and standalone legal HTML routes (served outside
-  // [locale] so next-intl does not rewrite them into /[locale]/...).
-  matcher: [
-    "/((?!api|_next|_vercel|icon|apple-icon|privacy|terms|cookies|accessibility|do-not-sell|.*\\..*).*)",
-  ],
+  matcher: ["/((?!api|_next|_vercel|icon|apple-icon|.*\\..*).*)"],
 };
