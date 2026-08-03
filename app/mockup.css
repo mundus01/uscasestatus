@@ -224,6 +224,15 @@ svg text{font-family:var(--figtree)}
 .claimed-note{display:none;align-items:center;gap:.75rem;background:var(--bg-light-green);border-radius:1rem;padding:1rem 1.25rem;margin-bottom:1.75rem;font-size:.9rem;color:#12433a}
 .claimed-note.show{display:flex}
 .claimed-note .ic{width:24px;height:24px;border-radius:50%;background:var(--success);color:#fff;display:grid;place-items:center;font-size:.8rem;font-weight:700;flex:0 0 auto}
+.claimed-note .linkish,.claimed-note button.linkish{background:none;border:0;color:var(--skyblue);font:inherit;cursor:pointer;text-decoration:underline;padding:0}
+
+/* Inline filing-details panel (replaces claim modal) */
+.case-details{margin-bottom:1.75rem;scroll-margin-top:5rem}
+.case-details-lede{font-size:.9rem;color:var(--text-grey);line-height:1.55;margin:0 0 1.25rem;max-width:62ch}
+.case-details-actions{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:.25rem}
+.case-details-actions .privacy{font-size:.72rem;color:var(--text-light);line-height:1.45;flex:1;min-width:16ch;margin:0}
+.case-details-buttons{display:flex;gap:.6rem;align-items:center;margin-left:auto}
+.claim a.button{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
 
 /* ============================================================
    SITE FOOTER — global

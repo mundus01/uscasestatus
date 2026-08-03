@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 
+import { safeNextPath } from "@/lib/claim-fields";
 import { publicEnv } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getClientIdentifier, rateLimit } from "@/lib/ratelimit";
 import { isLocale } from "@/i18n/routing";
 
-type Body = { email?: string; locale?: string };
+type Body = { email?: string; locale?: string; next?: string };
 
 export async function POST(request: Request) {
   const limit = await rateLimit("track", getClientIdentifier(request.headers));
@@ -42,9 +43,9 @@ export async function POST(request: Request) {
 
   const locale = body.locale && isLocale(body.locale) ? body.locale : "en";
   const site = publicEnv.siteUrl.replace(/\/$/, "");
-  const redirectTo = `${site}/auth/callback?next=${encodeURIComponent(
-    locale === "en" ? "/dashboard" : `/${locale}/dashboard`,
-  )}`;
+  const defaultNext = locale === "en" ? "/dashboard" : `/${locale}/dashboard`;
+  const next = safeNextPath(body.next, defaultNext);
+  const redirectTo = `${site}/auth/callback?next=${encodeURIComponent(next)}`;
 
   try {
     const supabase = createAdminClient();

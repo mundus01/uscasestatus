@@ -8,6 +8,7 @@ import {
   WeeklyBlockChart,
 } from "@/components/case/block-charts";
 import { CaseActions } from "@/components/case/case-actions";
+import { CaseDetailsPanel } from "@/components/case/case-details-panel";
 import { CaseError } from "@/components/case/case-error";
 import { ClaimStrip } from "@/components/case/claim-strip";
 import { EstimateCard } from "@/components/case/estimate-card";
@@ -18,6 +19,7 @@ import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { buildAnswerSentence } from "@/lib/case-answer";
 import { checkCase } from "@/lib/check-case";
+import { getCaseClaimForUser } from "@/lib/claims";
 import { receiptBlock } from "@/lib/filing-date";
 import {
   buildFreshnessInfo,
@@ -29,6 +31,7 @@ import { getNearbySummary } from "@/lib/neighbors";
 import { MIN_CELL_SIZE } from "@/lib/privacy";
 import { getServiceCenterName, validateReceipt } from "@/lib/receipt";
 import { getClientIdentifier, rateLimit } from "@/lib/ratelimit";
+import { createClient } from "@/lib/supabase/server";
 import { parseUscisDate } from "@/lib/uscis/dates";
 
 export async function generateMetadata(
@@ -116,6 +119,20 @@ export default async function CasePage({
   }
 
   const data = result.data;
+
+  let userId: string | null = null;
+  try {
+    const supabase = await createClient();
+    const { data: auth } = await supabase.auth.getUser();
+    userId = auth.user?.id ?? null;
+  } catch {
+    userId = null;
+  }
+  const isSignedIn = userId != null;
+  const claim = userId
+    ? await getCaseClaimForUser(userId, data.receipt)
+    : null;
+
   const form = data.formType ? getForm(data.formType) : undefined;
   const office = getServiceCenterName(data.receipt) ?? t("unknownOffice");
   const processing = data.processingTime;
@@ -282,8 +299,19 @@ export default async function CasePage({
         </div>
       </section>
 
-      <ClaimStrip sampleSize={sampleSize} />
-      {/* Claim modal is mounted in the locale layout for header CTAs. */}
+      {isSignedIn ? (
+        <CaseDetailsPanel
+          receipt={data.receipt}
+          initialProfile={claim}
+        />
+      ) : (
+        <ClaimStrip
+          sampleSize={sampleSize}
+          receipt={data.receipt}
+          isSignedIn={false}
+          hasClaim={false}
+        />
+      )}
 
       {dayCount ? (
         <h2 className="daycount">
@@ -319,6 +347,10 @@ export default async function CasePage({
         title={t("corpus.queueTitle")}
         insufficientTitle={t("corpus.insufficientTitle")}
         insufficientBody={corpusInsufficientBody}
+        receipt={data.receipt}
+        isSignedIn={isSignedIn}
+        addDetailsLabel={t("claim.addDetails")}
+        categoryNudgeBody={t("claim.categoryNudge")}
       />
 
       <EstimateCard
@@ -328,6 +360,11 @@ export default async function CasePage({
         title={t("corpus.estimateTitle")}
         publishedOnlyBody={t("corpus.estimatePublishedOnly")}
         noPaceBody={t("corpus.estimateNoPace")}
+        receipt={data.receipt}
+        isSignedIn={isSignedIn}
+        tellUsLabel={t("claim.tellUs")}
+        premiumNudgeTitle={t("claim.premiumNudgeTitle")}
+        premiumNudgeBody={t("claim.premiumNudgeBody")}
       />
 
       <div className="charts">

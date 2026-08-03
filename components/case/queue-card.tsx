@@ -9,6 +9,10 @@ type QueueCardProps = {
   insufficientTitle: string;
   insufficientBody: string;
   title: string;
+  receipt: string;
+  isSignedIn: boolean;
+  addDetailsLabel: string;
+  categoryNudgeBody: string;
 };
 
 /**
@@ -23,6 +27,10 @@ export function QueueCard({
   insufficientTitle,
   insufficientBody,
   title,
+  receipt,
+  isSignedIn,
+  addDetailsLabel,
+  categoryNudgeBody,
 }: QueueCardProps) {
   const sampleSize = nearby?.sampleSize ?? 0;
 
@@ -134,12 +142,10 @@ export function QueueCard({
         </div>
         <div className="nudge">
           <span className="ic">?</span>
-          <div>
-            Approval rates differ a lot by visa category. Tell us yours and
-            we&apos;ll show the rate for cases like yours instead of the whole
-            block.
-          </div>
-          <ClaimButton>Add my details</ClaimButton>
+          <div>{categoryNudgeBody}</div>
+          <ClaimButton receipt={receipt} isSignedIn={isSignedIn}>
+            {addDetailsLabel}
+          </ClaimButton>
         </div>
         <div className="honest">
           USCIS does not process cases strictly in receipt order, so your

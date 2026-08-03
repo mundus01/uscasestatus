@@ -3,9 +3,11 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
 
 import { Link } from "@/i18n/navigation";
+import { listClaimsForUser } from "@/lib/claims";
 import { createClient } from "@/lib/supabase/server";
 import { listTrackedForUser } from "@/lib/tracking";
 import { formatReceipt } from "@/lib/receipt";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function generateMetadata(
   props: PageProps<"/[locale]/dashboard">,
@@ -14,6 +16,15 @@ export async function generateMetadata(
   const t = await getTranslations({ locale, namespace: "dashboard" });
   return { title: t("title"), robots: { index: false, follow: false } };
 }
+
+type DashboardRow = {
+  receipt: string;
+  formType: string | null;
+  lastStatus: string | null;
+  nickname: string | null;
+  tracked: boolean;
+  claimed: boolean;
+};
 
 export default async function DashboardPage({
   params,
@@ -37,14 +48,75 @@ export default async function DashboardPage({
     redirect(locale === "en" ? "/sign-in" : `/${locale}/sign-in`);
   }
 
-  const tracked = await listTrackedForUser(user.id, user.email);
+  const [tracked, claims] = await Promise.all([
+    listTrackedForUser(user.id, user.email),
+    listClaimsForUser(user.id),
+  ]);
+
+  const byReceipt = new Map<string, DashboardRow>();
+
+  for (const row of tracked) {
+    byReceipt.set(row.receipt, {
+      receipt: row.receipt,
+      formType: row.caseRow?.form_type ?? null,
+      lastStatus: row.caseRow?.last_status ?? null,
+      nickname: row.nickname,
+      tracked: true,
+      claimed: false,
+    });
+  }
+
+  for (const claim of claims) {
+    const existing = byReceipt.get(claim.receipt);
+    if (existing) {
+      existing.claimed = true;
+    } else {
+      byReceipt.set(claim.receipt, {
+        receipt: claim.receipt,
+        formType: null,
+        lastStatus: null,
+        nickname: null,
+        tracked: false,
+        claimed: true,
+      });
+    }
+  }
+
+  // Fill status for claim-only receipts from cases table.
+  const claimOnly = [...byReceipt.values()].filter(
+    (row) => row.claimed && !row.lastStatus,
+  );
+  if (claimOnly.length > 0) {
+    try {
+      const admin = createAdminClient();
+      const { data: caseRows } = await admin
+        .from("cases")
+        .select("receipt, last_status, form_type")
+        .in(
+          "receipt",
+          claimOnly.map((row) => row.receipt),
+        );
+      for (const caseRow of caseRows ?? []) {
+        const row = byReceipt.get(caseRow.receipt);
+        if (!row) continue;
+        row.lastStatus = caseRow.last_status;
+        row.formType = caseRow.form_type;
+      }
+    } catch {
+      // Status enrichment is optional.
+    }
+  }
+
+  const rows = [...byReceipt.values()].sort((a, b) =>
+    a.receipt.localeCompare(b.receipt),
+  );
 
   return (
     <div className="shell content-page">
       <h1>{t("title")}</h1>
       <p className="lede">{t("subtitle")}</p>
 
-      {tracked.length === 0 ? (
+      {rows.length === 0 ? (
         <section className="card">
           <div className="card-b">
             <p className="grey">{t("empty")}</p>
@@ -57,22 +129,30 @@ export default async function DashboardPage({
         </section>
       ) : (
         <ul className="content-list">
-          {tracked.map((row) => (
-            <li key={row.id}>
-              <Link href={`/case/${row.receipt}`}>
-                <span className="title">{formatReceipt(row.receipt)}</span>
-                <span className="sub">
-                  {[
-                    row.caseRow?.form_type,
-                    row.caseRow?.last_status ?? t("statusUnknown"),
-                    row.nickname,
-                  ]
-                    .filter(Boolean)
-                    .join(" · ")}
-                </span>
-              </Link>
-            </li>
-          ))}
+          {rows.map((row) => {
+            const badges = [
+              row.tracked ? t("badgeTracked") : null,
+              row.claimed ? t("badgeDetails") : null,
+            ].filter(Boolean);
+
+            return (
+              <li key={row.receipt}>
+                <Link href={`/case/${row.receipt}`}>
+                  <span className="title">{formatReceipt(row.receipt)}</span>
+                  <span className="sub">
+                    {[
+                      row.formType,
+                      row.lastStatus ?? t("statusUnknown"),
+                      row.nickname,
+                      badges.join(" · "),
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

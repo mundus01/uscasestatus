@@ -4,7 +4,6 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
-import { ClaimModal } from "@/components/case/claim-modal";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { routing } from "@/i18n/routing";
@@ -75,7 +74,6 @@ export default async function LocaleLayout({
           <Header />
           <main id="main">{children}</main>
           <Footer />
-          <ClaimModal receipt="this case" />
         </NextIntlClientProvider>
       </body>
     </html>

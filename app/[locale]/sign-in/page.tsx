@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { SignInForm } from "@/components/auth/sign-in-form";
+import { safeNextPath } from "@/lib/claim-fields";
 
 export async function generateMetadata(
   props: PageProps<"/[locale]/sign-in">,
@@ -13,10 +14,16 @@ export async function generateMetadata(
 
 export default async function SignInPage({
   params,
+  searchParams,
 }: PageProps<"/[locale]/sign-in">) {
   const { locale } = await params;
+  const query = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations("auth");
+
+  const rawNext = typeof query.next === "string" ? query.next : null;
+  const defaultNext = locale === "en" ? "/dashboard" : `/${locale}/dashboard`;
+  const next = safeNextPath(rawNext, defaultNext);
 
   return (
     <div className="shell content-page content-narrow">
@@ -24,6 +31,7 @@ export default async function SignInPage({
       <p className="lede">{t("signInBody")}</p>
       <SignInForm
         locale={locale}
+        next={next}
         emailLabel={t("emailLabel")}
         emailPlaceholder={t("emailPlaceholder")}
         submitLabel={t("sendLink")}

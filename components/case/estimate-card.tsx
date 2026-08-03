@@ -10,6 +10,11 @@ type EstimateCardProps = {
   title: string;
   publishedOnlyBody: string;
   noPaceBody: string;
+  receipt: string;
+  isSignedIn: boolean;
+  tellUsLabel: string;
+  premiumNudgeTitle: string;
+  premiumNudgeBody: string;
 };
 
 export function EstimateCard({
@@ -19,6 +24,11 @@ export function EstimateCard({
   title,
   publishedOnlyBody,
   noPaceBody,
+  receipt,
+  isSignedIn,
+  tellUsLabel,
+  premiumNudgeTitle,
+  premiumNudgeBody,
 }: EstimateCardProps) {
   const months = processing?.elapsed.months;
   const low = processing?.lowMonths ?? null;
@@ -118,10 +128,11 @@ export function EstimateCard({
           <div className="nudge">
             <span className="ic">!</span>
             <div>
-              <b>Filed with premium processing?</b> That replaces this estimate
-              entirely with a 15-business-day statutory clock.
+              <b>{premiumNudgeTitle}</b> {premiumNudgeBody}
             </div>
-            <ClaimButton>Tell us</ClaimButton>
+            <ClaimButton receipt={receipt} isSignedIn={isSignedIn}>
+              {tellUsLabel}
+            </ClaimButton>
           </div>
         </div>
         <div className="est-r">

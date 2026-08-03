@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 
 type SignInFormProps = {
   locale: string;
+  next?: string;
   emailLabel: string;
   emailPlaceholder: string;
   submitLabel: string;
@@ -14,6 +15,7 @@ type SignInFormProps = {
 
 export function SignInForm({
   locale,
+  next,
   emailLabel,
   emailPlaceholder,
   submitLabel,
@@ -36,7 +38,7 @@ export function SignInForm({
       const response = await fetch("/api/auth/magic-link", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, locale }),
+        body: JSON.stringify({ email, locale, next }),
       });
       const json = (await response.json()) as {
         error: { message?: string } | null;

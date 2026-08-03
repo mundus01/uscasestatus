@@ -1,55 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { ClaimButton } from "@/components/case/claim-button";
 import { MIN_CELL_SIZE, isSufficientSample } from "@/lib/privacy";
 
 type ClaimStripProps = {
   sampleSize: number;
+  receipt: string;
+  isSignedIn: boolean;
+  hasClaim: boolean;
 };
 
-export function ClaimStrip({ sampleSize }: ClaimStripProps) {
-  const [claimed, setClaimed] = useState(false);
+export function ClaimStrip({
+  sampleSize,
+  receipt,
+  isSignedIn,
+  hasClaim,
+}: ClaimStripProps) {
+  const t = useTranslations("case.claim");
 
-  useEffect(() => {
-    function onClaimed() {
-      setClaimed(true);
-    }
-    window.addEventListener("uscasestatus:case-claimed", onClaimed);
-    return () => window.removeEventListener("uscasestatus:case-claimed", onClaimed);
-  }, []);
-
-  if (claimed) {
-    return (
-      <div className="claimed-note show" id="claimedNote">
-        <span className="ic">✓</span>
-        <div>
-          <b>Case claimed.</b> These figures now use cases matching the filing
-          details you provided.{" "}
-          <button
-            type="button"
-            onClick={() =>
-              window.dispatchEvent(new CustomEvent("uscasestatus:open-claim"))
-            }
-            style={{
-              background: "none",
-              border: 0,
-              color: "var(--skyblue)",
-              font: "inherit",
-              cursor: "pointer",
-              textDecoration: "underline",
-            }}
-          >
-            Edit details
-          </button>
-        </div>
-      </div>
-    );
+  if (hasClaim) {
+    // Claimed UI lives in CaseDetailsPanel when signed in.
+    return null;
   }
 
   const sufficient = isSufficientSample(sampleSize);
-  const count = sampleSize.toLocaleString("en-US");
+  const count = sampleSize.toLocaleString();
 
   return (
     <section className="claim" id="claimStrip">
@@ -62,15 +39,20 @@ export function ClaimStrip({ sampleSize }: ClaimStripProps) {
       <div className="copy">
         <b>
           {sufficient
-            ? `Every number here describes all ${count} cases in your block.`
-            : `We're still gathering comparable cases in your receipt block (${count} of ${MIN_CELL_SIZE}).`}
+            ? t("stripEnough", { count })
+            : t("stripGathering", { count, min: MIN_CELL_SIZE })}
         </b>
         <span>
-          Claim your case and add your filing details — we&apos;ll narrow them to
-          cases that match yours.
+          {isSignedIn ? t("stripSignedInBody") : t("stripSignedOutBody")}
         </span>
       </div>
-      <ClaimButton className="button is-small">Claim this case</ClaimButton>
+      <ClaimButton
+        className="button is-small"
+        receipt={receipt}
+        isSignedIn={isSignedIn}
+      >
+        {isSignedIn ? t("addDetails") : t("signInToClaim")}
+      </ClaimButton>
     </section>
   );
 }
