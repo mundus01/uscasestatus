@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
+import { ProcessingTimeSource } from "@/components/case/processing-time-source";
 import { ReceiptInput } from "@/components/receipt-input";
 import { Link } from "@/i18n/navigation";
 import { forms, getFormByTrackerSlug, formToPathSlug } from "@/lib/forms";
@@ -74,6 +75,7 @@ export default async function FormTrackerPage({
                 })}
               </p>
               <p className="content-note">{tCase("processingDisclaimer")}</p>
+              <ProcessingTimeSource label={tCase("processingSource")} />
               <div className="content-actions">
                 <Link
                   href={`/processing-times/${formToPathSlug(form.code)}`}

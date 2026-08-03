@@ -1,3 +1,4 @@
+import { ProcessingTimeSource } from "@/components/case/processing-time-source";
 import { Card, CardBody, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/cn";
 import type { ProcessingTimeContext } from "@/lib/processing-times";
@@ -172,7 +173,10 @@ export function ProcessingTimeCard({
           </div>
         ) : null}
 
-        <p className="text-xs text-ink-subtle">{sourceFooter}</p>
+        <ProcessingTimeSource
+          label={sourceFooter}
+          className="text-xs text-ink-subtle"
+        />
         <p className="text-xs leading-relaxed text-ink-subtle">{disclaimer}</p>
       </CardBody>
     </Card>

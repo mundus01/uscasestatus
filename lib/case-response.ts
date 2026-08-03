@@ -79,7 +79,7 @@ export async function toCaseApiResponse(
     meta: {
       dataSources: [
         data.source === "mock" ? "mock_fixture" : "uscis_case_status_api",
-        "published_uscis_processing_times",
+        "uscis_historic_processing_times",
       ],
       generatedAt: new Date().toISOString(),
       source: data.source,

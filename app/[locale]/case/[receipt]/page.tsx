@@ -365,6 +365,7 @@ export default async function CasePage({
         tellUsLabel={t("claim.tellUs")}
         premiumNudgeTitle={t("claim.premiumNudgeTitle")}
         premiumNudgeBody={t("claim.premiumNudgeBody")}
+        sourceLabel={t("processingSource")}
       />
 
       <div className="charts">

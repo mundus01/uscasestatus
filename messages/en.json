@@ -103,7 +103,7 @@
       "q1": "Is this an official government site?",
       "a1": "No. uscasestatus is an independent service with no connection to USCIS, DHS, or any government agency. We read the same public status USCIS publishes and add context around it. The official tool is free at uscis.gov, and we'd rather you know that.",
       "q2": "Where does the data come from?",
-      "a2": "Case statuses come from the official USCIS case status system. Queue and pace figures come from the cases we've observed in your receipt block over time. Published processing times come from USCIS's own published ranges. Every page names its sources.",
+      "a2": "Case statuses come from the official USCIS case status system. Queue and pace figures come from the cases we've observed in your receipt block over time. Processing-time context comes from USCIS historic national median processing times. Every page names its sources.",
       "q3": "Do you store my receipt number?",
       "a3": "Only if you ask us to — by setting an alert or claiming the case. A one-off lookup isn't tied to you. We never sell or share receipt numbers, and we never send anything to USCIS on your behalf.",
       "q4": "Can you tell me if my case will be approved?",
@@ -179,9 +179,10 @@
     "officialTitle": "Official USCIS description",
     "timelineTitle": "Typical path for this form",
     "processingTitle": "Processing time context",
-    "processingRange": "Cases like yours ({form}) typically take about {low}–{high} months according to published USCIS processing times.",
+    "processingRange": "Cases like yours ({form}) typically take about {low}–{high} months based on recent USCIS historic national median processing times.",
     "processingProgress": "You appear to be about {months} months into processing.",
-    "processingDisclaimer": "These are published USCIS ranges, not a prediction for your case. Times vary by office, form category, and workload.",
+    "processingDisclaimer": "These figures come from USCIS historic national medians (min–max of recent fiscal years for the form’s main classification), not a prediction for your case. They are not comparable to the live Case Processing Times tool.",
+    "processingSource": "Source: USCIS historic processing times.",
     "checked": {
       "label": "Status check",
       "live": "Checked live just now",
@@ -224,9 +225,9 @@
       "over": "You're past the published upper bound of {high} months.",
       "unknownPosition": "We can't place this case on the published range yet.",
       "decidedTotal": "Total time from receipt to decision: {months} months.",
-      "sourceFooter": "Source: published USCIS processing times.",
+      "sourceFooter": "Source: USCIS historic processing times.",
       "insufficient": "We don't have a filing date yet, so we can't place this case on the published range. A receipt notice date would unlock this.",
-      "missingForm": "No published processing range for this form yet. We'll show context once USCIS ranges are available."
+      "missingForm": "No USCIS historic median is available for this form yet. We'll show context when it appears on the historic processing times tables."
     },
     "inquiry": {
       "title": "You may be eligible for a case inquiry",
@@ -246,8 +247,8 @@
       "insufficientBody": "We need at least {threshold} cases in this receipt block before we publish queue, pace, or chart stats ({n} so far). Your live USCIS status and published processing-time range stay available.",
       "queueTitle": "Your place in line",
       "estimateTitle": "When something is likely to happen",
-      "estimatePublishedOnly": "We don't have enough nearby cases yet to estimate from your block's pace. Until then, use the published USCIS processing-time range on the right.",
-      "estimateNoPace": "Block pace math unlocks once we observe enough recent decisions in this receipt block. Until then, use the published USCIS range.",
+      "estimatePublishedOnly": "We don't have enough nearby cases yet to estimate from your block's pace. Until then, use the USCIS historic processing-time band on the right.",
+      "estimateNoPace": "Block pace math unlocks once we observe enough recent decisions in this receipt block. Until then, use the USCIS historic band.",
       "weeklyChartTitle": "Your block, week by week",
       "nationwideChartTitle": "Is USCIS speeding up?",
       "chartInsufficient": "Not enough cases in our corpus yet to show this chart ({n} of {threshold} needed)."
@@ -342,7 +343,7 @@
   },
   "methodology": {
     "title": "Methodology",
-    "body": "Case statuses come from the official USCIS Case Status API. Processing ranges are published USCIS times by form (and office when available). Nearby-case summaries use anonymized lookups from people who checked similar receipt blocks — we never list other people's receipt numbers. Elapsed time for decided cases stops on the decision date. This site is not affiliated with USCIS and is not legal advice."
+    "body": "Case statuses come from the official USCIS Case Status API. Processing bands come from USCIS historic national median processing times by form (recent fiscal-year medians). Nearby-case summaries use anonymized lookups from people who checked similar receipt blocks — we never list other people's receipt numbers. Elapsed time for decided cases stops on the decision date. This site is not affiliated with USCIS and is not legal advice."
   },
   "auth": {
     "signInTitle": "Sign in to your cases",
@@ -378,11 +379,12 @@
     "commonStatuses": "Common statuses for this form",
     "moreProcessingTimes": "See processing time details",
     "processingHubTitle": "USCIS processing times",
-    "processingHubDescription": "Published USCIS processing time ranges by form — context for how long cases like yours typically take.",
-    "processingHubBody": "These ranges come from published USCIS processing times. They are not a prediction for your specific case.",
+    "processingHubDescription": "USCIS historic national median processing times by form — context for how long cases like yours have typically taken.",
+    "processingHubBody": "These bands come from USCIS historic national median processing times (recent fiscal-year medians). They are not a prediction for your specific case and are not comparable to the live Case Processing Times tool.",
     "processingFormTitle": "{form} processing times",
     "processingFormHeading": "{form} processing times",
-    "processingUnavailable": "We don't have published ranges for this form yet."
+    "processingUnavailable": "USCIS historic processing times do not currently list this form.",
+    "processingMedianNote": "Latest USCIS national median: {median} months (FY{year}, {classification}). Displayed band is the min–max of the latest three available fiscal-year medians."
   },
   "insights": {
     "title": "USCIS activity insights",

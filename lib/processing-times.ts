@@ -13,20 +13,40 @@ import type { UscisHistoryEvent } from "@/lib/uscis/types";
 
 export { parseUscisDate } from "@/lib/uscis/dates";
 
+export const USCIS_HISTORIC_PT_URL =
+  "https://egov.uscis.gov/processing-times/historic-pt";
+
 type Range = { lowMonths: number; highMonths: number };
 
 type FormTimes = {
+  classification?: string;
+  titleEn?: string;
+  titleEs?: string;
+  latestFiscalYear?: string;
+  latestMedianMonths?: number;
   default: Range;
   centers: Record<string, Range>;
+  byFiscalYear?: Record<string, number>;
 };
 
 type ProcessingTimesFile = {
+  _meta?: {
+    source?: string;
+    sourceLabel?: string;
+    methodology?: string;
+    coverageNote?: string;
+    updated?: string;
+  };
   forms: Record<string, FormTimes>;
 };
 
 const data = processingTimesData as ProcessingTimesFile;
 
-/** Maps receipt prefixes to the center codes used in processing-times.json. */
+/**
+ * Receipt prefixes historically mapped to service centers. Historic-pt data is
+ * national-only, so these codes are retained for labeling when a prefix is known
+ * but never select a different numeric range.
+ */
 const PREFIX_TO_CENTER: Partial<Record<ReceiptPrefix, string>> = {
   WAC: "CSC",
   EAC: "VSC",
@@ -43,14 +63,29 @@ export type ProcessingTimeContext = {
   centerCode: string | null;
   lowMonths: number;
   highMonths: number;
+  latestMedianMonths: number | null;
+  latestFiscalYear: string | null;
+  classification: string | null;
   /** @deprecated use elapsed.months — kept briefly for callers */
   monthsSinceFiled: number | null;
   elapsed: Elapsed;
   position: RangePosition;
   isTerminal: boolean;
+  /** Always true for historic-pt (national medians; no office series). */
   usedNationalFallback: boolean;
-  sourceLabel: "published_uscis_range";
+  sourceLabel: "uscis_historic_processing_times";
+  sourceUrl: string;
 };
+
+export function getProcessingTimesMeta() {
+  return {
+    sourceUrl: data._meta?.source ?? USCIS_HISTORIC_PT_URL,
+    sourceLabel: data._meta?.sourceLabel ?? "USCIS historic processing times",
+    methodology: data._meta?.methodology ?? null,
+    coverageNote: data._meta?.coverageNote ?? null,
+    updated: data._meta?.updated ?? null,
+  };
+}
 
 export function getProcessingTimeContext(options: {
   formType: string | null;
@@ -67,9 +102,9 @@ export function getProcessingTimeContext(options: {
   if (!formTimes) return null;
 
   const centerCode = PREFIX_TO_CENTER[options.prefix] ?? null;
-  const centerRange = centerCode ? formTimes.centers[centerCode] : undefined;
-  const range = centerRange ?? formTimes.default;
-  const usedNationalFallback = !centerRange;
+  // Historic-pt publishes national medians only — ignore any legacy center overrides.
+  const range = formTimes.default;
+  const usedNationalFallback = true;
   const isTerminal = options.isTerminal ?? false;
   const history = options.history ?? [];
 
@@ -101,12 +136,15 @@ export function getProcessingTimeContext(options: {
     centerCode,
     lowMonths: range.lowMonths,
     highMonths: range.highMonths,
+    latestMedianMonths: formTimes.latestMedianMonths ?? null,
+    latestFiscalYear: formTimes.latestFiscalYear ?? null,
+    classification: formTimes.classification ?? null,
     monthsSinceFiled: elapsed.months,
     elapsed,
     position: rangePosition(elapsed.months, range.lowMonths, range.highMonths),
     isTerminal,
     usedNationalFallback,
-    sourceLabel: "published_uscis_range",
+    sourceLabel: "uscis_historic_processing_times",
+    sourceUrl: data._meta?.source ?? USCIS_HISTORIC_PT_URL,
   };
 }
-

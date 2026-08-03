@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
+import { ProcessingTimeSource } from "@/components/case/processing-time-source";
 import { ReceiptInput } from "@/components/receipt-input";
 import { Link } from "@/i18n/navigation";
 import { formFromPathSlug, formToPathSlug, forms } from "@/lib/forms";
@@ -62,7 +63,19 @@ export default async function ProcessingTimeFormPage({
                   high: processing.highMonths,
                 })}
               </p>
+              {processing.latestMedianMonths != null &&
+              processing.latestFiscalYear &&
+              processing.classification ? (
+                <p className="content-note">
+                  {t("processingMedianNote", {
+                    median: processing.latestMedianMonths,
+                    year: processing.latestFiscalYear,
+                    classification: processing.classification,
+                  })}
+                </p>
+              ) : null}
               <p className="content-note">{tCase("processingDisclaimer")}</p>
+              <ProcessingTimeSource label={tCase("processingSource")} />
             </div>
           </section>
         ) : (

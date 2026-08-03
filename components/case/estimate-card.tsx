@@ -1,4 +1,5 @@
 import { ClaimButton } from "@/components/case/claim-button";
+import { ProcessingTimeSource } from "@/components/case/processing-time-source";
 import type { ProcessingTimeContext } from "@/lib/processing-times";
 
 type EstimateCardProps = {
@@ -15,6 +16,7 @@ type EstimateCardProps = {
   tellUsLabel: string;
   premiumNudgeTitle: string;
   premiumNudgeBody: string;
+  sourceLabel: string;
 };
 
 export function EstimateCard({
@@ -29,6 +31,7 @@ export function EstimateCard({
   tellUsLabel,
   premiumNudgeTitle,
   premiumNudgeBody,
+  sourceLabel,
 }: EstimateCardProps) {
   const months = processing?.elapsed.months;
   const low = processing?.lowMonths ?? null;
@@ -136,16 +139,24 @@ export function EstimateCard({
           </div>
         </div>
         <div className="est-r">
-          <h4>How this compares to published times</h4>
+          <h4>How this compares to historic USCIS times</h4>
           {hasPublishedRange ? (
             <>
               <p>
-                USCIS publishes a range of{" "}
+                Recent USCIS historic national medians for{" "}
+                {processing?.formType ?? "this form"}
+                {processing?.classification
+                  ? ` (${processing.classification})`
+                  : ""}{" "}
+                fall around{" "}
                 <span className="pub">
                   {low}–{high} months
-                </span>{" "}
-                for {processing?.formType ?? "this form"}
-                {processing?.centerCode ? ` at your service center` : ""}.
+                </span>
+                {processing?.latestMedianMonths != null &&
+                processing.latestFiscalYear
+                  ? ` (latest FY${processing.latestFiscalYear} median: ${processing.latestMedianMonths} months)`
+                  : ""}
+                .
                 {months != null
                   ? ` At ${months} months in, you're ${
                       processing?.position === "under"
@@ -153,13 +164,13 @@ export function EstimateCard({
                         : processing?.position === "over"
                           ? "past"
                           : "inside"
-                    } that range.`
+                    } that recent band.`
                   : null}
               </p>
               <div
                 className="rangebar"
                 role="img"
-                aria-label={`Published range ${low} to ${high} months${
+                aria-label={`Historic median band ${low} to ${high} months${
                   months != null ? `, you are at ${months} months` : ""
                 }`}
               >
@@ -179,15 +190,19 @@ export function EstimateCard({
                 <span>{Math.round(scaleMax)} mo</span>
               </div>
               <p style={{ marginTop: "0.75rem" }}>
-                Published ranges describe most cases, not yours. Corpus pace
-                estimates appear on the left only when we have enough nearby
-                cases and recent decisions.
+                Historic national medians describe completed cases in past
+                fiscal years, not a prediction for yours. Corpus pace estimates
+                appear on the left only when we have enough nearby cases and
+                recent decisions.
               </p>
+              <ProcessingTimeSource
+                label={sourceLabel}
+                className="text-small grey"
+              />
             </>
           ) : (
             <p className="text-small grey">
-              No published USCIS processing range is available for this form
-              yet.
+              No USCIS historic median is available for this form yet.
             </p>
           )}
         </div>

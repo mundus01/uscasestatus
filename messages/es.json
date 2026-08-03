@@ -103,7 +103,7 @@
       "q1": "¿Es este un sitio oficial del gobierno?",
       "a1": "No. uscasestatus es un servicio independiente sin conexión con USCIS, DHS ni ninguna agencia gubernamental. Leemos el mismo estado público que publica USCIS y añadimos contexto. La herramienta oficial es gratis en uscis.gov, y preferimos que lo sepas.",
       "q2": "¿De dónde vienen los datos?",
-      "a2": "Los estados de caso vienen del sistema oficial de estado de casos de USCIS. Las cifras de fila y ritmo vienen de los casos que hemos observado en tu bloque de recibo con el tiempo. Los tiempos de procesamiento publicados vienen de los rangos propios de USCIS. Cada página nombra sus fuentes.",
+      "a2": "Los estados de caso vienen del sistema oficial de estado de casos de USCIS. Las cifras de fila y ritmo vienen de los casos que hemos observado en tu bloque de recibo con el tiempo. El contexto de tiempos de procesamiento viene de las medianas nacionales históricas de USCIS. Cada página nombra sus fuentes.",
       "q3": "¿Guardan mi número de recibo?",
       "a3": "Solo si nos lo pides — al configurar una alerta o reclamar el caso. Una consulta puntual no queda ligada a ti. Nunca vendemos ni compartimos números de recibo, y nunca enviamos nada a USCIS en tu nombre.",
       "q4": "¿Pueden decirme si mi caso será aprobado?",
@@ -179,9 +179,10 @@
     "officialTitle": "Descripción oficial de USCIS",
     "timelineTitle": "Camino típico de este formulario",
     "processingTitle": "Contexto de tiempos de procesamiento",
-    "processingRange": "Los casos como el tuyo ({form}) suelen tardar entre {low} y {high} meses según los tiempos publicados por USCIS.",
+    "processingRange": "Los casos como el tuyo ({form}) suelen tardar entre {low} y {high} meses según las medianas nacionales históricas recientes de USCIS.",
     "processingProgress": "Parece que llevas unos {months} meses en procesamiento.",
-    "processingDisclaimer": "Estos son rangos publicados por USCIS, no una predicción para tu caso. Los tiempos varían según la oficina, la categoría del formulario y la carga de trabajo.",
+    "processingDisclaimer": "Estas cifras provienen de las medianas nacionales históricas de USCIS (mín–máx de años fiscales recientes para la clasificación principal del formulario), no son una predicción para tu caso. No son comparables con la herramienta en vivo de tiempos de procesamiento.",
+    "processingSource": "Fuente: tiempos históricos de procesamiento de USCIS.",
     "checked": {
       "label": "Consulta de estado",
       "live": "Consultado en vivo ahora mismo",
@@ -224,9 +225,9 @@
       "over": "Superaste el límite superior publicado de {high} meses.",
       "unknownPosition": "Aún no podemos ubicar este caso en el rango publicado.",
       "decidedTotal": "Tiempo total del recibo a la decisión: {months} meses.",
-      "sourceFooter": "Fuente: tiempos de procesamiento publicados por USCIS.",
+      "sourceFooter": "Fuente: tiempos históricos de procesamiento de USCIS.",
       "insufficient": "Aún no tenemos fecha de presentación, así que no podemos ubicar este caso en el rango publicado. La fecha del aviso de recibo lo habilitaría.",
-      "missingForm": "Aún no hay un rango de procesamiento publicado para este formulario. Mostraremos el contexto cuando USCIS lo publique."
+      "missingForm": "Aún no hay una mediana histórica de USCIS para este formulario. Mostraremos el contexto cuando aparezca en las tablas históricas."
     },
     "inquiry": {
       "title": "Puede ser elegible para una consulta de caso",
@@ -246,8 +247,8 @@
       "insufficientBody": "Necesitamos al menos {threshold} casos en este bloque de recibo antes de publicar estadísticas de cola, ritmo o gráficos ({n} por ahora). Tu estado en vivo de USCIS y el rango publicado de tiempos de procesamiento siguen disponibles.",
       "queueTitle": "Tu lugar en la fila",
       "estimateTitle": "Cuándo es probable que pase algo",
-      "estimatePublishedOnly": "Aún no tenemos suficientes casos cercanos para estimar con el ritmo de tu bloque. Mientras tanto, usa el rango publicado de tiempos de procesamiento de USCIS a la derecha.",
-      "estimateNoPace": "Las cuentas del ritmo del bloque se desbloquean cuando observemos suficientes decisiones recientes en este bloque. Mientras tanto, usa el rango publicado de USCIS.",
+      "estimatePublishedOnly": "Aún no tenemos suficientes casos cercanos para estimar con el ritmo de tu bloque. Mientras tanto, usa la banda histórica de tiempos de procesamiento de USCIS a la derecha.",
+      "estimateNoPace": "Las cuentas del ritmo del bloque se desbloquean cuando observemos suficientes decisiones recientes en este bloque. Mientras tanto, usa la banda histórica de USCIS.",
       "weeklyChartTitle": "Tu bloque, semana a semana",
       "nationwideChartTitle": "¿USCIS está acelerando?",
       "chartInsufficient": "Aún no hay suficientes casos en nuestro corpus para mostrar este gráfico ({n} de {threshold} necesarios)."
@@ -342,7 +343,7 @@
   },
   "methodology": {
     "title": "Metodología",
-    "body": "Los estados de caso provienen de la API oficial de estado de casos de USCIS. Los rangos de procesamiento son tiempos publicados por USCIS según formulario (y oficina cuando hay datos). Los resúmenes de casos cercanos usan consultas anonimizadas de personas que revisaron bloques de recibo similares — nunca listamos los números de recibo de otras personas. El tiempo transcurrido en casos decididos se detiene en la fecha de la decisión. Este sitio no está afiliado a USCIS y no es asesoría legal."
+    "body": "Los estados de caso provienen de la API oficial de estado de casos de USCIS. Las bandas de procesamiento vienen de las medianas nacionales históricas de USCIS por formulario (años fiscales recientes). Los resúmenes de casos cercanos usan consultas anonimizadas de personas que revisaron bloques de recibo similares — nunca listamos los números de recibo de otras personas. El tiempo transcurrido en casos decididos se detiene en la fecha de la decisión. Este sitio no está afiliado a USCIS y no es asesoría legal."
   },
   "auth": {
     "signInTitle": "Entra a tus casos",
@@ -378,11 +379,12 @@
     "commonStatuses": "Estados comunes de este formulario",
     "moreProcessingTimes": "Ver detalles de tiempos de procesamiento",
     "processingHubTitle": "Tiempos de procesamiento de USCIS",
-    "processingHubDescription": "Rangos publicados por USCIS según formulario — contexto sobre cuánto suelen tardar casos como el tuyo.",
-    "processingHubBody": "Estos rangos vienen de los tiempos publicados por USCIS. No son una predicción para tu caso específico.",
+    "processingHubDescription": "Medianas nacionales históricas de USCIS por formulario — contexto sobre cuánto han tardado casos como el tuyo.",
+    "processingHubBody": "Estas bandas vienen de las medianas nacionales históricas de USCIS (años fiscales recientes). No son una predicción para tu caso específico y no son comparables con la herramienta en vivo de tiempos de procesamiento.",
     "processingFormTitle": "Tiempos de procesamiento de {form}",
     "processingFormHeading": "Tiempos de procesamiento de {form}",
-    "processingUnavailable": "Aún no tenemos rangos publicados para este formulario."
+    "processingUnavailable": "Las tablas históricas de USCIS aún no incluyen este formulario.",
+    "processingMedianNote": "Última mediana nacional de USCIS: {median} meses (FY{year}, {classification}). La banda mostrada es el mín–máx de las tres medianas fiscales más recientes disponibles."
   },
   "insights": {
     "title": "Actividad de USCIS",

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { ProcessingTimeSource } from "@/components/case/processing-time-source";
 import { Link } from "@/i18n/navigation";
 import { forms, formToPathSlug } from "@/lib/forms";
 import type { Locale } from "@/i18n/routing";
@@ -22,12 +23,14 @@ export default async function ProcessingTimesHubPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("seo");
+  const tCase = await getTranslations("case");
   const activeLocale = locale as Locale;
 
   return (
     <div className="shell content-page">
       <h1>{t("processingHubTitle")}</h1>
       <p className="lede">{t("processingHubBody")}</p>
+      <ProcessingTimeSource label={tCase("processingSource")} />
 
       <div className="content-grid">
         {forms.map((form) => (
