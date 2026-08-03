@@ -98,7 +98,6 @@ export default async function CasePage({
           reasons={[
             t("errors.notFoundReason1"),
             t("errors.notFoundReason2"),
-            t("errors.notFoundReason3"),
           ]}
           trackWhenAvailableTitle={t("errors.notifyTitle")}
           trackWhenAvailableBody={t("errors.notifyBody")}
