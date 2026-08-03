@@ -80,10 +80,17 @@ export default async function CasePage({
 
   if (!result.ok) {
     if (result.code === "not_found") {
+      const uscisMessage = result.message.trim();
+      const defaultNotFound = t("errors.notFoundBody");
+      const body =
+        uscisMessage &&
+        uscisMessage !== "USCIS has no case for this receipt number."
+          ? uscisMessage
+          : defaultNotFound;
       return (
         <CaseError
           title={t("errors.notFoundTitle")}
-          body={t("errors.notFoundBody")}
+          body={body}
           retryLabel={t("errors.tryAnother")}
           homeLabel={tErrors("backHome")}
           reasonsTitle={t("errors.notFoundReasonsTitle")}
@@ -101,7 +108,7 @@ export default async function CasePage({
     return (
       <CaseError
         title={t("errors.upstreamTitle")}
-        body={t("errors.upstreamBody")}
+        body={result.message || t("errors.upstreamBody")}
         retryLabel={t("errors.tryAnother")}
         homeLabel={tErrors("backHome")}
       />

@@ -6,6 +6,7 @@ import { normalizeFormType } from "@/lib/uscis/form-type";
 import { getMockUscisCase } from "@/lib/uscis/mock";
 import type {
   UscisCasePayload,
+  UscisFetchErrorCode,
   UscisFetchResult,
   UscisHistoryEvent,
 } from "@/lib/uscis/types";
@@ -32,10 +33,67 @@ type RawCaseStatus = {
   hist_case_status?: RawHistoryEntry[] | null;
 };
 
+type RawUscisError = {
+  code?: string;
+  message?: string;
+  category?: string;
+  reference?: string;
+  status?: string | number;
+  traceId?: string;
+};
+
 type RawResponse = {
   case_status?: RawCaseStatus;
   message?: string;
+  errors?: RawUscisError[];
 };
+
+/**
+ * Prefer USCIS RFC-9457 `errors[].message` (sandbox/demo requirement).
+ * Falls back to a top-level `message` when present.
+ */
+export function messageFromUscisErrorBody(
+  body: unknown,
+  fallback: string,
+): string {
+  if (!body || typeof body !== "object") return fallback;
+
+  const record = body as RawResponse;
+  const fromErrors = Array.isArray(record.errors)
+    ? record.errors
+        .map((entry) =>
+          typeof entry?.message === "string" ? entry.message.trim() : "",
+        )
+        .filter(Boolean)
+    : [];
+
+  if (fromErrors.length > 0) return fromErrors.join(" ");
+
+  if (typeof record.message === "string" && record.message.trim()) {
+    return record.message.trim();
+  }
+
+  return fallback;
+}
+
+async function readUscisErrorMessage(
+  response: Response,
+  fallback: string,
+): Promise<string> {
+  try {
+    const json: unknown = await response.json();
+    return messageFromUscisErrorBody(json, fallback);
+  } catch {
+    return fallback;
+  }
+}
+
+function errorResult(
+  code: UscisFetchErrorCode,
+  message: string,
+): UscisFetchResult {
+  return { ok: false, code, message };
+}
 
 /**
  * Fetches a case from the official USCIS Case Status API.
@@ -63,44 +121,55 @@ export async function fetchUscisCase(receipt: string): Promise<UscisFetchResult>
     });
 
     if (response.status === 404) {
-      return {
-        ok: false,
-        code: "not_found",
-        message: "USCIS has no case for this receipt number.",
-      };
+      const message = await readUscisErrorMessage(
+        response,
+        "USCIS has no case for this receipt number.",
+      );
+      return errorResult("not_found", message);
     }
 
     if (response.status === 401 || response.status === 403) {
-      return {
-        ok: false,
-        code: "unauthorized",
-        message: "USCIS rejected our API credentials.",
-      };
+      const message = await readUscisErrorMessage(
+        response,
+        "USCIS rejected our API credentials.",
+      );
+      return errorResult("unauthorized", message);
     }
 
     if (!response.ok) {
-      return {
-        ok: false,
-        code: "upstream",
-        message: `USCIS returned HTTP ${response.status}.`,
-      };
+      const message = await readUscisErrorMessage(
+        response,
+        `USCIS returned HTTP ${response.status}.`,
+      );
+      return errorResult("upstream", message);
     }
 
     const json = (await response.json()) as RawResponse;
+
+    // Some error payloads may still arrive with HTTP 200.
+    if (Array.isArray(json.errors) && json.errors.length > 0 && !json.case_status) {
+      return errorResult(
+        "upstream",
+        messageFromUscisErrorBody(json, "USCIS returned an error response."),
+      );
+    }
+
     const parsed = parseCaseStatus(json, receipt);
     if (!parsed) {
-      return {
-        ok: false,
-        code: "invalid_response",
-        message: "USCIS returned an unexpected response shape.",
-      };
+      return errorResult(
+        "invalid_response",
+        messageFromUscisErrorBody(
+          json,
+          "USCIS returned an unexpected response shape.",
+        ),
+      );
     }
 
     return { ok: true, data: parsed, source: "live" };
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Unknown USCIS fetch error";
-    return { ok: false, code: "upstream", message };
+    return errorResult("upstream", message);
   }
 }
 
