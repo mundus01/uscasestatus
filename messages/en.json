@@ -137,6 +137,11 @@
     "disclaimerLegal": "Nothing on this site is legal advice, and we are not a law firm. Estimates are statistical ranges based on observed case data, not predictions about your case. For advice about your situation, talk to a licensed immigration attorney or a DOJ-accredited representative.",
     "copyright": "© {year} uscasestatus",
     "synced": "USCIS data synced 12 minutes ago",
+    "syncedNever": "Corpus not synced yet",
+    "syncedJustNow": "USCIS data synced just now",
+    "syncedMinutes": "USCIS data synced {minutes} minutes ago",
+    "syncedHours": "USCIS data synced {hours} hours ago",
+    "syncedDays": "USCIS data synced {days} days ago",
     "privacy": "Privacy",
     "terms": "Terms",
     "cookies": "Cookie preferences",
@@ -235,6 +240,17 @@
       "pending": "In progress",
       "alert": "RFE / denied",
       "insufficient": "Not enough comparable cases yet ({n} of the ~{threshold} we need). We'll fill this in as more filings in this receipt block report updates."
+    },
+    "corpus": {
+      "insufficientTitle": "Not enough cases in our corpus yet",
+      "insufficientBody": "We need at least {threshold} cases in this receipt block before we publish queue, pace, or chart stats ({n} so far). Your live USCIS status and published processing-time range stay available.",
+      "queueTitle": "Your place in line",
+      "estimateTitle": "When something is likely to happen",
+      "estimatePublishedOnly": "We don't have enough nearby cases yet to estimate from your block's pace. Until then, use the published USCIS processing-time range on the right.",
+      "estimateNoPace": "Block pace math unlocks once we observe enough recent decisions in this receipt block. Until then, use the published USCIS range.",
+      "weeklyChartTitle": "Your block, week by week",
+      "nationwideChartTitle": "Is USCIS speeding up?",
+      "chartInsufficient": "Not enough cases in our corpus yet to show this chart ({n} of {threshold} needed)."
     },
     "actions": {
       "copy": "Copy receipt number",

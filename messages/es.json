@@ -137,6 +137,11 @@
     "disclaimerLegal": "Nada en este sitio es asesoría legal, y no somos un bufete de abogados. Las estimaciones son rangos estadísticos basados en datos observados de casos, no predicciones sobre tu caso. Para consejo sobre tu situación, habla con un abogado de inmigración con licencia o un representante acreditado por el DOJ.",
     "copyright": "© {year} uscasestatus",
     "synced": "Datos de USCIS sincronizados hace 12 minutos",
+    "syncedNever": "Corpus aún no sincronizado",
+    "syncedJustNow": "Datos de USCIS sincronizados ahora mismo",
+    "syncedMinutes": "Datos de USCIS sincronizados hace {minutes} minutos",
+    "syncedHours": "Datos de USCIS sincronizados hace {hours} horas",
+    "syncedDays": "Datos de USCIS sincronizados hace {days} días",
     "privacy": "Privacidad",
     "terms": "Términos",
     "cookies": "Preferencias de cookies",
@@ -235,6 +240,17 @@
       "pending": "En proceso",
       "alert": "RFE / denegado",
       "insufficient": "Aún no hay suficientes casos comparables ({n} de los ~{threshold} que necesitamos). Lo completaremos cuando más presentaciones de este bloque reporten actualizaciones."
+    },
+    "corpus": {
+      "insufficientTitle": "Aún no hay suficientes casos en nuestro corpus",
+      "insufficientBody": "Necesitamos al menos {threshold} casos en este bloque de recibo antes de publicar estadísticas de cola, ritmo o gráficos ({n} por ahora). Tu estado en vivo de USCIS y el rango publicado de tiempos de procesamiento siguen disponibles.",
+      "queueTitle": "Tu lugar en la fila",
+      "estimateTitle": "Cuándo es probable que pase algo",
+      "estimatePublishedOnly": "Aún no tenemos suficientes casos cercanos para estimar con el ritmo de tu bloque. Mientras tanto, usa el rango publicado de tiempos de procesamiento de USCIS a la derecha.",
+      "estimateNoPace": "Las cuentas del ritmo del bloque se desbloquean cuando observemos suficientes decisiones recientes en este bloque. Mientras tanto, usa el rango publicado de USCIS.",
+      "weeklyChartTitle": "Tu bloque, semana a semana",
+      "nationwideChartTitle": "¿USCIS está acelerando?",
+      "chartInsufficient": "Aún no hay suficientes casos en nuestro corpus para mostrar este gráfico ({n} de {threshold} necesarios)."
     },
     "actions": {
       "copy": "Copiar número de recibo",

@@ -1,34 +1,65 @@
 import { ClaimButton } from "@/components/case/claim-button";
 import type { NearbySummary } from "@/lib/neighbors";
+import { MIN_CELL_SIZE, isSufficientSample } from "@/lib/privacy";
 
 type QueueCardProps = {
   block: string;
   receiptSerial: number;
   nearby: NearbySummary | null;
+  insufficientTitle: string;
+  insufficientBody: string;
+  title: string;
 };
 
 /**
- * Queue visualization matching uscasestatus-final.html.
- * Uses corpus nearby counts when available; falls back to the mockup’s
- * illustrative proportions so the design stays intact.
+ * Queue visualization from observed cases in the same receipt block.
+ * Never invents demo counts — shows an insufficient-data state below
+ * the privacy floor (MIN_CELL_SIZE).
  */
-export function QueueCard({ block, receiptSerial, nearby }: QueueCardProps) {
-  const sampleSize = nearby?.sampleSize ?? 4962;
-  const approved = nearby?.approved ?? 555;
-  const denied = nearby?.alert ?? 160;
-  const pending = nearby?.pending ?? 577;
+export function QueueCard({
+  block,
+  receiptSerial,
+  nearby,
+  insufficientTitle,
+  insufficientBody,
+  title,
+}: QueueCardProps) {
+  const sampleSize = nearby?.sampleSize ?? 0;
+
+  if (!nearby || !isSufficientSample(sampleSize)) {
+    return (
+      <section className="card">
+        <div className="card-h">
+          <h3>{title}</h3>
+          <span className="meta">
+            Block {block} · {sampleSize.toLocaleString("en-US")} / {MIN_CELL_SIZE}
+          </span>
+        </div>
+        <div className="card-b">
+          <p className="queue-lede">
+            <b>{insufficientTitle}</b>
+          </p>
+          <p className="text-small grey">{insufficientBody}</p>
+        </div>
+      </section>
+    );
+  }
+
+  const approved = nearby.approved;
+  const denied = nearby.alert;
+  const pending = nearby.pending;
   const behind = Math.max(
     0,
-    sampleSize - approved - denied - pending,
+    sampleSize - approved - denied - pending - nearby.other,
   );
-  // Approximate "ahead" as decided+pending excluding a synthetic position.
+  // Corpus-relative position among cases we observe (not a full USCIS queue).
   const ahead = approved + denied + pending;
   const youIndex = Math.min(
     Math.max(1, ahead),
     Math.max(1, (receiptSerial % Math.max(sampleSize, 1)) + 1),
   );
   const youPct =
-    sampleSize > 0 ? Math.min(99, (ahead / sampleSize) * 100) : 26;
+    sampleSize > 0 ? Math.min(99, (ahead / sampleSize) * 100) : 0;
   const decided = approved + denied;
   const approvalRate =
     decided > 0 ? ((approved / decided) * 100).toFixed(1) : "—";
@@ -38,16 +69,16 @@ export function QueueCard({ block, receiptSerial, nearby }: QueueCardProps) {
   return (
     <section className="card">
       <div className="card-h">
-        <h3>Your place in line</h3>
+        <h3>{title}</h3>
         <span className="meta">
           Block {block} · {sampleSize.toLocaleString("en-US")} cases
         </span>
       </div>
       <div className="card-b">
         <p className="queue-lede">
-          We track every case filed in the same receipt block as yours. By
-          receipt number, <b>{ahead.toLocaleString("en-US")} cases</b> sit ahead
-          of you — and most of them are already decided.
+          Among cases we track in the same receipt block as yours, by receipt
+          number, <b>{ahead.toLocaleString("en-US")} cases</b> sit ahead of you
+          in our corpus — many of them may already be decided.
         </p>
         <div className="qtrack">
           <div
@@ -114,7 +145,7 @@ export function QueueCard({ block, receiptSerial, nearby }: QueueCardProps) {
           USCIS does not process cases strictly in receipt order, so your
           position is a useful reference point, not a countdown. Approval rates
           describe your block as a group — they are not a prediction for your
-          individual case.
+          individual case. Counts reflect only cases we observe.
         </div>
       </div>
     </section>

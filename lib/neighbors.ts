@@ -1,5 +1,6 @@
 import "server-only";
 
+import { isSufficientSample } from "@/lib/privacy";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { validateReceipt } from "@/lib/receipt";
 
@@ -11,6 +12,8 @@ export type NearbySummary = {
   other: number;
   /** Share approved 0–1 among classified rows. */
   approvedRate: number | null;
+  /** True when sampleSize meets the privacy MIN_CELL_SIZE floor. */
+  sufficient: boolean;
 };
 
 function classifyStatus(status: string): "approved" | "pending" | "alert" | "other" {
@@ -84,6 +87,7 @@ export async function getNearbySummary(
       alert,
       other,
       approvedRate: classified > 0 ? approved / classified : null,
+      sufficient: isSufficientSample(sampleSize),
     };
   } catch {
     return null;

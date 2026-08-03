@@ -1,8 +1,12 @@
 import { getRedis } from "@/lib/redis";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export const REFRESH_COOLDOWN_MS = 60_000;
 export const FRESH_MS = 6 * 60 * 60 * 1000;
 export const STALE_MS = 24 * 60 * 60 * 1000;
+
+export type { SyncAge } from "@/lib/sync-age";
+export { syncAgeFromTimestamp } from "@/lib/sync-age";
 
 export type FreshnessState = "fresh" | "stale" | "checking";
 
@@ -72,5 +76,28 @@ export async function setRefreshCooldown(
     });
   } catch (error) {
     console.warn("[freshness] cooldown set failed:", error);
+  }
+}
+
+/**
+ * Most recent successful case check across the corpus (`cases.last_checked`).
+ * Returns null when Supabase is unavailable or the corpus is empty.
+ */
+export async function getLastCorpusSyncAt(): Promise<string | null> {
+  try {
+    const supabase = createAdminClient();
+    const { data, error } = await supabase
+      .from("cases")
+      .select("last_checked")
+      .order("last_checked", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error || !data?.last_checked) return null;
+    return typeof data.last_checked === "string"
+      ? data.last_checked
+      : new Date(data.last_checked).toISOString();
+  } catch {
+    return null;
   }
 }

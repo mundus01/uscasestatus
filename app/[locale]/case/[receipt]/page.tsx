@@ -26,6 +26,7 @@ import {
 import { getForm } from "@/lib/forms";
 import { getNextSteps } from "@/lib/next-steps";
 import { getNearbySummary } from "@/lib/neighbors";
+import { MIN_CELL_SIZE } from "@/lib/privacy";
 import { getServiceCenterName, validateReceipt } from "@/lib/receipt";
 import { getClientIdentifier, rateLimit } from "@/lib/ratelimit";
 import { parseUscisDate } from "@/lib/uscis/dates";
@@ -182,7 +183,17 @@ export default async function CasePage({
   });
 
   const toneLabel = tStatus(data.tone);
-  const pendingAhead = nearby?.pending ?? 577;
+  const sampleSize = nearby?.sampleSize ?? 0;
+  const pendingAhead =
+    nearby?.sufficient === true ? nearby.pending : null;
+  const corpusInsufficientBody = t("corpus.insufficientBody", {
+    threshold: MIN_CELL_SIZE,
+    n: sampleSize,
+  });
+  const chartInsufficientBody = t("corpus.chartInsufficient", {
+    n: sampleSize,
+    threshold: MIN_CELL_SIZE,
+  });
 
   const timelineNodes = data.caseTimeline.nodes;
 
@@ -272,7 +283,7 @@ export default async function CasePage({
         </div>
       </section>
 
-      <ClaimStrip sampleSize={nearby?.sampleSize ?? 0} />
+      <ClaimStrip sampleSize={sampleSize} />
       {/* Claim modal is mounted in the locale layout for header CTAs. */}
 
       {dayCount ? (
@@ -302,13 +313,36 @@ export default async function CasePage({
         <div className="legal">{tFooter("notLegalAdvice")}</div>
       </div>
 
-      <QueueCard block={block} receiptSerial={serial} nearby={nearby} />
+      <QueueCard
+        block={block}
+        receiptSerial={serial}
+        nearby={nearby}
+        title={t("corpus.queueTitle")}
+        insufficientTitle={t("corpus.insufficientTitle")}
+        insufficientBody={corpusInsufficientBody}
+      />
 
-      <EstimateCard processing={processing} pendingAhead={pendingAhead} />
+      <EstimateCard
+        processing={processing}
+        pendingAhead={pendingAhead}
+        pacePerWeek={null}
+        title={t("corpus.estimateTitle")}
+        publishedOnlyBody={t("corpus.estimatePublishedOnly")}
+        noPaceBody={t("corpus.estimateNoPace")}
+      />
 
       <div className="charts">
-        <WeeklyBlockChart />
-        <NationwidePaceChart formType={data.formType} />
+        <WeeklyBlockChart
+          sampleSize={sampleSize}
+          title={t("corpus.weeklyChartTitle")}
+          insufficientBody={chartInsufficientBody}
+        />
+        <NationwidePaceChart
+          formType={data.formType}
+          sampleSize={sampleSize}
+          title={t("corpus.nationwideChartTitle")}
+          insufficientBody={chartInsufficientBody}
+        />
       </div>
 
       <section className="card">

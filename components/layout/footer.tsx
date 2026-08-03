@@ -2,10 +2,33 @@ import { getTranslations } from "next-intl/server";
 
 import { LocaleSwitcher } from "@/components/layout/locale-switcher";
 import { Link } from "@/i18n/navigation";
+import { getLastCorpusSyncAt } from "@/lib/freshness";
+import { syncAgeFromTimestamp } from "@/lib/sync-age";
 
 export async function Footer() {
   const t = await getTranslations("footer");
   const year = new Date().getFullYear();
+  const lastSyncAt = await getLastCorpusSyncAt();
+  const age = syncAgeFromTimestamp(lastSyncAt);
+
+  let syncedLabel: string;
+  switch (age.kind) {
+    case "never":
+      syncedLabel = t("syncedNever");
+      break;
+    case "just_now":
+      syncedLabel = t("syncedJustNow");
+      break;
+    case "minutes":
+      syncedLabel = t("syncedMinutes", { minutes: age.minutes });
+      break;
+    case "hours":
+      syncedLabel = t("syncedHours", { hours: age.hours });
+      break;
+    case "days":
+      syncedLabel = t("syncedDays", { days: age.days });
+      break;
+  }
 
   return (
     <footer className="site-footer">
@@ -118,7 +141,7 @@ export async function Footer() {
           <small>{t("copyright", { year })}</small>
           <small className="sync">
             <span className="led" />
-            {t("synced")}
+            {syncedLabel}
           </small>
           <nav>
             <a href="/privacy">{t("privacy")}</a>

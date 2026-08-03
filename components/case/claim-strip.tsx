@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { ClaimButton } from "@/components/case/claim-button";
+import { MIN_CELL_SIZE, isSufficientSample } from "@/lib/privacy";
 
 type ClaimStripProps = {
   sampleSize: number;
@@ -47,7 +48,8 @@ export function ClaimStrip({ sampleSize }: ClaimStripProps) {
     );
   }
 
-  const count = sampleSize > 0 ? sampleSize.toLocaleString("en-US") : "cases";
+  const sufficient = isSufficientSample(sampleSize);
+  const count = sampleSize.toLocaleString("en-US");
 
   return (
     <section className="claim" id="claimStrip">
@@ -59,9 +61,9 @@ export function ClaimStrip({ sampleSize }: ClaimStripProps) {
       </span>
       <div className="copy">
         <b>
-          {sampleSize > 0
+          {sufficient
             ? `Every number here describes all ${count} cases in your block.`
-            : "Claim your case to personalize every number on this page."}
+            : `We're still gathering comparable cases in your receipt block (${count} of ${MIN_CELL_SIZE}).`}
         </b>
         <span>
           Claim your case and add your filing details — we&apos;ll narrow them to

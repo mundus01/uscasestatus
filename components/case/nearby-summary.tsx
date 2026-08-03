@@ -1,7 +1,8 @@
 import type { NearbySummary } from "@/lib/neighbors";
 import { Card, CardBody, CardHeader } from "@/components/ui/card";
+import { MIN_CELL_SIZE } from "@/lib/privacy";
 
-const NEARBY_THRESHOLD = 5;
+const NEARBY_THRESHOLD = MIN_CELL_SIZE;
 
 type NearbySummaryCardProps = {
   title: string;
