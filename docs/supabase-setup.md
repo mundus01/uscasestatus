@@ -2,8 +2,8 @@
 
 This project uses Supabase for:
 
-1. **Postgres** — `lookups`, `cases`, `case_events`, `tracked_cases`
-2. **Auth** — magic-link sign-in for `/dashboard`
+1. **Postgres** — `lookups`, `cases`, `case_events`, `tracked_cases`, `case_claims`
+2. **Auth** — magic-link sign-in for `/dashboard` and `/settings`
 
 You do **not** need the Supabase CLI for the first setup. The SQL Editor is enough.
 
@@ -92,6 +92,22 @@ Paste the full contents of:
 
 Click **Run**.
 
+### Migration 3 — case claims (filing details)
+
+Paste the full contents of:
+
+`supabase/migrations/003_case_claims.sql`
+
+Click **Run**.
+
+### Migration 4 — account deletion cascade
+
+Paste the full contents of:
+
+`supabase/migrations/004_account_deletion.sql`
+
+Click **Run**. Required for Settings → Delete account (`DELETE /api/account`), which uses the **service_role** key already in env to call `auth.admin.deleteUser` after wiping `case_claims` and `tracked_cases`.
+
 ### Verify tables exist
 
 **Table Editor** should show:
@@ -100,6 +116,7 @@ Click **Run**.
 - `cases`
 - `case_events`
 - `tracked_cases`
+- `case_claims`
 
 Or run:
 
@@ -219,6 +236,8 @@ npx supabase db push
 - [ ] `.env.local` has URL + anon + service_role
 - [ ] `001_lookups.sql` run
 - [ ] `002_tracking.sql` run
+- [ ] `003_case_claims.sql` run
+- [ ] `004_account_deletion.sql` run
 - [ ] Auth Email provider enabled
 - [ ] Site URL = `http://localhost:3000`
 - [ ] Redirect URL includes `/auth/callback`
@@ -249,5 +268,19 @@ npx supabase db push
 | `cases` | Full receipt + latest status (tracking + nearby) |
 | `case_events` | Status transitions over time |
 | `tracked_cases` | Email alert subscriptions (+ optional `user_id`) |
+| `case_claims` | Account-scoped filing details per receipt |
 
 Users sign in with magic link; dashboard lists their confirmed tracked cases.
+
+### Account deletion
+
+Signed-in users delete from **`/settings`** (Privacy). The API:
+
+1. Requires a valid session (`getUser`) and `{ confirm: true }`
+2. Deletes `case_claims` and `tracked_cases` for that user (and tracks matching the account email)
+3. Calls `auth.admin.deleteUser` via `SUPABASE_SERVICE_ROLE_KEY`
+4. Signs the browser out and redirects home with `?deleted=1`
+
+No extra Supabase dashboard toggle is required beyond the service role key already used by cron/API. Run migration `004` so `tracked_cases.user_id` cascades on auth user delete.
+
+**Manual check:** Supabase → **Authentication → Users** — the user row should disappear after delete. **Table Editor** — no remaining `case_claims` / `tracked_cases` for that email.

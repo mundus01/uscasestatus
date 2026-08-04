@@ -32,9 +32,14 @@ export async function Header() {
         <div className="header-r">
           <LocaleSwitcher />
           {signedIn ? (
-            <Link className="signin" href="/dashboard">
-              {t("dashboard")}
-            </Link>
+            <>
+              <Link className="signin" href="/dashboard">
+                {t("dashboard")}
+              </Link>
+              <Link className="signin" href="/settings">
+                {t("settings")}
+              </Link>
+            </>
           ) : (
             <Link className="signin" href="/sign-in">
               {t("signIn")}

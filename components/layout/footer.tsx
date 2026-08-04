@@ -53,6 +53,9 @@ export async function Footer() {
                 <Link href="/dashboard">{t("trackCases")}</Link>
               </li>
               <li>
+                <Link href="/settings">{t("settings")}</Link>
+              </li>
+              <li>
                 <Link href="/">{t("emailAlerts")}</Link>
               </li>
               <li>

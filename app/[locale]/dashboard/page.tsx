@@ -113,8 +113,13 @@ export default async function DashboardPage({
 
   return (
     <div className="shell content-page">
-      <h1>{t("title")}</h1>
-      <p className="lede">{t("subtitle")}</p>
+      <div className="content-page-head">
+        <h1>{t("title")}</h1>
+        <p className="lede">{t("subtitle")}</p>
+        <p className="content-links">
+          <Link href="/settings">{t("settings")}</Link>
+        </p>
+      </div>
 
       {rows.length === 0 ? (
         <section className="card">

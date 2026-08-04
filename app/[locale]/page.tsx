@@ -40,12 +40,18 @@ export async function generateMetadata(
   };
 }
 
-export default async function HomePage({ params }: PageProps<"/[locale]">) {
+export default async function HomePage({
+  params,
+  searchParams,
+}: PageProps<"/[locale]">) {
   const { locale } = await params;
+  const query = await searchParams;
   setRequestLocale(locale);
 
   const t = await getTranslations("home");
+  const tSettings = await getTranslations("settings");
   const tForms = await getTranslations("home.forms");
+  const accountDeleted = query.deleted === "1";
 
   const featured = HIGHLIGHT_FORM_CODES.map((code) => {
     const form = getForm(code);
@@ -62,6 +68,12 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
     <>
       <section className="hero">
         <div className="shell">
+          {accountDeleted ? (
+            <div className="flash-banner" role="status">
+              <strong>{tSettings("deletedFlashTitle")}</strong>
+              {tSettings("deletedFlashBody")}
+            </div>
+          ) : null}
           <span className="eyebrow">{t("hero.eyebrow")}</span>
           <h1>{t("hero.title")}</h1>
           <p className="lede">{t("hero.lede")}</p>
