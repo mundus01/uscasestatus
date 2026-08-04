@@ -129,12 +129,24 @@ main#main:has(.hero){padding:0}
 .content-stat .value{font-family:var(--font-sora),Sora,sans-serif;font-size:2rem;font-weight:600;color:var(--blue-dark);margin:.25rem 0 0;font-variant-numeric:tabular-nums}
 .receipt-box .lookup{max-width:none;margin:0}
 .receipt-box .lookup-row{box-shadow:none}
+.auth-panel{display:grid;gap:1rem}
+.auth-google{width:100%;justify-content:center}
+.auth-google svg{flex:0 0 auto}
+.auth-divider{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:.75rem;color:var(--text-light);font-size:.8rem}
+.auth-divider::before,.auth-divider::after{content:"";height:1px;background:var(--border-primary)}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:.35rem;padding:.3rem;background:#fff;border:1px solid var(--border-primary);border-radius:.85rem}
+.auth-tabs button{appearance:none;border:0;background:transparent;border-radius:.65rem;padding:.65rem .75rem;font-family:var(--figtree);font-size:.9rem;font-weight:600;color:var(--text-light);cursor:pointer}
+.auth-tabs button.is-active{background:var(--blue-light);color:var(--blue-dark)}
+.auth-mode-toggle{display:flex;gap:.75rem;flex-wrap:wrap}
+.auth-mode-toggle button{appearance:none;border:0;background:transparent;padding:0;font-family:var(--figtree);font-size:.85rem;font-weight:600;color:var(--text-light);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.auth-mode-toggle button.is-active{color:var(--skyblue);text-decoration:none}
+.auth-tab-help{margin:0;font-size:.9rem;color:var(--text-light)}
 .auth-form{display:grid;gap:.85rem}
 .auth-form label{font-size:.9rem;font-weight:600;color:var(--blue-dark)}
 .auth-form input{width:100%;border:1px solid var(--border-primary);border-radius:.75rem;padding:.85rem 1rem;font-family:var(--figtree);font-size:1rem;color:var(--blue-dark);background:#fff;outline:0}
 .auth-form input:focus{border-color:var(--skyblue)}
 .auth-form .button{justify-self:start}
-.auth-form .helper{margin:0}
+.auth-panel .helper{margin:0}
 .helper.is-error{color:var(--error)}
 @media(max-width:820px){
   .content-page > h1,.content-page-head > h1{font-size:1.75rem}

@@ -16,7 +16,9 @@ function required(name: string, value: string | undefined): string {
 export const publicEnv = {
   supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
   supabaseAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://uscasestatus.com",
+  // Empty string must not win over the production default (`??` only skips null/undefined).
+  siteUrl:
+    process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://uscasestatus.com",
 };
 
 export function requireSupabasePublicEnv() {

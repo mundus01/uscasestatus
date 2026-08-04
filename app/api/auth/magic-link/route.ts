@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { safeNextPath } from "@/lib/claim-fields";
-import { publicEnv } from "@/lib/env";
+import { authCallbackUrl, getSiteUrl } from "@/lib/site-url";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getClientIdentifier, rateLimit } from "@/lib/ratelimit";
 import { isLocale } from "@/i18n/routing";
@@ -42,10 +42,10 @@ export async function POST(request: Request) {
   }
 
   const locale = body.locale && isLocale(body.locale) ? body.locale : "en";
-  const site = publicEnv.siteUrl.replace(/\/$/, "");
+  const site = getSiteUrl(request);
   const defaultNext = locale === "en" ? "/dashboard" : `/${locale}/dashboard`;
   const next = safeNextPath(body.next, defaultNext);
-  const redirectTo = `${site}/auth/callback?next=${encodeURIComponent(next)}`;
+  const redirectTo = authCallbackUrl(site, next);
 
   try {
     const supabase = createAdminClient();

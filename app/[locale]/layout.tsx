@@ -4,6 +4,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
+import { AuthHashHandler } from "@/components/auth/auth-hash-handler";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { routing } from "@/i18n/routing";
@@ -65,6 +66,7 @@ export default async function LocaleLayout({
     <html lang={locale} className={`${figtree.variable} ${sora.variable}`}>
       <body>
         <NextIntlClientProvider>
+          <AuthHashHandler />
           <a
             href="#main"
             className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-surface focus:px-4 focus:py-2 focus:text-ink"

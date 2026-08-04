@@ -31,5 +31,6 @@ export const config = {
   // Skip Next internals, API routes, generated icons, and anything with a
   // file extension. Icon routes have no extension (`/icon`, `/apple-icon`) so
   // they must be listed explicitly or i18n rewrites them to `/en/icon` → 404.
-  matcher: ["/((?!api|_next|_vercel|icon|apple-icon|.*\\..*).*)"],
+  // Skip /auth/* so Supabase OAuth / magic-link callbacks are not rewritten.
+  matcher: ["/((?!api|auth|_next|_vercel|icon|apple-icon|.*\\..*).*)"],
 };

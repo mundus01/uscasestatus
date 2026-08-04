@@ -2,24 +2,34 @@ import { NextResponse } from "next/server";
 
 import { safeNextPath } from "@/lib/claim-fields";
 import { createClient } from "@/lib/supabase/server";
-import { publicEnv } from "@/lib/env";
 
 /**
- * Supabase magic-link callback (outside [locale] so the redirect URL is stable).
+ * Supabase auth callback (outside [locale] so redirect URLs stay stable).
+ * Handles the PKCE `?code=` flow used by magic links, email confirm, and OAuth.
+ * Hash tokens (`#access_token=`) are handled client-side by AuthHashHandler.
  */
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
+  const oauthError = url.searchParams.get("error");
   const next = safeNextPath(url.searchParams.get("next"), "/dashboard");
-  const site = publicEnv.siteUrl.replace(/\/$/, "");
+  const origin = url.origin;
+
+  if (oauthError) {
+    return NextResponse.redirect(
+      new URL(`/sign-in?error=auth&next=${encodeURIComponent(next)}`, origin),
+    );
+  }
 
   if (code) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      return NextResponse.redirect(`${site}${next}`);
+      return NextResponse.redirect(new URL(next, origin));
     }
   }
 
-  return NextResponse.redirect(`${site}/sign-in?error=auth`);
+  return NextResponse.redirect(
+    new URL(`/sign-in?error=auth&next=${encodeURIComponent(next)}`, origin),
+  );
 }

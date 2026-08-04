@@ -24,21 +24,13 @@ export default async function SignInPage({
   const rawNext = typeof query.next === "string" ? query.next : null;
   const defaultNext = locale === "en" ? "/dashboard" : `/${locale}/dashboard`;
   const next = safeNextPath(rawNext, defaultNext);
+  const initialError = query.error === "auth";
 
   return (
     <div className="shell content-page content-narrow">
       <h1>{t("signInTitle")}</h1>
       <p className="lede">{t("signInBody")}</p>
-      <SignInForm
-        locale={locale}
-        next={next}
-        emailLabel={t("emailLabel")}
-        emailPlaceholder={t("emailPlaceholder")}
-        submitLabel={t("sendLink")}
-        submittingLabel={t("sending")}
-        successMessage={t("linkSent")}
-        errorMessage={t("errorGeneric")}
-      />
+      <SignInForm locale={locale} next={next} initialError={initialError} />
     </div>
   );
 }

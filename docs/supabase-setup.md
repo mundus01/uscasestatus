@@ -3,7 +3,7 @@
 This project uses Supabase for:
 
 1. **Postgres** — `lookups`, `cases`, `case_events`, `tracked_cases`, `case_claims`
-2. **Auth** — magic-link sign-in for `/dashboard` and `/settings`
+2. **Auth** — email/password, Google OAuth, and optional magic-link for `/dashboard` and `/settings`
 
 You do **not** need the Supabase CLI for the first setup. The SQL Editor is enough.
 
@@ -54,14 +54,23 @@ Example:
 NEXT_PUBLIC_SUPABASE_URL=https://xxxxxxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOi...   # anon public
 SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOi...      # service_role — NEVER expose to the browser
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_SITE_URL=http://localhost:3000   # local only
 ```
+
+**Production (Vercel) must use:**
+
+```bash
+NEXT_PUBLIC_SITE_URL=https://uscasestatus.com
+```
+
+If this is left as `http://localhost:3000` (or Supabase **Site URL** is localhost), magic-link emails open localhost instead of production.
 
 **Important**
 
 - `anon` is safe for the browser (RLS protects data)
 - `service_role` bypasses RLS — only on the server (our API/cron already use it that way)
 - Never commit `.env.local`
+- Never put Google Client Secrets or Supabase service role keys in the repo
 
 Restart the Next.js dev server after saving env vars:
 
@@ -130,48 +139,94 @@ order by table_name;
 
 ---
 
-## 4. Configure Auth (magic link)
+## 4. Configure Auth (production checklist)
 
-### 4a. Enable email auth
+> **Root cause of “magic link opens localhost”:**  
+> Supabase **Authentication → URL Configuration → Site URL** was almost certainly still `http://localhost:3000`. When a redirect is missing from the allowlist, Supabase falls back to Site URL — so live emails open localhost with `#access_token=...`.
+
+### 4a. URL configuration (do this first)
+
+**Authentication → URL Configuration**
+
+| Field | Value |
+|---|---|
+| **Site URL** | `https://uscasestatus.com` |
+
+**Redirect URLs** — add all of these (one per line; wildcards are supported):
+
+```text
+https://uscasestatus.com/**
+https://www.uscasestatus.com/**
+http://localhost:3000/**
+http://127.0.0.1:3000/**
+```
+
+Explicit callback paths (optional but clear):
+
+```text
+https://uscasestatus.com/auth/callback
+https://www.uscasestatus.com/auth/callback
+http://localhost:3000/auth/callback
+http://127.0.0.1:3000/auth/callback
+```
+
+Our callback route is always `/auth/callback` (not under `/es`).
+
+Also set on **Vercel → Project → Settings → Environment Variables** (Production):
+
+```bash
+NEXT_PUBLIC_SITE_URL=https://uscasestatus.com
+```
+
+Redeploy after changing that env var.
+
+### 4b. Enable Email provider (password + magic link)
 
 **Authentication → Providers → Email**
 
 - Enable **Email**
-- Enable **Confirm email** (recommended)
-- For local testing you can disable “Confirm email” temporarily, but production should keep it on
+- Enable **Email password** sign-in (password auth)
+- Enable **Confirm email** for production (recommended)
+- Magic links use `signInWithOtp` from `/api/auth/magic-link` with `emailRedirectTo` → `https://uscasestatus.com/auth/callback?next=...`
 
-We use **magic links** (`signInWithOtp`), not passwords. Password sign-up can stay off.
+### 4c. Enable Google provider
 
-### 4b. URL configuration
+**Authentication → Providers → Google** → Enable
 
-**Authentication → URL Configuration**
+You need a Google OAuth **Client ID** and **Client Secret** from Google Cloud Console.
 
-Set:
+#### Google Cloud Console steps
 
-| Field | Local | Production (later) |
-|---|---|---|
-| **Site URL** | `http://localhost:3000` | `https://uscasestatus.com` |
-| **Redirect URLs** | see below | see below |
-
-**Redirect URLs** — add all of these (one per line):
+1. Open [Google Cloud Console](https://console.cloud.google.com/)
+2. Create or select a project
+3. **APIs & Services → OAuth consent screen**
+   - User type: **External** (unless you only allow your Workspace)
+   - App name: `uscasestatus`
+   - Support email: your email
+   - Authorized domains: `uscasestatus.com` and your Supabase domain host (e.g. `xxxxxxxx.supabase.co`) if prompted
+   - Save
+4. **APIs & Services → Credentials → Create credentials → OAuth client ID**
+   - Application type: **Web application**
+   - Name: `uscasestatus Supabase`
+   - **Authorized JavaScript origins:**
+     - `https://uscasestatus.com`
+     - `https://www.uscasestatus.com`
+     - `http://localhost:3000` (local)
+   - **Authorized redirect URIs** — this must be the **Supabase** callback, not your app:
 
 ```text
-http://localhost:3000/auth/callback
-http://localhost:3000/auth/callback?next=/dashboard
-http://127.0.0.1:3000/auth/callback
+https://YOUR_PROJECT_REF.supabase.co/auth/v1/callback
 ```
 
-When you deploy:
+   `YOUR_PROJECT_REF` is the subdomain in **Project Settings → API → Project URL**  
+   Example: `https://abcdxyz.supabase.co/auth/v1/callback`
 
-```text
-https://uscasestatus.com/auth/callback
-https://uscasestatus.com/auth/callback?next=/dashboard
-https://uscasestatus.com/es/auth/callback
-```
+5. Copy **Client ID** and **Client Secret** into Supabase → **Authentication → Providers → Google**
+6. Save in Supabase
 
-(Our callback route is `/auth/callback` — not under `/es`.)
+No Google secrets go in the Next.js `.env` — Supabase stores them.
 
-### 4c. Email delivery (dev vs prod)
+### 4d. Email delivery (dev vs prod)
 
 By default Supabase sends auth emails through their built-in provider (rate-limited; fine for testing).
 
@@ -180,45 +235,60 @@ For production later:
 - **Authentication → Emails** — customize templates optional
 - Or connect **SMTP** / Resend for higher volume
 
-**Note:** Case-status alert emails (track confirm / status change) use **Resend** (`RESEND_API_KEY`), not Supabase mail. Magic-link sign-in uses Supabase Auth email unless you customize it.
+**Note:** Case-status alert emails (track confirm / status change) use **Resend** (`RESEND_API_KEY`), not Supabase mail. Auth emails (magic link, confirm signup) use Supabase Auth email unless you customize SMTP.
 
 ---
 
-## 5. Quick smoke tests
+## 5. How auth works in this app
 
-With `npm run dev` running and env vars set:
+| Method | Flow |
+|---|---|
+| **Google** | Browser `signInWithOAuth` → Google → Supabase → `/auth/callback?code=...` → session cookies → `next` or `/dashboard` |
+| **Email + password** | Browser `signInWithPassword` / `signUp` (confirm email may be required) |
+| **Magic link** | `POST /api/auth/magic-link` → Supabase email with `emailRedirectTo` → `/auth/callback?code=...` |
+
+Hash tokens (`#access_token=...`) are recovered client-side by `AuthHashHandler` (legacy / misconfigured Site URL), then stripped from the address bar.
+
+---
+
+## 6. Quick smoke tests
 
 ### A. Lookup writes a case row
 
-1. Open `http://localhost:3000`
+1. Open the site
 2. Check a sandbox receipt (e.g. `EAC9999103402`) during USCIS sandbox hours
 3. In Supabase **Table Editor → `cases`**, you should see a new row
-4. **`lookups`** should also get an anonymized row (`receipt_block`, not full serial)
 
-If tables stay empty: check the terminal for `[lookups]` / `[case-store]` warnings — usually a wrong `SUPABASE_SERVICE_ROLE_KEY` or migration not run.
+### B. Password sign-in
 
-### B. Magic link sign-in
-
-1. Open `http://localhost:3000/sign-in`
-2. Enter your email → send link
-3. Open the email → click link
+1. Open `https://uscasestatus.com/sign-in` (or `http://localhost:3000/sign-in`)
+2. **Password** tab → **Create account** → email + password (8+ chars)
+3. Confirm email if required, then **Sign in**
 4. You should land on `/dashboard`
 
-If redirect fails: fix **Redirect URLs** in Auth settings (step 4b).
+### C. Google sign-in
 
-### C. Track a case (needs Resend)
+1. On `/sign-in`, click **Continue with Google**
+2. Complete Google consent
+3. You should return to `/auth/callback` then `/dashboard`
+4. If it fails: check Supabase Google provider + Google redirect URI `https://PROJECT.supabase.co/auth/v1/callback`
+
+### D. Magic link
+
+1. On `/sign-in` → **Email link** tab → send link
+2. Open the email — the link host must be **`uscasestatus.com`**, not `localhost`
+3. You should land on `/dashboard`
+4. If the link is localhost: fix **Site URL** + **Redirect URLs** (section 4a) and resend
+
+### E. Track a case (needs Resend)
 
 1. On a case page, use **Track this case**
 2. Confirm email from Resend
 3. Row appears in `tracked_cases` with `confirmed = true`
 
-Without `RESEND_API_KEY`, the track row can still be created, but you won’t get the confirm email (check `confirm_token` in Table Editor and hit `/api/track/confirm?token=...` manually for local testing).
-
 ---
 
-## 6. Optional: Supabase CLI (later)
-
-If you prefer migrations from the terminal:
+## 7. Optional: Supabase CLI (later)
 
 ```bash
 npx supabase login
@@ -226,24 +296,21 @@ npx supabase link --project-ref YOUR_PROJECT_REF
 npx supabase db push
 ```
 
-`YOUR_PROJECT_REF` is the subdomain in your URL: `https://YOUR_PROJECT_REF.supabase.co`.
-
 ---
 
-## 7. Checklist
+## 8. Checklist
 
 - [ ] Project created
 - [ ] `.env.local` has URL + anon + service_role
-- [ ] `001_lookups.sql` run
-- [ ] `002_tracking.sql` run
-- [ ] `003_case_claims.sql` run
-- [ ] `004_account_deletion.sql` run
-- [ ] Auth Email provider enabled
-- [ ] Site URL = `http://localhost:3000`
-- [ ] Redirect URL includes `/auth/callback`
-- [ ] Dev server restarted
-- [ ] Case check creates rows in `cases` / `lookups`
-- [ ] Sign-in magic link reaches `/dashboard`
+- [ ] Vercel Production `NEXT_PUBLIC_SITE_URL=https://uscasestatus.com`
+- [ ] `001`–`004` migrations run
+- [ ] Auth **Site URL** = `https://uscasestatus.com`
+- [ ] Redirect URLs include `https://uscasestatus.com/**` and localhost for dev
+- [ ] Email provider enabled (password + confirm as desired)
+- [ ] Google provider enabled with Cloud Console client; redirect URI is `https://PROJECT.supabase.co/auth/v1/callback`
+- [ ] Password signup → dashboard
+- [ ] Google → dashboard
+- [ ] Magic link email opens **production** host, not localhost
 
 ---
 
@@ -251,12 +318,13 @@ npx supabase db push
 
 | Symptom | Fix |
 |---|---|
-| `Missing environment variable NEXT_PUBLIC_SUPABASE_URL` | Add keys to `.env.local`, restart `npm run dev` |
-| Header / dashboard crashes on load | Same — public env vars missing |
-| Magic link opens but doesn’t sign in | Add exact callback URL to Redirect URLs |
-| Lookups never appear | Wrong `SUPABASE_SERVICE_ROLE_KEY`, or RLS/migration missing |
-| `relation "tracked_cases" does not exist` | Run `002_tracking.sql` |
-| Auth email never arrives | Check spam; Supabase free email is rate-limited; try another address |
+| Magic link opens `http://localhost:3000/#access_token=...` | Set Supabase **Site URL** to `https://uscasestatus.com`; allowlist production Redirect URLs; set Vercel `NEXT_PUBLIC_SITE_URL` |
+| `Missing environment variable NEXT_PUBLIC_SUPABASE_URL` | Add keys to `.env.local` / Vercel, redeploy |
+| Magic link opens but doesn’t sign in | Add `/auth/callback` (or `/**`) to Redirect URLs |
+| Google redirect_uri_mismatch | Google authorized redirect must be `https://PROJECT.supabase.co/auth/v1/callback` |
+| Password sign-up says check email | Confirm email is on — open the confirm link, then sign in |
+| Lookups never appear | Wrong `SUPABASE_SERVICE_ROLE_KEY`, or migration missing |
+| Auth email never arrives | Check spam; Supabase free email is rate-limited |
 
 ---
 
@@ -270,8 +338,6 @@ npx supabase db push
 | `tracked_cases` | Email alert subscriptions (+ optional `user_id`) |
 | `case_claims` | Account-scoped filing details per receipt |
 
-Users sign in with magic link; dashboard lists their confirmed tracked cases.
-
 ### Account deletion
 
 Signed-in users delete from **`/settings`** (Privacy). The API:
@@ -281,6 +347,4 @@ Signed-in users delete from **`/settings`** (Privacy). The API:
 3. Calls `auth.admin.deleteUser` via `SUPABASE_SERVICE_ROLE_KEY`
 4. Signs the browser out and redirects home with `?deleted=1`
 
-No extra Supabase dashboard toggle is required beyond the service role key already used by cron/API. Run migration `004` so `tracked_cases.user_id` cascades on auth user delete.
-
-**Manual check:** Supabase → **Authentication → Users** — the user row should disappear after delete. **Table Editor** — no remaining `case_claims` / `tracked_cases` for that email.
+**Manual check:** Supabase → **Authentication → Users** — the user row should disappear after delete.
