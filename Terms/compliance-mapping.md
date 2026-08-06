@@ -32,7 +32,7 @@ Each checklist item below maps to the section that addresses it. Section anchors
 | Instructions to permanently delete data | Privacy §[Deleting your data](privacy.html#delete) — numbered steps | ✅ |
 | What happens to data on transfer of ownership / wind-down | Privacy §[If our ownership changes](privacy.html#ownership) — 30-day advance notice; acquirer must adopt this policy in writing; **and** user gets the choice to export or have data securely destroyed; wind-down destroys all data | ✅ Covers both the "policies align" option and the user-choice option |
 | Securely dispose of / transmit / download their information | Privacy §[If our ownership changes](privacy.html#ownership) bullet 3; export also available anytime via §[Your choices](privacy.html#choices) | ✅ |
-| How users can close their account | Privacy §[Closing your account](privacy.html#close) — distinguishes closing from deleting | ✅ |
+| How users can close their account | Privacy §[Closing your account](privacy.html#close) — closing = permanent deletion via Settings → Close account (`/settings`); same two-step flow as §[Deleting your data](privacy.html#delete) | ✅ |
 | Notify users of changes in ownership | Privacy §[If our ownership changes](privacy.html#ownership) — email + prominent site notice, ≥30 days ahead | ✅ |
 | Active consent when policies change | Privacy §[Changes to this policy](privacy.html#changes); Terms §[Changes to these terms](terms.html#changes) — click-to-agree required, silence ≠ consent, no retroactive application | ✅ |
 | Plain-language summaries of what changed | Privacy §[Changes to this policy](privacy.html#changes) — side-by-side before/after summary, not a redline; changelog URL | ⚠️ Needs changelog URL and a build process to produce the summaries |
