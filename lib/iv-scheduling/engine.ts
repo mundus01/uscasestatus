@@ -821,8 +821,21 @@ export function explorerRows(
   }));
 }
 
-export function rankRows(index: NvcIndex, cat: BroadCat) {
-  return index.posts
+export type RankRow = {
+  post: string;
+  b: number;
+  cut: string;
+  mv: number | null;
+  rank: number;
+  selected: boolean;
+};
+
+export function rankRows(
+  index: NvcIndex,
+  cat: BroadCat,
+  options?: { selectedPost?: string; limit?: number | null },
+): RankRow[] {
+  const all = index.posts
     .map((post) => ({
       post,
       b: index.postBacklog(post, cat),
@@ -831,7 +844,32 @@ export function rankRows(index: NvcIndex, cat: BroadCat) {
     }))
     .filter((x): x is typeof x & { b: number } => x.b !== null)
     .sort((a, b) => b.b - a.b)
-    .slice(0, 12);
+    .map((x, i) => ({
+      ...x,
+      rank: i + 1,
+      selected: x.post === options?.selectedPost,
+    }));
+
+  const limit = options?.limit;
+  if (limit == null || limit >= all.length) return all;
+
+  const top = all.slice(0, limit);
+  const selected = all.find((x) => x.selected);
+  if (selected && !top.some((x) => x.post === selected.post)) {
+    return [...top, selected];
+  }
+  return top;
+}
+
+export function chartSeries(
+  index: NvcIndex,
+  post: string,
+  cat: BroadCat,
+): Array<{ edition: string; cutoff: string }> {
+  return index
+    .rowsFor(post)
+    .filter((r) => parseMon(r[cat] ?? null))
+    .map((r) => ({ edition: r.Edition, cutoff: r[cat] || "—" }));
 }
 
 export function drawPostChart(

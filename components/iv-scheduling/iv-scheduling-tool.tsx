@@ -7,6 +7,7 @@ import { ivSchedulingData } from "@/lib/iv-scheduling/data";
 import {
   analyzeCase,
   broadCat,
+  chartSeries,
   createNvcIndex,
   drawPostChart,
   explorerRows,
@@ -23,6 +24,22 @@ import type {
 const DOS_SOURCE =
   "https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/iv-wait-times.html";
 
+const PD_MIN = "1965-01-01";
+const DQ_MIN_FLOOR = "1990-01";
+
+function isoDate(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+function isoMonth(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+}
+
+function shortOptionLabel(full: string): string {
+  const base = full.split(" / ")[0] ?? full;
+  return base.length > 40 ? `${base.slice(0, 38)}…` : base;
+}
+
 type Props = {
   eyebrow: string;
   title: string;
@@ -32,6 +49,9 @@ type Props = {
 export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
   const { nvc, bulletin } = ivSchedulingData;
   const index = useMemo(() => createNvcIndex(nvc), [nvc]);
+  const today = useMemo(() => new Date(), []);
+  const pdMax = isoDate(today);
+  const dqMax = isoMonth(today);
 
   const [path, setPath] = useState<VisaPath>("employment");
   const [subcategory, setSubcategory] = useState("EB2");
@@ -45,8 +65,48 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
     "employment",
   );
   const [rankCat, setRankCat] = useState<BroadCat>("EmploymentVisa");
+  const [showAllRanks, setShowAllRanks] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const dqMin =
+    priorityDate && priorityDate >= PD_MIN
+      ? priorityDate.slice(0, 7)
+      : DQ_MIN_FLOOR;
+
+  const pref = path !== "relative";
+
+  const pdError = !pref
+    ? null
+    : !priorityDate
+      ? "Enter a Priority Date."
+      : priorityDate > pdMax
+        ? "Priority Date can’t be in the future."
+        : priorityDate < PD_MIN
+          ? "Enter a Priority Date from 1965 or later."
+          : null;
+
+  const dqError =
+    !dqMonth
+      ? "Enter a documentarily qualified month."
+      : dqMonth > dqMax
+        ? "DQ month can’t be after the current month."
+        : dqMonth < DQ_MIN_FLOOR
+          ? "Enter a DQ month from 1990 or later."
+          : pref && priorityDate && dqMonth < priorityDate.slice(0, 7)
+            ? "DQ month can’t be before the Priority Date."
+            : null;
+
+  const analysisPd = pdError
+    ? priorityDate > pdMax
+      ? pdMax
+      : PD_MIN
+    : priorityDate;
+  const analysisDq = dqError
+    ? dqMonth > dqMax
+      ? dqMax
+      : dqMin
+    : dqMonth;
 
   const analysis = useMemo(
     () =>
@@ -54,11 +114,21 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
         path,
         subcategory,
         charge,
-        priorityDate,
+        priorityDate: analysisPd,
         post,
-        dqMonth,
+        dqMonth: analysisDq,
       }),
-    [nvc, bulletin, index, path, subcategory, charge, priorityDate, post, dqMonth],
+    [
+      nvc,
+      bulletin,
+      index,
+      path,
+      subcategory,
+      charge,
+      analysisPd,
+      post,
+      analysisDq,
+    ],
   );
 
   const explorer = useMemo(
@@ -67,9 +137,20 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
   );
 
   const ranks = useMemo(
-    () => rankRows(index, rankCat),
-    [index, rankCat],
+    () =>
+      rankRows(index, rankCat, {
+        selectedPost: post,
+        limit: showAllRanks ? null : 12,
+      }),
+    [index, rankCat, post, showAllRanks],
   );
+
+  const historySeries = useMemo(
+    () => chartSeries(index, analysis.chart.post, analysis.chart.cat),
+    [index, analysis.chart.post, analysis.chart.cat],
+  );
+
+  const chartAriaLabel = `${analysis.trend.caption}. ${analysis.trend.title}. ${analysis.trend.text}`;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -103,12 +184,13 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
     setPath(next);
     setSubcategory(DEFAULT_SUBCATEGORY[next]);
     setRankCat(broadCat(next));
+    setShowAllRanks(false);
     if (next === "employment" || next === "family") {
       setExplorerPath(next);
     }
   }
 
-  const pref = path !== "relative";
+  const showPdField = pref;
 
   return (
     <div className="iv-tool">
@@ -143,16 +225,17 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
             </select>
           </div>
 
-          <div className={`iv-field${pref ? "" : " hidden"}`}>
+          <div className={`iv-field iv-field-wide${pref ? "" : " hidden"}`}>
             <label htmlFor="iv-subcategory">Visa category</label>
             <select
               id="iv-subcategory"
               value={subcategory}
+              title={CATS[path][subcategory] ?? subcategory}
               onChange={(e) => setSubcategory(e.target.value)}
             >
               {Object.entries(CATS[path]).map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
+                <option key={value} value={value} title={label}>
+                  {shortOptionLabel(label)}
                 </option>
               ))}
             </select>
@@ -173,14 +256,23 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
             </select>
           </div>
 
-          <div className={`iv-field${pref ? "" : " hidden"}`}>
+          <div className={`iv-field${showPdField ? "" : " hidden"}`}>
             <label htmlFor="iv-pd">Priority Date</label>
             <input
               id="iv-pd"
               type="date"
+              min={PD_MIN}
+              max={pdMax}
               value={priorityDate}
+              aria-invalid={Boolean(pdError)}
+              aria-describedby={pdError ? "iv-pd-error" : undefined}
               onChange={(e) => setPriorityDate(e.target.value)}
             />
+            {pdError ? (
+              <p className="iv-field-error" id="iv-pd-error" role="alert">
+                {pdError}
+              </p>
+            ) : null}
           </div>
 
           <div className="iv-field">
@@ -203,9 +295,18 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
             <input
               id="iv-dq"
               type="month"
+              min={dqMin}
+              max={dqMax}
               value={dqMonth}
+              aria-invalid={Boolean(dqError)}
+              aria-describedby={dqError ? "iv-dq-error" : undefined}
               onChange={(e) => setDqMonth(e.target.value)}
             />
+            {dqError ? (
+              <p className="iv-field-error" id="iv-dq-error" role="alert">
+                {dqError}
+              </p>
+            ) : null}
           </div>
         </div>
         <div className="iv-actions">
@@ -373,8 +474,42 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
             </div>
           </div>
           <div className="iv-chartwrap">
-            <canvas ref={canvasRef} />
+            <canvas
+              ref={canvasRef}
+              role="img"
+              aria-label={chartAriaLabel}
+            />
           </div>
+          <table className="iv-sr-only">
+            <caption>
+              NVC scheduling cutoff history for {analysis.chart.post}
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Published edition</th>
+                <th scope="col">Scheduling DQ cutoff</th>
+              </tr>
+            </thead>
+            <tbody>
+              {historySeries.map((row) => (
+                <tr key={row.edition}>
+                  <td>{row.edition}</td>
+                  <td>{row.cutoff}</td>
+                </tr>
+              ))}
+              {analysis.chart.dq ? (
+                <tr>
+                  <td>Your DQ month</td>
+                  <td>
+                    {analysis.chart.dq.toLocaleDateString("en-US", {
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </td>
+                </tr>
+              ) : null}
+            </tbody>
+          </table>
           <div className="iv-trendcallout">
             <strong>{analysis.trend.title}</strong>
             <p>{analysis.trend.text}</p>
@@ -543,36 +678,52 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
               </select>
             </div>
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Category</th>
-                <th>All other areas</th>
-                <th>China</th>
-                <th>India</th>
-                <th>Mexico</th>
-                <th>Philippines</th>
-              </tr>
-            </thead>
-            <tbody>
-              {explorer.map((row) => (
-                <tr key={row.key}>
-                  <td>
-                    <strong>{row.label}</strong>
-                  </td>
-                  {row.cells.map((cell, i) => (
-                    <td key={i}>
-                      <VbCell value={cell.fad} /> ·{" "}
-                      <VbCell value={cell.dff} plain />
-                    </td>
+          <div className="iv-scroll">
+            <p className="iv-scroll-hint">Swipe → for more chargeability areas</p>
+            <div className="iv-scroll-x">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th>All other areas</th>
+                    <th>China</th>
+                    <th>India</th>
+                    <th>Mexico</th>
+                    <th>Philippines</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {explorer.map((row) => (
+                    <tr key={row.key}>
+                      <td>
+                        <strong title={row.label}>
+                          {shortOptionLabel(row.label)}
+                        </strong>
+                      </td>
+                      {row.cells.map((cell, i) => (
+                        <td key={i}>
+                          <div className="iv-cellpair">
+                            <div className="iv-cellpair-row">
+                              <span className="iv-cellpair-l">FAD</span>
+                              <VbCell value={cell.fad} />
+                            </div>
+                            <div className="iv-cellpair-row">
+                              <span className="iv-cellpair-l">Filing</span>
+                              <VbCell value={cell.dff} />
+                            </div>
+                          </div>
+                        </td>
+                      ))}
+                    </tr>
                   ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                </tbody>
+              </table>
+            </div>
+          </div>
           <div className="iv-caption iv-table-note">
-            Each cell shows <strong>Final Action Date</strong> · Filing Date.
-            “C” = Current; “U” = Unavailable.
+            Each chargeability cell shows{" "}
+            <strong>Final Action Date (FAD)</strong> and{" "}
+            <strong>Date for Filing</strong>. “C” = Current; “U” = Unavailable.
           </div>
         </div>
       </section>
@@ -587,49 +738,87 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
                 supplied NVC scheduling cutoff and recent queue movement.
               </div>
             </div>
-            <div className="iv-seg" role="group" aria-label="Visa category">
+            <div
+              className="iv-seg"
+              role="tablist"
+              aria-label="Visa category for embassy ranking"
+            >
               {(
                 [
                   ["EmploymentVisa", "Employment"],
                   ["PreferenceVisa", "Family pref."],
                   ["RelativeVisa", "Immediate rel."],
                 ] as const
-              ).map(([cat, label]) => (
-                <button
-                  key={cat}
-                  type="button"
-                  className={rankCat === cat ? "active" : undefined}
-                  onClick={() => setRankCat(cat)}
-                >
-                  {label}
-                </button>
-              ))}
+              ).map(([cat, label]) => {
+                const selected = rankCat === cat;
+                return (
+                  <button
+                    key={cat}
+                    type="button"
+                    role="tab"
+                    id={`iv-rank-tab-${cat}`}
+                    aria-selected={selected}
+                    aria-controls="iv-rank-panel"
+                    tabIndex={selected ? 0 : -1}
+                    className={selected ? "active" : undefined}
+                    onClick={() => {
+                      setRankCat(cat);
+                      setShowAllRanks(false);
+                    }}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
             </div>
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Post</th>
-                <th>Scheduling DQ cutoff</th>
-                <th style={{ textAlign: "right" }}>Backlog</th>
-                <th style={{ textAlign: "right" }}>Latest movement</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ranks.map((row, i) => (
-                <tr key={row.post}>
-                  <td>
-                    <strong>
-                      {i + 1}. {row.post}
-                    </strong>
-                  </td>
-                  <td>{row.cut}</td>
-                  <td className="num">{row.b} mo</td>
-                  <td className="num">{formatMove(row.mv)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div
+            className="iv-scroll"
+            id="iv-rank-panel"
+            role="tabpanel"
+            aria-labelledby={`iv-rank-tab-${rankCat}`}
+          >
+            <p className="iv-scroll-hint">Swipe → for backlog and movement</p>
+            <div className="iv-scroll-x">
+              <table className="iv-posts-table">
+                <thead>
+                  <tr>
+                    <th>Post</th>
+                    <th>Scheduling DQ cutoff</th>
+                    <th style={{ textAlign: "right" }}>Backlog</th>
+                    <th style={{ textAlign: "right" }}>Latest movement</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ranks.map((row) => (
+                    <tr
+                      key={row.post}
+                      className={row.selected ? "is-selected" : undefined}
+                    >
+                      <td>
+                        <strong>
+                          {row.rank}. {row.post}
+                          {row.selected ? " (selected)" : ""}
+                        </strong>
+                      </td>
+                      <td>{row.cut}</td>
+                      <td className="num">{row.b} mo</td>
+                      <td className="num">{formatMove(row.mv)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <button
+            type="button"
+            className="iv-show-all"
+            onClick={() => setShowAllRanks((v) => !v)}
+          >
+            {showAllRanks
+              ? "Show top 12 backlogs"
+              : "Show all posts"}
+          </button>
         </div>
       </section>
 
@@ -734,18 +923,12 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
   );
 }
 
-function VbCell({
-  value,
-  plain = false,
-}: {
-  value: string;
-  plain?: boolean;
-}) {
+function VbCell({ value }: { value: string }) {
   if (value === "C") {
-    return plain ? <>C</> : <span className="iv-tag c">C</span>;
+    return <span className="iv-tag c">C</span>;
   }
   if (value === "U") {
-    return plain ? <>U</> : <span className="iv-tag u">U</span>;
+    return <span className="iv-tag u">U</span>;
   }
-  return <>{prettyVB(value)}</>;
+  return <span className="iv-tag date">{prettyVB(value)}</span>;
 }
