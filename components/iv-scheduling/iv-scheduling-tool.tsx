@@ -58,7 +58,7 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
   const [charge, setCharge] = useState<ChargeKey>("row");
   const [priorityDate, setPriorityDate] = useState("2024-03-14");
   const [post, setPost] = useState(() =>
-    index.posts.includes("Lagos") ? "Lagos" : (index.posts[0] ?? ""),
+    index.posts.includes("London") ? "London" : (index.posts[0] ?? ""),
   );
   const [dqMonth, setDqMonth] = useState("2025-06");
   const [explorerPath, setExplorerPath] = useState<"employment" | "family">(
@@ -205,11 +205,20 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
         <a href="#posts">Embassy wait times</a>
       </nav>
 
-      <div className="iv-builder">
+      <form
+        className="iv-builder"
+        onSubmit={(e) => {
+          e.preventDefault();
+          document
+            .getElementById("analysis")
+            ?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }}
+      >
         <h2>Check your NVC interview scheduling status</h2>
         <div className="iv-caption">
           Enter your case details to analyze your NVC DQ queue, immigrant visa
-          interview wait, and Visa Bulletin eligibility.
+          interview wait, and Visa Bulletin eligibility. Results update as you
+          change fields.
         </div>
         <div className="iv-formgrid">
           <div className="iv-field">
@@ -310,11 +319,11 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
           </div>
         </div>
         <div className="iv-actions">
-          <a className="button" href="#analysis">
-            Analyze my case
-          </a>
+          <button className="button" type="submit">
+            See my results
+          </button>
         </div>
-      </div>
+      </form>
 
       <section className="iv-section iv-seocopy" id="about-nvc-tool">
         <div className="iv-panel">
@@ -435,7 +444,7 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
             </div>
             <div className="iv-postintel">
               <div className="iv-intel">
-                <div className="k">Scheduling momentum</div>
+                <div className="k">Latest-update signal</div>
                 <div className="v">{analysis.postGate.momentum.value}</div>
                 <div className="s">{analysis.postGate.momentum.sub}</div>
               </div>
@@ -445,7 +454,7 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
                 <div className="s">{analysis.postGate.lastMove.sub}</div>
               </div>
               <div className="iv-intel">
-                <div className="k">Trend-based estimate</div>
+                <div className="k">Pace-based estimate</div>
                 <div className="v">{analysis.postGate.trendEstimate.value}</div>
                 <div className="s">{analysis.postGate.trendEstimate.sub}</div>
               </div>
@@ -530,23 +539,31 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
         </div>
         <div className="iv-steps">
           <div className="iv-step done">
-            <div className="iv-stepno">1</div>
+            <div className="iv-stepno" aria-hidden="true">
+              1
+            </div>
             <strong>Petition / case created</strong>
             <div>Your case has entered the immigrant visa process.</div>
           </div>
           <div className="iv-step done">
-            <div className="iv-stepno">2</div>
+            <div className="iv-stepno" aria-hidden="true">
+              2
+            </div>
             <strong>Documentarily qualified</strong>
             <div>{analysis.steps.dqText}</div>
           </div>
           <div className={`iv-step ${analysis.steps.visaClass}`}>
-            <div className="iv-stepno">3</div>
-            <strong>Visa number available</strong>
+            <div className="iv-stepno" aria-hidden="true">
+              3
+            </div>
+            <strong>{analysis.steps.visaTitle}</strong>
             <div>{analysis.steps.visaText}</div>
           </div>
           <div className={`iv-step ${analysis.steps.postClass}`}>
-            <div className="iv-stepno">4</div>
-            <strong>Post has reached your DQ</strong>
+            <div className="iv-stepno" aria-hidden="true">
+              4
+            </div>
+            <strong>{analysis.steps.postTitle}</strong>
             <div>{analysis.steps.postText}</div>
           </div>
         </div>

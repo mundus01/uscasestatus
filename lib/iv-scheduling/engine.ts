@@ -427,9 +427,11 @@ export type AnalysisResult = {
   trend: { title: string; text: string; caption: string; movement: string };
   steps: {
     dqText: string;
-    visaClass: "done" | "active";
+    visaClass: "done" | "active" | "pending";
+    visaTitle: string;
     visaText: string;
-    postClass: "done" | "active";
+    postClass: "done" | "active" | "pending";
+    postTitle: string;
     postText: string;
   };
   embassySnapshot: Array<{
@@ -485,10 +487,18 @@ export function analyzeCase(
   const mvNow = index.lastPostMove(post, cat);
   const paceNow = index.recentPostPace(post, cat);
   const sigNow = index.postSignal(post, cat);
-  const etaNow =
-    !postReached && gap !== null && paceNow && paceNow > 0
-      ? Math.ceil(gap / paceNow)
+  const paceRounded =
+    paceNow === null ? null : Math.round(paceNow * 10) / 10;
+  const etaExact =
+    !postReached && gap !== null && paceNow !== null && paceNow > 0
+      ? gap / paceNow
       : null;
+  const etaDisplay =
+    etaExact === null
+      ? null
+      : Number.isInteger(etaExact)
+        ? String(etaExact)
+        : (Math.round(etaExact * 10) / 10).toFixed(1);
 
   const editionLong = editionLabel(bulletin.currentEdition);
   const editionPretty = prettyMon(index.latest);
@@ -504,7 +514,8 @@ export function analyzeCase(
     title: "Not applicable",
     text: "Immediate Relative cases are not controlled by preference-category Final Action Dates.",
   };
-  let stepVisaClass: "done" | "active" = "done";
+  let stepVisaClass: "done" | "active" | "pending" = "done";
+  let stepVisaTitle = "Visa number available";
   let stepVisaText =
     "Not numerically limited — Visa Bulletin gate not applicable";
   let bh: Array<{ edition: string; value: string }> = [];
@@ -523,6 +534,10 @@ export function analyzeCase(
       kind: postReached ? "green" : "amber",
       text: postReached ? "Queue reached" : "Post queue",
     };
+    stepVisaClass = "done";
+    stepVisaTitle = "Visa number available";
+    stepVisaText =
+      "Not numerically limited — Visa Bulletin gate not applicable";
   } else {
     const v = ve.v!;
     if (v.fad === "U") {
@@ -544,14 +559,19 @@ export function analyzeCase(
       visaExplain =
         "Your Priority Date is not yet earlier than the applicable Final Action Date." +
         (mo !== null
-          ? ` It is roughly ${mo} month${mo === 1 ? "" : "s"} ahead of the current cutoff.`
+          ? ` It is roughly ${mo} month${mo === 1 ? "" : "s"} behind the current Final Action Date.`
           : "");
     }
 
-    stepVisaClass = ve.available ? "done" : "active";
-    stepVisaText = ve.available
-      ? "Priority Date is current for final action"
-      : "Waiting for Priority Date / visa availability";
+    if (ve.available) {
+      stepVisaClass = "done";
+      stepVisaTitle = "Visa number available";
+      stepVisaText = "Priority Date is current for final action";
+    } else {
+      stepVisaClass = "active";
+      stepVisaTitle = "Waiting on visa number";
+      stepVisaText = "Priority Date is not yet current for final action";
+    }
 
     if (!ve.available) {
       bottleneckTitle = "Visa availability";
@@ -584,6 +604,23 @@ export function analyzeCase(
     };
   }
 
+  let stepPostClass: "done" | "active" | "pending";
+  let stepPostTitle: string;
+  let stepPostText: string;
+  if (postReached) {
+    stepPostClass = "done";
+    stepPostTitle = "Post has reached your DQ";
+    stepPostText = "Published cutoff has reached your DQ month";
+  } else if (path === "relative" || ve.available) {
+    stepPostClass = "active";
+    stepPostTitle = "Waiting on post queue";
+    stepPostText = "Post cutoff has not yet reached your DQ month";
+  } else {
+    stepPostClass = "pending";
+    stepPostTitle = "Post queue comes next";
+    stepPostText = "Checked after visa availability clears";
+  }
+
   let postStatus: StatusPill;
   let postExplain: string;
   if (!cut || !dq) {
@@ -597,9 +634,9 @@ export function analyzeCase(
   } else {
     postStatus = { kind: "amber", text: "Waiting on post" };
     postExplain =
-      `Your DQ month is ${gap} month${gap === 1 ? "" : "s"} ahead of the post's published scheduling cutoff.` +
-      (etaNow
-        ? ` At the recent historical pace, the cutoff would take roughly ${etaNow} month${etaNow === 1 ? "" : "s"} to cover that gap if the pace persisted.`
+      `Your DQ month is ${gap} month${gap === 1 ? "" : "s"} newer than the post's published scheduling cutoff — about ${gap} month${gap === 1 ? "" : "s"} still to go.` +
+      (etaDisplay && paceRounded !== null
+        ? ` At the trailing 6-month pace (${paceRounded} cutoff months per calendar month), that gap would take roughly ${etaDisplay} month${etaDisplay === "1" ? "" : "s"} if the pace continued.`
         : "");
   }
 
@@ -609,9 +646,9 @@ export function analyzeCase(
       "The published scheduling cutoff has already reached or passed your DQ month.";
   } else if (gap !== null) {
     trendText +=
-      `Your DQ month is ${gap} month${gap === 1 ? "" : "s"} ahead of the latest published cutoff.` +
-      (etaNow
-        ? ` At the recent pace, that gap would take roughly ${etaNow} month${etaNow === 1 ? "" : "s"} to cover if the same pace continued.`
+      `Your DQ month is ${gap} month${gap === 1 ? "" : "s"} newer than the latest published cutoff — about ${gap} month${gap === 1 ? "" : "s"} still to go.` +
+      (etaDisplay && paceRounded !== null
+        ? ` Dividing that gap by the trailing 6-month pace (${paceRounded}) gives roughly ${etaDisplay} month${etaDisplay === "1" ? "" : "s"} if the same pace continued.`
         : "");
   }
 
@@ -721,20 +758,24 @@ export function analyzeCase(
           : path === "family"
             ? "Family Preference cutoff"
             : "Employment Preference cutoff",
-      gap: gap === null ? "—" : gap <= 0 ? "Reached" : `${gap} mo`,
+      gap: gap === null ? "—" : `${Math.max(0, gap)} mo`,
       gapSub:
         gap === null
           ? "no usable cutoff"
           : gap <= 0
-            ? "published cutoff has reached your month"
-            : "your DQ is ahead of cutoff",
+            ? "published cutoff has reached your DQ month"
+            : `${gap} month${gap === 1 ? "" : "s"} still to go`,
       explain: postExplain,
       momentum: {
         value: sigNow.label,
         sub:
-          paceNow === null
-            ? sigNow.text
-            : `Recent pace: ${Math.round(paceNow * 10) / 10} cutoff months per calendar month`,
+          mvNow === null
+            ? "Based on latest published update — not enough history"
+            : mvNow === 0
+              ? "Based on latest published update: no movement"
+              : mvNow > 0
+                ? `Based on latest published update: ${formatMove(mvNow)}`
+                : `Based on latest published update: ${formatMove(mvNow)}`,
       },
       lastMove: {
         value: formatMove(mvNow),
@@ -749,25 +790,25 @@ export function analyzeCase(
       },
       trendEstimate: {
         value: postReached
-          ? "Reached"
-          : etaNow
-            ? `~${etaNow} mo`
-            : "No reliable estimate",
+          ? "0 mo"
+          : etaDisplay
+            ? `~${etaDisplay} mo`
+            : "—",
         sub: postReached
-          ? "Published cutoff has reached your DQ"
-          : etaNow
-            ? "If the recent historical pace continued"
-            : "Recent movement does not support a useful estimate",
+          ? "Cutoff already at or past your DQ"
+          : etaDisplay && paceRounded !== null
+            ? `Gap ÷ trailing 6-mo pace (${paceRounded} cutoff mo / calendar mo)`
+            : "Trailing 6-month pace is zero or unavailable",
       },
     },
     trend: {
-      title: `${sigNow.label}: what the chart means`,
+      title: `${sigNow.label}: latest-update signal`,
       text: trendText,
       caption: `${post} · ${PATHNAMES[path]} scheduling cutoff`,
       movement:
-        paceNow === null
-          ? "Not enough history for a recent pace."
-          : `How to read this chart: when the blue line rises, NVC is scheduling newer DQ cases; a flat line means the post is stalled; a falling line means retrogression. Recent historical pace: about ${Math.round(paceNow * 10) / 10} cutoff months of movement per calendar month.`,
+        paceRounded === null
+          ? "Not enough history for a trailing 6-month pace. The momentum label above reflects only the latest published update."
+          : `How to read this chart: when the blue line rises, NVC is scheduling newer DQ cases; a flat line means the latest updates stalled; a falling line means retrogression. Trailing 6-month pace: about ${paceRounded} cutoff months of movement per calendar month (separate from the latest-update momentum label).`,
     },
     steps: {
       dqText: `DQ: ${
@@ -776,11 +817,11 @@ export function analyzeCase(
           : "—"
       }`,
       visaClass: stepVisaClass,
+      visaTitle: stepVisaTitle,
       visaText: stepVisaText,
-      postClass: postReached ? "done" : "active",
-      postText: postReached
-        ? "Published cutoff has reached your DQ"
-        : "Post cutoff has not yet reached your DQ",
+      postClass: stepPostClass,
+      postTitle: stepPostTitle,
+      postText: stepPostText,
     },
     embassySnapshot,
     global: {

@@ -346,23 +346,43 @@
   background: var(--neutral-light);
   color: var(--text-light);
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 0.55rem;
 }
 
+.iv-tool .iv-step.done {
+  border-color: #9ad9c8;
+  background: #f3fbf8;
+}
+
 .iv-tool .iv-step.done .iv-stepno {
-  background: var(--iv-soft-green);
-  color: var(--iv-green);
+  background: var(--iv-green);
+  color: #fff;
 }
 
 .iv-tool .iv-step.active {
-  border-color: #a8c7ef;
+  border-color: var(--skyblue);
   background: var(--cloud-blue);
+  box-shadow: inset 0 0 0 1px #c9ddf8;
 }
 
 .iv-tool .iv-step.active .iv-stepno {
-  background: var(--blue-light);
-  color: var(--navy);
+  background: var(--skyblue);
+  color: #fff;
+}
+
+.iv-tool .iv-step.pending {
+  background: #fafafa;
+  opacity: 0.85;
+}
+
+.iv-tool .iv-step.pending .iv-stepno {
+  background: var(--neutral-light);
+  color: var(--text-light);
+}
+
+.iv-tool .iv-step.pending strong {
+  color: var(--text-grey);
 }
 
 .iv-tool .iv-step strong {
