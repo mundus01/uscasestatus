@@ -845,11 +845,11 @@ export function drawPostChart(
   if (!ctx) return;
   const rect = canvas.getBoundingClientRect();
   const ratio = window.devicePixelRatio || 1;
-  canvas.width = Math.max(760, rect.width * ratio);
-  canvas.height = Math.max(340, rect.height * ratio);
+  const W = Math.max(1, rect.width);
+  const H = Math.max(1, rect.height);
+  canvas.width = Math.round(W * ratio);
+  canvas.height = Math.round(H * ratio);
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-  const W = canvas.width / ratio;
-  const H = canvas.height / ratio;
   ctx.clearRect(0, 0, W, H);
 
   const brand = "#1474e1";
@@ -857,12 +857,13 @@ export function drawPostChart(
   const ink = "#131349";
   const line = "#e5e5e5";
   const amber = "#8a6d00";
+  const narrow = W < 420;
 
   const rs = index.rowsFor(post).filter((r) => parseMon(r[cat] ?? null));
   if (rs.length < 2) {
     ctx.fillStyle = muted;
     ctx.font = "13px var(--font-figtree), system-ui, sans-serif";
-    ctx.fillText("Not enough history to chart.", 22, 36);
+    ctx.fillText("Not enough history to chart.", 16, 28);
     return;
   }
 
@@ -873,10 +874,10 @@ export function drawPostChart(
   min -= 1;
   max += 1;
 
-  const left = 86;
-  const right = 28;
-  const top = 28;
-  const bottom = 58;
+  const left = narrow ? 52 : 104;
+  const right = narrow ? 14 : 28;
+  const top = narrow ? 36 : 28;
+  const bottom = 52;
   const x = (i: number) => left + (i * (W - left - right)) / (rs.length - 1);
   const y = (v: number) =>
     top + ((max - v) * (H - top - bottom)) / Math.max(1, max - min);
@@ -898,7 +899,7 @@ export function drawPostChart(
     ctx.fillStyle = muted;
     ctx.fillText(
       d.toLocaleDateString("en-US", { month: "short", year: "2-digit" }),
-      left - 10,
+      left - 8,
       yy,
     );
   }
@@ -916,7 +917,8 @@ export function drawPostChart(
     ctx.fillStyle = amber;
     ctx.textAlign = "left";
     ctx.font = "600 11px var(--font-figtree), system-ui, sans-serif";
-    ctx.fillText("Your DQ", W - right - 58, yy - 10);
+    const dqLabelX = Math.min(W - right - 54, left + 8);
+    ctx.fillText("Your DQ", dqLabelX, Math.max(top + 10, yy - 10));
   }
 
   ctx.strokeStyle = brand;
@@ -930,20 +932,22 @@ export function drawPostChart(
   vals.forEach((v, i) => {
     ctx.fillStyle = brand;
     ctx.beginPath();
-    ctx.arc(x(i), y(v), 4, 0, Math.PI * 2);
+    ctx.arc(x(i), y(v), narrow ? 3 : 4, 0, Math.PI * 2);
     ctx.fill();
+    const labelEveryPoint = narrow ? i === vals.length - 1 : true;
     if (
-      i === vals.length - 1 ||
-      (i > 0 &&
-        vals[i] !== vals[i - 1] &&
-        (i === 1 ||
-          i === vals.length - 2 ||
-          Math.abs(vals[i]! - vals[i - 1]!) >= 2))
+      labelEveryPoint &&
+      (i === vals.length - 1 ||
+        (i > 0 &&
+          vals[i] !== vals[i - 1] &&
+          (i === 1 ||
+            i === vals.length - 2 ||
+            Math.abs(vals[i]! - vals[i - 1]!) >= 2)))
     ) {
       ctx.font = "600 10px var(--font-figtree), system-ui, sans-serif";
       ctx.textAlign = "center";
       ctx.fillStyle = ink;
-      ctx.fillText(rs[i]![cat]!, x(i), Math.max(12, y(v) - 11));
+      ctx.fillText(rs[i]![cat]!, x(i), Math.max(top + 10, y(v) - 11));
     }
   });
 
@@ -951,20 +955,31 @@ export function drawPostChart(
   ctx.fillStyle = muted;
   ctx.textAlign = "center";
   ctx.textBaseline = "alphabetic";
-  const labelEvery = rs.length > 10 ? 2 : 1;
+  const labelEvery = rs.length > (narrow ? 6 : 10) ? 2 : 1;
   rs.forEach((r, i) => {
     if (i % labelEvery === 0 || i === rs.length - 1) {
-      ctx.fillText(r.Edition, x(i), H - 24);
+      ctx.fillText(r.Edition, x(i), H - 22);
     }
   });
   ctx.textAlign = "left";
   ctx.font = "600 11px var(--font-figtree), system-ui, sans-serif";
   ctx.fillStyle = muted;
-  ctx.fillText("Published monthly NVC update", left, H - 6);
-  ctx.save();
-  ctx.translate(16, H / 2);
-  ctx.rotate(-Math.PI / 2);
-  ctx.textAlign = "center";
-  ctx.fillText("DQ month NVC is scheduling → newer is better", 0, 0);
-  ctx.restore();
+  ctx.fillText(
+    narrow ? "Monthly NVC update" : "Published monthly NVC update",
+    left,
+    H - 6,
+  );
+
+  if (narrow) {
+    ctx.textAlign = "left";
+    ctx.font = "600 10px var(--font-figtree), system-ui, sans-serif";
+    ctx.fillText("Newer DQ months = progress →", left, 16);
+  } else {
+    ctx.save();
+    ctx.translate(18, H / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.textAlign = "center";
+    ctx.fillText("DQ month NVC is scheduling → newer is better", 0, 0);
+    ctx.restore();
+  }
 }

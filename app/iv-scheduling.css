@@ -158,6 +158,15 @@
   margin-top: 1rem;
 }
 
+.iv-tool .iv-gates.is-single {
+  grid-template-columns: 1fr;
+}
+
+.iv-tool .iv-section,
+.iv-tool [id] {
+  scroll-margin-top: 5.5rem;
+}
+
 .iv-tool .iv-gatehead {
   display: flex;
   justify-content: space-between;
@@ -359,9 +368,11 @@
   border-radius: 0.85rem;
   padding: 0.65rem;
   background: #fcfdff;
+  overflow: hidden;
 }
 
 .iv-tool .iv-chartwrap canvas {
+  display: block;
   width: 100%;
   height: 100%;
 }

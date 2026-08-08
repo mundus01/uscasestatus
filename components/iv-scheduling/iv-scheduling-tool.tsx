@@ -74,6 +74,7 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    const wrap = canvas.parentElement;
 
     const paint = () => {
       drawPostChart(
@@ -87,13 +88,24 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
 
     paint();
     window.addEventListener("resize", paint);
-    return () => window.removeEventListener("resize", paint);
+    let ro: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== "undefined" && wrap) {
+      ro = new ResizeObserver(paint);
+      ro.observe(wrap);
+    }
+    return () => {
+      window.removeEventListener("resize", paint);
+      ro?.disconnect();
+    };
   }, [index, analysis.chart]);
 
   function onPathChange(next: VisaPath) {
     setPath(next);
     setSubcategory(DEFAULT_SUBCATEGORY[next]);
     setRankCat(broadCat(next));
+    if (next === "employment" || next === "family") {
+      setExplorerPath(next);
+    }
   }
 
   const pref = path !== "relative";
@@ -106,7 +118,7 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
 
       <nav className="iv-toc" aria-label="On this page">
         <a href="#analysis">NVC status</a>
-        <a href="#history">Interview trends</a>
+        <a href="#nvc-history">Interview trends</a>
         <a href="#explorer">Visa Bulletin</a>
         <a href="#posts">Embassy wait times</a>
       </nav>
@@ -252,7 +264,9 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
           </div>
         </div>
 
-        <div className="iv-gates">
+        <div
+          className={`iv-gates${analysis.visaGate.visible ? "" : " is-single"}`}
+        >
           <div
             className={`iv-panel${analysis.visaGate.visible ? "" : " hidden"}`}
           >
@@ -359,7 +373,7 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
             </div>
           </div>
           <div className="iv-chartwrap">
-            <canvas ref={canvasRef} width={1000} height={390} />
+            <canvas ref={canvasRef} />
           </div>
           <div className="iv-trendcallout">
             <strong>{analysis.trend.title}</strong>
@@ -509,7 +523,7 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
           <div className="iv-toolbar">
             <div>
               <h2>
-                {analysis.editionLong} Visa Bulletin &amp; Priority Date tracker
+                {`${analysis.editionLong} Visa Bulletin & Priority Date tracker`}
               </h2>
               <div className="iv-caption">
                 Check Final Action Dates and Dates for Filing for
@@ -686,17 +700,16 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
 
       <p className="iv-disclaimer">
         <strong>Independent NVC scheduling tracker:</strong> uscasestatus is not
-        affiliated with the U.S. Department of State or National Visa Center.
-        Visa availability is evaluated against the {analysis.editionLong} U.S.
-        Department of State Visa Bulletin. A preference applicant generally
-        needs a Priority Date earlier than the applicable Final Action Date for
-        a visa number to be available; “C” means Current and “U” means
-        Unavailable. Immediate Relative cases bypass this numerically limited
-        Visa Bulletin gate. NVC interview intelligence uses the supplied IV
-        scheduling-status history and compares a user&apos;s DQ month with the
-        post&apos;s published scheduling month. Queue gaps and historical trends
-        are informational only and are not guarantees of an immigrant visa
-        interview date. Official source:{" "}
+        affiliated with the U.S. Department of State or National Visa Center.{" "}
+        {`Visa availability is evaluated against the ${analysis.editionLong} U.S. Department of State Visa Bulletin.`}{" "}
+        A preference applicant generally needs a Priority Date earlier than the
+        applicable Final Action Date for a visa number to be available; “C”
+        means Current and “U” means Unavailable. Immediate Relative cases bypass
+        this numerically limited Visa Bulletin gate. NVC interview intelligence
+        uses the supplied IV scheduling-status history and compares a
+        user&apos;s DQ month with the post&apos;s published scheduling month.
+        Queue gaps and historical trends are informational only and are not
+        guarantees of an immigrant visa interview date. Official source:{" "}
         <a href={DOS_SOURCE} target="_blank" rel="noopener noreferrer">
           Department of State IV Scheduling Status Tool
         </a>
@@ -710,7 +723,7 @@ export function IvSchedulingTool({ eyebrow, title, lede }: Props) {
               target="_blank"
               rel="noopener noreferrer"
             >
-              {analysis.editionLong} Visa Bulletin
+              {`${analysis.editionLong} Visa Bulletin`}
             </a>
             .
           </>
