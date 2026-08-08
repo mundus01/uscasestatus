@@ -14,7 +14,8 @@
     "checkCase": "Check a case",
     "processingTimes": "Processing times",
     "formGuides": "Form guides",
-    "insights": "Insights"
+    "insights": "Insights",
+    "ivScheduling": "IV scheduling"
   },
   "localeSwitcher": {
     "label": "Language",
@@ -126,6 +127,7 @@
     "estimateHow": "How we estimate timelines",
     "processingTimes": "Processing times",
     "visaBulletin": "Visa bulletin",
+    "ivScheduling": "NVC IV scheduling tool",
     "rfe": "Responding to an RFE",
     "formsHeading": "Form guides",
     "companyHeading": "Company",
@@ -346,6 +348,12 @@
   "methodology": {
     "title": "Methodology",
     "body": "Case statuses come from the official USCIS Case Status API. Processing bands come from USCIS historic national median processing times by form (recent fiscal-year medians). Nearby-case summaries use anonymized lookups from people who checked similar receipt blocks — we never list other people's receipt numbers. Elapsed time for decided cases stops on the decision date. This site is not affiliated with USCIS and is not legal advice."
+  },
+  "ivScheduling": {
+    "eyebrow": "NVC IV Scheduling Tool & Visa Bulletin Tracker",
+    "title": "NVC IV Scheduling Tool: Check your immigrant visa interview queue",
+    "description": "Check NVC IV scheduling status, immigrant visa interview wait times, DQ queue movement, Visa Bulletin eligibility, and U.S. embassy or consulate backlogs.",
+    "lede": "Check your NVC interview scheduling status by U.S. embassy or consulate. Compare your documentarily qualified (DQ) date with the latest IV scheduling status, add your Priority Date and Visa Bulletin category, and see whether visa availability or the NVC interview queue is holding up your case."
   },
   "auth": {
     "signInTitle": "Sign in to your cases",

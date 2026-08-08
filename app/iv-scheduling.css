@@ -1,0 +1,670 @@
+/* IV Scheduling Tool — scoped to site design tokens */
+.iv-tool {
+  --iv-panel: #fff;
+  --iv-soft: var(--cloud-blue);
+  --iv-soft-green: var(--bg-light-green);
+  --iv-soft-red: #ffe4ee;
+  --iv-soft-amber: var(--bg-warning);
+  --iv-green: #0f6b52;
+  --iv-red: var(--error);
+  --iv-amber: var(--status-pending, #8a6d00);
+}
+
+.iv-tool .iv-builder {
+  background: var(--iv-panel);
+  border: 1px solid var(--border-primary);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  margin: 0 0 2rem;
+}
+
+.iv-tool .iv-builder h2 {
+  font-size: 1.1rem;
+  margin: 0 0 0.35rem;
+}
+
+.iv-tool .iv-caption {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+.iv-tool .iv-formgrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.iv-tool .iv-field label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-light);
+  margin: 0 0 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.iv-tool .iv-field select,
+.iv-tool .iv-field input {
+  width: 100%;
+  height: 2.75rem;
+  border: 1px solid var(--border-primary);
+  border-radius: 0.75rem;
+  background: #fff;
+  color: var(--blue-dark);
+  font-family: var(--figtree);
+  font-size: 0.95rem;
+  padding: 0 0.85rem;
+  outline: none;
+}
+
+.iv-tool .iv-field select:focus,
+.iv-tool .iv-field input:focus {
+  border-color: var(--skyblue);
+  box-shadow: 0 0 0 3px var(--blue-light);
+}
+
+.iv-tool .iv-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.iv-tool .iv-section {
+  margin-top: 1.75rem;
+}
+
+.iv-tool .iv-panel {
+  background: var(--iv-panel);
+  border: 1px solid var(--border-primary);
+  border-radius: 1rem;
+  padding: 1.25rem;
+}
+
+.iv-tool .iv-sectionhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  margin: 0 0 0.85rem;
+}
+
+.iv-tool .iv-sectionhead h2,
+.iv-tool .iv-panel h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.iv-tool .iv-bottleneck {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.iv-tool .iv-bottleneck .iv-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.iv-tool .iv-bottleneck h2 {
+  font-size: 1.65rem;
+  margin: 0.4rem 0 0.5rem;
+}
+
+.iv-tool .iv-bottleneck p {
+  margin: 0;
+  color: var(--text-grey);
+  line-height: 1.55;
+}
+
+.iv-tool .iv-pill {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 100rem;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.iv-tool .iv-pill.green {
+  background: var(--iv-soft-green);
+  color: var(--iv-green);
+}
+.iv-tool .iv-pill.amber {
+  background: var(--iv-soft-amber);
+  color: var(--iv-amber);
+}
+.iv-tool .iv-pill.red {
+  background: var(--iv-soft-red);
+  color: var(--iv-red);
+}
+.iv-tool .iv-pill.blue {
+  background: var(--blue-light);
+  color: var(--navy);
+}
+
+.iv-tool .iv-gates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.iv-tool .iv-gatehead {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.iv-tool .iv-gatehead h3 {
+  font-size: 1rem;
+  margin: 0 0 0.2rem;
+}
+
+.iv-tool .iv-gatebody {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.iv-tool .iv-stat,
+.iv-tool .iv-intel,
+.iv-tool .iv-snapshotcard,
+.iv-tool .iv-globalcard,
+.iv-tool .iv-change,
+.iv-tool .iv-historychip {
+  border: 1px solid var(--border-primary);
+  border-radius: 0.85rem;
+  padding: 0.85rem;
+  background: #fff;
+}
+
+.iv-tool .iv-stat .k,
+.iv-tool .iv-intel .k,
+.iv-tool .iv-snapshotcard .name,
+.iv-tool .iv-globalcard .name,
+.iv-tool .iv-change .t {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.iv-tool .iv-stat .v,
+.iv-tool .iv-intel .v {
+  font-family: var(--sora);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-top: 0.3rem;
+  color: var(--blue-dark);
+  letter-spacing: -0.02em;
+}
+
+.iv-tool .iv-stat .s,
+.iv-tool .iv-intel .s {
+  font-size: 0.72rem;
+  color: var(--text-light);
+  margin-top: 0.2rem;
+  line-height: 1.35;
+}
+
+.iv-tool .iv-explain {
+  margin-top: 0.9rem;
+  border-radius: 0.75rem;
+  background: var(--neutral-lighter);
+  border: 1px solid var(--border-primary);
+  padding: 0.75rem 0.85rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-grey);
+}
+
+.iv-tool .iv-watch {
+  border-left: 3px solid var(--warning);
+  background: #fff9ee;
+  border-radius: 0.75rem;
+  padding: 0.85rem 1rem;
+  margin-top: 0.85rem;
+}
+
+.iv-tool .iv-watch strong {
+  font-size: 0.85rem;
+  color: var(--blue-dark);
+}
+
+.iv-tool .iv-watch p {
+  font-size: 0.8rem;
+  color: #6e5b35;
+  margin: 0.35rem 0 0;
+  line-height: 1.45;
+}
+
+.iv-tool .iv-postintel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65rem;
+  margin-top: 0.75rem;
+}
+
+.iv-tool .iv-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+}
+
+.iv-tool .iv-step {
+  border: 1px solid var(--border-primary);
+  border-radius: 0.85rem;
+  padding: 0.9rem;
+  background: #fff;
+}
+
+.iv-tool .iv-stepno {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--neutral-light);
+  color: var(--text-light);
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin-bottom: 0.55rem;
+}
+
+.iv-tool .iv-step.done .iv-stepno {
+  background: var(--iv-soft-green);
+  color: var(--iv-green);
+}
+
+.iv-tool .iv-step.active {
+  border-color: #a8c7ef;
+  background: var(--cloud-blue);
+}
+
+.iv-tool .iv-step.active .iv-stepno {
+  background: var(--blue-light);
+  color: var(--navy);
+}
+
+.iv-tool .iv-step strong {
+  font-size: 0.85rem;
+  color: var(--blue-dark);
+}
+
+.iv-tool .iv-step div:last-child {
+  font-size: 0.72rem;
+  color: var(--text-light);
+  margin-top: 0.3rem;
+  line-height: 1.4;
+}
+
+.iv-tool .iv-snapshotgrid,
+.iv-tool .iv-globalgrid,
+.iv-tool .iv-changes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.iv-tool .iv-snapshotcard .date {
+  font-family: var(--sora);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 0.4rem;
+  color: var(--blue-dark);
+}
+
+.iv-tool .iv-snapshotcard .meta {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  margin-top: 0.3rem;
+  line-height: 1.45;
+}
+
+.iv-tool .iv-signalbadge {
+  display: inline-flex;
+  margin-top: 0.55rem;
+  border-radius: 100rem;
+  padding: 0.3rem 0.55rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.iv-tool .iv-globalcard .pct {
+  font-family: var(--sora);
+  font-size: 1.85rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  margin-top: 0.4rem;
+  color: var(--blue-dark);
+}
+
+.iv-tool .iv-chartwrap {
+  height: 390px;
+  margin-top: 0.75rem;
+  border: 1px solid var(--border-primary);
+  border-radius: 0.85rem;
+  padding: 0.65rem;
+  background: #fcfdff;
+}
+
+.iv-tool .iv-chartwrap canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.iv-tool .iv-chartlegend {
+  display: flex;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+  margin: 0.65rem 0 0.25rem;
+  font-size: 0.75rem;
+  color: var(--text-light);
+}
+
+.iv-tool .iv-legenditem {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.iv-tool .iv-legendline {
+  width: 1.5rem;
+  height: 0;
+  border-top: 3px solid var(--skyblue);
+}
+
+.iv-tool .iv-legendline.dq {
+  border-top: 2px dashed #b7791f;
+}
+
+.iv-tool .iv-trendcallout {
+  margin-top: 0.75rem;
+  border: 1px solid var(--border-primary);
+  border-radius: 0.85rem;
+  padding: 0.9rem;
+  background: var(--neutral-lighter);
+}
+
+.iv-tool .iv-trendcallout strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+  color: var(--blue-dark);
+}
+
+.iv-tool .iv-trendcallout p {
+  margin: 0;
+  color: var(--text-grey);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.iv-tool .iv-historyrow {
+  display: flex;
+  gap: 0.5rem;
+  overflow: auto;
+  padding: 0.75rem 0 0.15rem;
+}
+
+.iv-tool .iv-historychip {
+  min-width: 6rem;
+}
+
+.iv-tool .iv-historychip .m {
+  font-size: 0.65rem;
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+.iv-tool .iv-historychip .d {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 0.25rem;
+  color: var(--blue-dark);
+}
+
+.iv-tool .iv-change strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-top: 0.4rem;
+  color: var(--blue-dark);
+}
+
+.iv-tool .iv-change p {
+  font-size: 0.8rem;
+  color: var(--text-grey);
+  line-height: 1.45;
+  margin: 0.4rem 0 0;
+}
+
+.iv-tool .iv-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.iv-tool .iv-seg {
+  display: flex;
+  background: var(--bg-gray);
+  padding: 0.2rem;
+  border-radius: 0.65rem;
+  gap: 0.15rem;
+}
+
+.iv-tool .iv-seg button {
+  height: 2rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--text-light);
+  font-family: var(--figtree);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0 0.7rem;
+  cursor: pointer;
+}
+
+.iv-tool .iv-seg button.active {
+  background: #fff;
+  color: var(--blue-dark);
+}
+
+.iv-tool .iv-explorerControls select {
+  width: auto;
+  min-width: 12rem;
+  height: 2.35rem;
+  border: 1px solid var(--border-primary);
+  border-radius: 0.65rem;
+  background: #fff;
+  color: var(--blue-dark);
+  font-family: var(--figtree);
+  font-size: 0.9rem;
+  padding: 0 0.75rem;
+}
+
+.iv-tool .iv-tablebox {
+  overflow: auto;
+}
+
+.iv-tool .iv-table-note {
+  margin-top: 0.75rem;
+}
+
+.iv-tool table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.iv-tool th {
+  text-align: left;
+  padding: 0.65rem;
+  border-bottom: 1px solid var(--border-primary);
+  color: var(--text-light);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.055em;
+}
+
+.iv-tool td {
+  padding: 0.7rem 0.65rem;
+  border-bottom: 1px solid var(--border-primary);
+  color: var(--text-dark-grey);
+}
+
+.iv-tool td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.iv-tool .iv-tag {
+  display: inline-flex;
+  border-radius: 100rem;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.iv-tool .iv-tag.c {
+  background: var(--iv-soft-green);
+  color: var(--iv-green);
+}
+
+.iv-tool .iv-tag.u {
+  background: var(--iv-soft-red);
+  color: var(--iv-red);
+}
+
+.iv-tool .iv-seocopy p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-grey);
+  margin: 0.65rem 0;
+}
+
+.iv-tool .iv-seocopy strong {
+  color: var(--blue-dark);
+}
+
+.iv-tool .iv-faq {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.9rem;
+}
+
+.iv-tool .iv-faqitem {
+  border: 1px solid var(--border-primary);
+  border-radius: 0.85rem;
+  background: #fff;
+  padding: 1rem 1.05rem;
+}
+
+.iv-tool .iv-faqitem h3 {
+  font-size: 0.92rem;
+  margin: 0 0 0.4rem;
+}
+
+.iv-tool .iv-faqitem p {
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-grey);
+  margin: 0;
+}
+
+.iv-tool .iv-disclaimer {
+  font-size: 0.78rem;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-top: 2rem;
+  border-top: 1px solid var(--border-primary);
+  padding-top: 1.1rem;
+}
+
+.iv-tool .iv-disclaimer a {
+  color: var(--skyblue);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.iv-tool .iv-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin: 0 0 1.5rem;
+  font-size: 0.88rem;
+}
+
+.iv-tool .iv-toc a {
+  color: var(--text-grey);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.iv-tool .iv-toc a:hover {
+  color: var(--blue-dark);
+  text-decoration: underline;
+}
+
+.iv-tool .hidden {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  .iv-tool .iv-formgrid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .iv-tool .iv-gates,
+  .iv-tool .iv-bottleneck {
+    grid-template-columns: 1fr;
+  }
+  .iv-tool .iv-postintel,
+  .iv-tool .iv-snapshotgrid,
+  .iv-tool .iv-globalgrid {
+    grid-template-columns: 1fr;
+  }
+  .iv-tool .iv-pill {
+    justify-self: start;
+  }
+  .iv-tool .iv-changes {
+    grid-template-columns: 1fr;
+  }
+  .iv-tool .iv-steps {
+    grid-template-columns: 1fr 1fr;
+  }
+  .iv-tool .iv-chartwrap {
+    height: 340px;
+  }
+}
+
+@media (max-width: 560px) {
+  .iv-tool .iv-formgrid {
+    grid-template-columns: 1fr;
+  }
+  .iv-tool .iv-gatebody {
+    grid-template-columns: 1fr;
+  }
+  .iv-tool .iv-steps {
+    grid-template-columns: 1fr;
+  }
+  .iv-tool .iv-chartwrap {
+    height: 320px;
+  }
+}

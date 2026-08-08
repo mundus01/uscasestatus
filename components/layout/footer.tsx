@@ -80,6 +80,9 @@ export async function Footer() {
                 <Link href="/insights">{t("visaBulletin")}</Link>
               </li>
               <li>
+                <Link href="/iv-scheduling-tool">{t("ivScheduling")}</Link>
+              </li>
+              <li>
                 <Link href="/status">{t("rfe")}</Link>
               </li>
             </ul>

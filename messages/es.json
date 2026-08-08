@@ -14,7 +14,8 @@
     "checkCase": "Consultar un caso",
     "processingTimes": "Tiempos de procesamiento",
     "formGuides": "Guías de formularios",
-    "insights": "Datos"
+    "insights": "Datos",
+    "ivScheduling": "Programación IV"
   },
   "localeSwitcher": {
     "label": "Idioma",
@@ -126,6 +127,7 @@
     "estimateHow": "Cómo estimamos los plazos",
     "processingTimes": "Tiempos de procesamiento",
     "visaBulletin": "Boletín de visas",
+    "ivScheduling": "Herramienta de programación IV del NVC",
     "rfe": "Responder a un RFE",
     "formsHeading": "Guías de formularios",
     "companyHeading": "Empresa",
@@ -346,6 +348,12 @@
   "methodology": {
     "title": "Metodología",
     "body": "Los estados de caso provienen de la API oficial de estado de casos de USCIS. Las bandas de procesamiento vienen de las medianas nacionales históricas de USCIS por formulario (años fiscales recientes). Los resúmenes de casos cercanos usan consultas anonimizadas de personas que revisaron bloques de recibo similares — nunca listamos los números de recibo de otras personas. El tiempo transcurrido en casos decididos se detiene en la fecha de la decisión. Este sitio no está afiliado a USCIS y no es asesoría legal."
+  },
+  "ivScheduling": {
+    "eyebrow": "Herramienta de programación IV del NVC y boletín de visas",
+    "title": "Herramienta de programación IV del NVC: consulta tu cola de entrevista de visa de inmigrante",
+    "description": "Consulta el estado de programación IV del NVC, tiempos de espera de entrevista, movimiento de la cola DQ, elegibilidad del Boletín de Visas y atrasos en embajadas o consulados de EE. UU.",
+    "lede": "Consulta el estado de programación de entrevista del NVC por embajada o consulado de EE. UU. Compara tu fecha de calificación documental (DQ) con el último estado de programación IV, añade tu Priority Date y categoría del Boletín de Visas, y mira si te está frenando la disponibilidad de visa o la cola de entrevistas del NVC."
   },
   "auth": {
     "signInTitle": "Entra a tus casos",

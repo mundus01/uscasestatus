@@ -25,7 +25,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const hubs = ["/status", "/processing-times", "/insights"] as const;
+  const hubs = [
+    "/status",
+    "/processing-times",
+    "/insights",
+    "/iv-scheduling-tool",
+  ] as const;
   for (const path of hubs) {
     entries.push({
       url: `${base}${path}`,

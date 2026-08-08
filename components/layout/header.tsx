@@ -26,6 +26,7 @@ export async function Header() {
         <nav className="mainnav">
           <Link href="/">{t("checkCase")}</Link>
           <Link href="/processing-times">{t("processingTimes")}</Link>
+          <Link href="/iv-scheduling-tool">{t("ivScheduling")}</Link>
           <Link href="/forms/i485-tracker">{t("formGuides")}</Link>
           <Link href="/insights">{t("insights")}</Link>
         </nav>
