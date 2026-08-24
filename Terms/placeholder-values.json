@@ -3,10 +3,10 @@
 
   "_1_company": {
     "ENTITY_NAME": "USCaseStatus",
-    "ENTITY_FULL": "Mundus Consult LLC",
-    "ENTITY_ADDRESS": "Texas, USA",
-    "ENTITY_NAME_ADDRESS": "Mundus Consult LLC, Texas, USA",
-    "GOVERNING_STATE": "Texas"
+    "ENTITY_FULL": "Mundus Consult LLC, a Delaware limited liability company",
+    "ENTITY_ADDRESS": "Delaware, USA",
+    "ENTITY_NAME_ADDRESS": "Mundus Consult LLC, Delaware, USA",
+    "GOVERNING_STATE": "Delaware"
   },
 
   "_2_contact_emails": {

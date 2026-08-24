@@ -12,7 +12,7 @@
   --blue-dark:#131349;--skyblue:#1474e1;--blue-medium:#3076bd;--navy:#00438e;
   --text-dark-grey:#404040;--text-grey:#565656;--text-light:#747474;
   --border-primary:#e5e5e5;--success:#25d0a4;--bg-light-green:#c7f3e8;
-  --error:#fa105d;--warning:#f9da47;--bg-warning:#f9da4726;
+  --error:#b40e4a;--warning:#f9da47;--bg-warning:#f9da4726;
   --blue-light:#e7f0fe;--cloud-blue:#f5faff;--pale-blue:#e7f1fc;--bg-gray:#eef1f5;
   --neutral-light:#f1f1f1;--neutral-lighter:#fafafa;
   --sora:'Sora',sans-serif;--figtree:'Figtree',sans-serif;--shell:1000px;
@@ -53,10 +53,10 @@ a{color:var(--blue-medium);text-decoration:underline;text-underline-offset:2px}
 .legal-hero{background:var(--cloud-blue);border-bottom:1px solid var(--border-primary);padding:3rem 0 2.5rem}
 .legal-hero h1{font-size:2.5rem;line-height:1.15;margin:.6rem 0 .75rem}
 .legal-hero .lede{font-size:1.05rem;color:var(--text-grey);max-width:70ch}
-.dates{display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:1.5rem;font-size:.82rem;color:var(--text-light)}
+.dates{display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:1.5rem;font-size:.875rem;color:var(--text-light)}
 .dates b{color:var(--blue-dark);font-weight:600}
 .legal-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.75rem}
-.legal-tabs a{background:#fff;border:1px solid var(--border-primary);border-radius:100rem;padding:.4rem 1rem;font-size:.82rem;font-weight:500;color:var(--text-grey);text-decoration:none}
+.legal-tabs a{background:#fff;border:1px solid var(--border-primary);border-radius:100rem;padding:.4rem 1rem;font-size:.875rem;font-weight:500;color:var(--text-grey);text-decoration:none}
 .legal-tabs a:hover{border-color:var(--skyblue);color:var(--blue-dark)}
 .legal-tabs a[aria-current]{background:var(--blue-dark);border-color:var(--blue-dark);color:#fff;font-weight:600}
 
@@ -65,7 +65,7 @@ a{color:var(--blue-medium);text-decoration:underline;text-underline-offset:2px}
 .toc{position:sticky;top:5rem}
 .toc h4{font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue-medium);margin-bottom:.85rem}
 .toc ul{list-style:none;display:grid;gap:.5rem;border-left:2px solid var(--border-primary);padding-left:1rem}
-.toc a{color:var(--text-grey);text-decoration:none;font-size:.83rem;line-height:1.4;display:block}
+.toc a{color:var(--text-grey);text-decoration:none;font-size:.875rem;line-height:1.4;display:block}
 .toc a:hover{color:var(--blue-dark)}
 
 /* content */
@@ -81,10 +81,10 @@ a{color:var(--blue-medium);text-decoration:underline;text-underline-offset:2px}
 .plain p{margin:0;font-size:.92rem;color:#173f37;line-height:1.6}
 .callout{border:1px solid var(--border-primary);border-left:3px solid var(--skyblue);background:var(--cloud-blue);border-radius:.5rem;padding:1rem 1.25rem;margin:1.25rem 0;font-size:.92rem;line-height:1.65}
 .callout.warn{border-left-color:var(--warning);background:var(--bg-warning)}
-.callout.strong{border-left-color:var(--error);background:#fa105d0f}
+.callout.strong{border-left-color:var(--error);background:#b40e4a12}
 .callout p:last-child{margin-bottom:0}
-table{width:100%;border-collapse:collapse;margin:1.25rem 0;font-size:.85rem}
-th{text-align:left;background:var(--bg-gray);color:var(--blue-dark);font-family:var(--sora);font-weight:600;font-size:.78rem;padding:.7rem .85rem;border:1px solid var(--border-primary)}
+table{width:100%;border-collapse:collapse;margin:1.25rem 0;font-size:.875rem}
+th{text-align:left;background:var(--bg-gray);color:var(--blue-dark);font-family:var(--sora);font-weight:600;font-size:.875rem;padding:.7rem .85rem;border:1px solid var(--border-primary)}
 td{padding:.7rem .85rem;border:1px solid var(--border-primary);vertical-align:top;line-height:1.55}
 td b{color:var(--blue-dark)}
 .na{color:var(--text-light)}
@@ -96,7 +96,7 @@ td b{color:var(--blue-dark)}
 .form-card{background:#fff;border:1px solid var(--border-primary);border-radius:1rem;padding:1.75rem;margin:1.5rem 0}
 .field{margin-bottom:1.15rem}
 .field label{display:block;font-size:.85rem;font-weight:600;color:var(--blue-dark);margin-bottom:.35rem}
-.field .hint{font-size:.75rem;color:var(--text-light);margin-top:.25rem;line-height:1.5}
+.field .hint{font-size:.875rem;color:var(--text-light);margin-top:.25rem;line-height:1.5}
 .field input,.field select,.field textarea{width:100%;border:1px solid var(--border-primary);border-radius:.5rem;padding:.65rem .85rem;font-family:var(--figtree);font-size:.95rem;color:var(--text-dark-grey);background:#fff}
 .field textarea{min-height:90px;resize:vertical}
 .radio-row{display:flex;gap:.5rem;flex-wrap:wrap}
@@ -135,12 +135,12 @@ td b{color:var(--blue-dark)}
 .footer-disclaimer{border-top:1px solid #ffffff1f;padding:1.5rem 0;display:flex;gap:1rem;align-items:flex-start}
 .footer-disclaimer .flag{flex:0 0 auto;width:22px;height:22px;border-radius:.4rem;background:#ffffff17;display:grid;place-items:center;color:#7fb4f5;font-size:.7rem;font-weight:700;font-family:var(--sora);margin-top:.1rem}
 .footer-disclaimer .cols{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;flex:1}
-.footer-disclaimer p{font-size:.78rem;line-height:1.65;color:#8f9dbd}
+.footer-disclaimer p{font-size:.875rem;line-height:1.65;color:#8f9dbd}
 .footer-disclaimer b{color:#c9d4ec;font-weight:600}
 .footer-bottom{border-top:1px solid #ffffff1f;padding:1.25rem 0 2rem;display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap}
-.footer-bottom small{font-size:.78rem;color:#8f9dbd}
+.footer-bottom small{font-size:.875rem;color:#8f9dbd}
 .footer-bottom nav{margin-left:auto;display:flex;gap:1.25rem;flex-wrap:wrap}
-.footer-bottom nav a{color:#8f9dbd;text-decoration:none;font-size:.78rem}
+.footer-bottom nav a{color:#8f9dbd;text-decoration:none;font-size:.875rem}
 .footer-bottom nav a:hover{color:#fff;text-decoration:underline}
 .sync{display:inline-flex;align-items:center;gap:.4rem}
 .sync .led{width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 0 3px #25d0a433}
@@ -253,7 +253,7 @@ td b{color:var(--blue-dark)}
   <div class="field"><label for="a11y-email">Email, if you'd like a reply</label><input id="a11y-email" type="email" placeholder="you@example.com"><div class="hint">Optional. We use it only to reply about this report.</div></div>
   <button class="button">Send report</button>
 </div>
-<p>You can also email info@uscasestatus.com or write to Texas, USA.</p>
+<p>You can also email info@uscasestatus.com or write to Delaware, USA.</p>
 <p><strong>We acknowledge every report within 2 business days</strong> and aim to resolve or provide a workaround within <strong>10 business days</strong>. If a fix will take longer, we will tell you why and give you a date.</p>
 
 <h2 id="alt">Alternative ways to get the information</h2>
